@@ -1,1 +1,1 @@
-Docs folder
+Docs directory 
