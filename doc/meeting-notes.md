@@ -15,6 +15,7 @@
   - Work on a branch with the name "alias/purpose" for now
   - Regroup later on
   - Staging branch for development and main is for deliverable tagging
+  - Maybe split it up so that 2 people write the program, 1 person writes the report, and one person does research
 
 ### Action items
 
