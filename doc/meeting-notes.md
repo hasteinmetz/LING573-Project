@@ -22,4 +22,4 @@
 - Go through a tutorial
   - Think about how it can be split
   - Think about interoperability
-- Make back on Thursday to talk about how to split up work
+- Meet back on Thursday to talk about how to split up work
