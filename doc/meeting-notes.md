@@ -19,7 +19,7 @@
 
 ### Action items
 
-- Go through a tutorial
+- Go through a [tutorial](https://pytorch.org/hub/huggingface_pytorch-transformers/#using-modelforsequenceclassification-to-do-paraphrase-classification-with-bert)
   - Think about how it can be split
   - Think about interoperability
 - Meet back on Thursday to talk about how to split up work
