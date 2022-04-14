@@ -2,10 +2,6 @@
 
 ## 4-14
 
-### Pre-meeting
-
-#### Hilly:
-
 - Need to divide data (one program).
 - Have embeddings... need to decide evaluation.
 - Split up coding:
