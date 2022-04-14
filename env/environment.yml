@@ -1,4 +1,4 @@
-name: /Users/hillel/Documents/UW/sp2022/systems/repo/env
+name: 573-project 
 channels:
   - conda-forge
   - defaults
@@ -175,4 +175,3 @@ dependencies:
     - pyyaml==6.0
     - sentencepiece==0.1.95
     - tensorboardx==2.5
-prefix: /Users/hillel/Documents/UW/sp2022/systems/repo/env
