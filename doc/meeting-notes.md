@@ -14,6 +14,7 @@
   - Train a classifier
   - Evaluate the classifier
 - Other work:
+  - Set up Anaconda environment
   - Ask Brandon for shared space
   - Decide on collaboration software
 
