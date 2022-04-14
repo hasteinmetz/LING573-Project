@@ -2,10 +2,11 @@
 
 ## 4-14
 
-- Need to divide data (one program).
 - Have embeddings... need to decide evaluation.
 - Split up coding:
   - Create train, dev, & test sets
+  - What level of preprocessing produces the right results?
+    - Are there going to be a lot of unknown tokens?
   - Make embeddings from RoBERTA
   - Train a classifier
   - Evaluate the classifier
