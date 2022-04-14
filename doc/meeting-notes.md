@@ -1,5 +1,19 @@
 # Meeting notes
 
+## 4-14
+
+### Pre-meeting
+
+#### Hilly:
+
+- Need to divide data (one program).
+- Have embeddings... need to decide evaluation.
+- Split up coding:
+  - Create train, dev, & test sets
+  - Make embeddings from RoBERTA
+  - Train a classifier
+  - Evaluate the classifier
+
 ## 4-11
 
 - Decided on a baseline task
