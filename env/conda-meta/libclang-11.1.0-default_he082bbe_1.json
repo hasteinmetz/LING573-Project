@@ -1,0 +1,53 @@
+{
+  "build": "default_he082bbe_1",
+  "build_number": 1,
+  "channel": "https://conda.anaconda.org/conda-forge/osx-64",
+  "constrains": [],
+  "depends": [
+    "libcxx >=11.1.0",
+    "libllvm11 >=11.1.0,<11.2.0a0"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/libclang-11.1.0-default_he082bbe_1",
+  "features": "",
+  "files": [
+    "lib/libclang.11.1.dylib",
+    "lib/libclang.dylib"
+  ],
+  "fn": "libclang-11.1.0-default_he082bbe_1.tar.bz2",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "license_family": "Apache",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/libclang-11.1.0-default_he082bbe_1",
+    "type": 1
+  },
+  "md5": "f402dd3a01e225f5d58084d2dcb128a7",
+  "name": "libclang",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/libclang-11.1.0-default_he082bbe_1.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/libclang.11.1.dylib",
+        "path_type": "hardlink",
+        "sha256": "eeef05a4a9ef4969c59718fae7b695a81467ad826cc031a4558028bc04e9edfe",
+        "sha256_in_prefix": "eeef05a4a9ef4969c59718fae7b695a81467ad826cc031a4558028bc04e9edfe",
+        "size_in_bytes": 25738836
+      },
+      {
+        "_path": "lib/libclang.dylib",
+        "path_type": "hardlink",
+        "sha256": "eeef05a4a9ef4969c59718fae7b695a81467ad826cc031a4558028bc04e9edfe",
+        "sha256_in_prefix": "eeef05a4a9ef4969c59718fae7b695a81467ad826cc031a4558028bc04e9edfe",
+        "size_in_bytes": 25738836
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "ff923240276baef31494a8c3699fcfced7e0d26b5fc578ffd754ee200e32a17f",
+  "size": 15111221,
+  "subdir": "osx-64",
+  "timestamp": 1620642751877,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/osx-64/libclang-11.1.0-default_he082bbe_1.tar.bz2",
+  "version": "11.1.0"
+}

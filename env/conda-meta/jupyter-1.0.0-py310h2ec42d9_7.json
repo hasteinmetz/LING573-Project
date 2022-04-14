@@ -1,0 +1,107 @@
+{
+  "build": "py310h2ec42d9_7",
+  "build_number": 7,
+  "channel": "https://conda.anaconda.org/conda-forge/osx-64",
+  "constrains": [],
+  "depends": [
+    "ipykernel",
+    "ipywidgets",
+    "jupyter_console",
+    "nbconvert",
+    "notebook",
+    "python >=3.10,<3.11.0a0",
+    "python_abi 3.10.* *_cp310",
+    "qtconsole"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/jupyter-1.0.0-py310h2ec42d9_7",
+  "features": "",
+  "files": [
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/INSTALLER",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/LICENSE",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/METADATA",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/RECORD",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/REQUESTED",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/WHEEL",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/direct_url.json",
+    "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/top_level.txt"
+  ],
+  "fn": "jupyter-1.0.0-py310h2ec42d9_7.tar.bz2",
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/jupyter-1.0.0-py310h2ec42d9_7",
+    "type": 1
+  },
+  "md5": "c522a801c5fe82662a3acec366b0baaa",
+  "name": "jupyter",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/jupyter-1.0.0-py310h2ec42d9_7.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "45a62b620e147140a0d4214467bc16e136983e5a2dba562852e5a6718597000d",
+        "sha256_in_prefix": "45a62b620e147140a0d4214467bc16e136983e5a2dba562852e5a6718597000d",
+        "size_in_bytes": 1481
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "1d59019c382e1da72b716c1119429a75ad1a343f33bfaf864f6d6d4db70f133f",
+        "sha256_in_prefix": "1d59019c382e1da72b716c1119429a75ad1a343f33bfaf864f6d6d4db70f133f",
+        "size_in_bytes": 1016
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "a4150b80640d817cc6229694a7041d12db4b04e895e3560a68c99267e5f48067",
+        "sha256_in_prefix": "a4150b80640d817cc6229694a7041d12db4b04e895e3560a68c99267e5f48067",
+        "size_in_bytes": 768
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "5b367c7308e1f25d23b542cd8d8ab51e9afe582a824603ebfbe4d7e0fe48d56a",
+        "sha256_in_prefix": "5b367c7308e1f25d23b542cd8d8ab51e9afe582a824603ebfbe4d7e0fe48d56a",
+        "size_in_bytes": 110
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "16621aa9be09a397118a6ea76fb8d79f3c0d61108c58de7b4b3bd204b75c7cc8",
+        "sha256_in_prefix": "16621aa9be09a397118a6ea76fb8d79f3c0d61108c58de7b4b3bd204b75c7cc8",
+        "size_in_bytes": 95
+      },
+      {
+        "_path": "lib/python3.10/site-packages/jupyter-1.0.0.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "ce72f0b7a376799ffbbb57931dceab5c9e1cea2254ce6855d4d37bdc7ba54e44",
+        "sha256_in_prefix": "ce72f0b7a376799ffbbb57931dceab5c9e1cea2254ce6855d4d37bdc7ba54e44",
+        "size_in_bytes": 8
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "jupyter",
+  "sha256": "2e7850eef88480b301a550a02ec46f338e23ecbb1d77494ae926ea5090dfbc73",
+  "size": 6505,
+  "subdir": "osx-64",
+  "timestamp": 1637233396175,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/osx-64/jupyter-1.0.0-py310h2ec42d9_7.tar.bz2",
+  "version": "1.0.0"
+}

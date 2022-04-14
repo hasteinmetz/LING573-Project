@@ -1,0 +1,428 @@
+{
+  "build": "pyhd3eb1b0_1",
+  "build_number": 1,
+  "channel": "https://repo.anaconda.com/pkgs/main/noarch",
+  "constrains": [],
+  "depends": [
+    "colorama",
+    "numpy >=1.17",
+    "portalocker",
+    "python",
+    "regex",
+    "tabulate >=0.8.9",
+    "typing"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/sacrebleu-2.0.0-pyhd3eb1b0_1",
+  "features": "",
+  "files": [
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/INSTALLER",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/LICENSE.txt",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/METADATA",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/RECORD",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/REQUESTED",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/WHEEL",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/direct_url.json",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/entry_points.txt",
+    "lib/python3.10/site-packages/sacrebleu-2.0.0.dist-info/top_level.txt",
+    "lib/python3.10/site-packages/sacrebleu/__init__.py",
+    "lib/python3.10/site-packages/sacrebleu/__main__.py",
+    "lib/python3.10/site-packages/sacrebleu/compat.py",
+    "lib/python3.10/site-packages/sacrebleu/dataset.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__init__.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/base.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/bleu.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/chrf.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/helpers.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/lib_ter.py",
+    "lib/python3.10/site-packages/sacrebleu/metrics/ter.py",
+    "lib/python3.10/site-packages/sacrebleu/py.typed",
+    "lib/python3.10/site-packages/sacrebleu/sacrebleu.py",
+    "lib/python3.10/site-packages/sacrebleu/significance.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__init__.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_13a.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_base.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_char.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_intl.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_ja_mecab.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_re.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_ter.py",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/tokenizer_zh.py",
+    "lib/python3.10/site-packages/sacrebleu/utils.py",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/__main__.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/compat.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/dataset.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/base.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/bleu.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/chrf.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/helpers.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/lib_ter.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/ter.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/sacrebleu.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/significance.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_13a.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_base.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_char.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_intl.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_ja_mecab.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_re.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_ter.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_zh.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacrebleu/__pycache__/utils.cpython-310.pyc",
+    "bin/sacrebleu"
+  ],
+  "fn": "sacrebleu-2.0.0-pyhd3eb1b0_1.conda",
+  "legacy_bz2_md5": "ce7be4e84dfa6de27bcaf6afc402cb89",
+  "license": "Apache-2.0",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/sacrebleu-2.0.0-pyhd3eb1b0_1",
+    "type": 1
+  },
+  "md5": "2d9ba03553a3ee030dc2cf0091ebd03c",
+  "name": "sacrebleu",
+  "noarch": "python",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/sacrebleu-2.0.0-pyhd3eb1b0_1.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/LICENSE.txt",
+        "path_type": "hardlink",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "sha256_in_prefix": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size_in_bytes": 11357
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "45bc36d4c0e013f2076e01ce7c011bf6494389826c44481bf7b27c48f540cce6",
+        "sha256_in_prefix": "45bc36d4c0e013f2076e01ce7c011bf6494389826c44481bf7b27c48f540cce6",
+        "size_in_bytes": 1355
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "398e552a617aac158ee6099b248b7fd333cdb7f5905124c9dc97e55096304bc5",
+        "sha256_in_prefix": "398e552a617aac158ee6099b248b7fd333cdb7f5905124c9dc97e55096304bc5",
+        "size_in_bytes": 4241
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "7b0c04b9e8a8d42d977874ef4f5ee7f1d6542603afc82582b7459534b0a53fda",
+        "sha256_in_prefix": "7b0c04b9e8a8d42d977874ef4f5ee7f1d6542603afc82582b7459534b0a53fda",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "d71034bec9edd1f6d7f4892033b3cdbe0566dd524f110d06064420024c570aa0",
+        "sha256_in_prefix": "d71034bec9edd1f6d7f4892033b3cdbe0566dd524f110d06064420024c570aa0",
+        "size_in_bytes": 82
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/entry_points.txt",
+        "path_type": "hardlink",
+        "sha256": "b840f83a93769183aed6bbdd5fb6f64e4827fda99a8c973feb257fd81f33e129",
+        "sha256_in_prefix": "b840f83a93769183aed6bbdd5fb6f64e4827fda99a8c973feb257fd81f33e129",
+        "size_in_bytes": 56
+      },
+      {
+        "_path": "site-packages/sacrebleu-2.0.0.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "1f77291d73d0b50b556ca2300cdf00bb6b7c9f0ad342503da261aea05eed24e0",
+        "sha256_in_prefix": "1f77291d73d0b50b556ca2300cdf00bb6b7c9f0ad342503da261aea05eed24e0",
+        "size_in_bytes": 10
+      },
+      {
+        "_path": "site-packages/sacrebleu/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "d61cfee846a25f23648efc19223b714aa829cee30e7c8c2b0806d8ab659dec8b",
+        "sha256_in_prefix": "d61cfee846a25f23648efc19223b714aa829cee30e7c8c2b0806d8ab659dec8b",
+        "size_in_bytes": 1439
+      },
+      {
+        "_path": "site-packages/sacrebleu/__main__.py",
+        "path_type": "hardlink",
+        "sha256": "1229b64dfb7d5dca21e4f2789f6de6567a4fdfa52679c3ad0801f552997991aa",
+        "sha256_in_prefix": "1229b64dfb7d5dca21e4f2789f6de6567a4fdfa52679c3ad0801f552997991aa",
+        "size_in_bytes": 1062
+      },
+      {
+        "_path": "site-packages/sacrebleu/compat.py",
+        "path_type": "hardlink",
+        "sha256": "bc67466e86b0a9e1b46edcb6fac8bcfe59e86dc0efde73f452ea66f07357ce75",
+        "sha256_in_prefix": "bc67466e86b0a9e1b46edcb6fac8bcfe59e86dc0efde73f452ea66f07357ce75",
+        "size_in_bytes": 8796
+      },
+      {
+        "_path": "site-packages/sacrebleu/dataset.py",
+        "path_type": "hardlink",
+        "sha256": "2d41be24a7d7a96df2f9478871069ea7002cc4f11eac2723f36c2302af55eaab",
+        "sha256_in_prefix": "2d41be24a7d7a96df2f9478871069ea7002cc4f11eac2723f36c2302af55eaab",
+        "size_in_bytes": 80303
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "3330b98526e9ae5c30bdb7aeebfebf14ecf72fb7352afb4192692039a1954c39",
+        "sha256_in_prefix": "3330b98526e9ae5c30bdb7aeebfebf14ecf72fb7352afb4192692039a1954c39",
+        "size_in_bytes": 260
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/base.py",
+        "path_type": "hardlink",
+        "sha256": "f6c2d6eabbafa31ec5a8833fb82daec6ee475765d2d48118bf44acd203105cca",
+        "sha256_in_prefix": "f6c2d6eabbafa31ec5a8833fb82daec6ee475765d2d48118bf44acd203105cca",
+        "size_in_bytes": 16722
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/bleu.py",
+        "path_type": "hardlink",
+        "sha256": "1ff29609bc54c3c8b8a286a75dbdbb734ba29b7fa3acb1f7f6a20729c0935eaf",
+        "sha256_in_prefix": "1ff29609bc54c3c8b8a286a75dbdbb734ba29b7fa3acb1f7f6a20729c0935eaf",
+        "size_in_bytes": 16757
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/chrf.py",
+        "path_type": "hardlink",
+        "sha256": "96190e0779f0b923afb2e6f5ecc72df60434a11d37f20123e6f8fed481508575",
+        "sha256_in_prefix": "96190e0779f0b923afb2e6f5ecc72df60434a11d37f20123e6f8fed481508575",
+        "size_in_bytes": 10674
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/helpers.py",
+        "path_type": "hardlink",
+        "sha256": "5569e03b717ff6051ae2e4051f55899b8c59aa9ab708b61e01610e78cb840b1e",
+        "sha256_in_prefix": "5569e03b717ff6051ae2e4051f55899b8c59aa9ab708b61e01610e78cb840b1e",
+        "size_in_bytes": 2339
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/lib_ter.py",
+        "path_type": "hardlink",
+        "sha256": "381263247983073abfb2ea595baf1599afad912572d6d89b48bc3f474f779dc1",
+        "sha256_in_prefix": "381263247983073abfb2ea595baf1599afad912572d6d89b48bc3f474f779dc1",
+        "size_in_bytes": 16477
+      },
+      {
+        "_path": "site-packages/sacrebleu/metrics/ter.py",
+        "path_type": "hardlink",
+        "sha256": "d6f5775e0fafdc70166a18245140e0683ed38f5994564c4864377f641b9af982",
+        "sha256_in_prefix": "d6f5775e0fafdc70166a18245140e0683ed38f5994564c4864377f641b9af982",
+        "size_in_bytes": 6857
+      },
+      {
+        "_path": "site-packages/sacrebleu/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/sacrebleu/sacrebleu.py",
+        "path_type": "hardlink",
+        "sha256": "426f2d31bd3885e03372468d8befaeb4850533fa303b85726c8ecfa426715d27",
+        "sha256_in_prefix": "426f2d31bd3885e03372468d8befaeb4850533fa303b85726c8ecfa426715d27",
+        "size_in_bytes": 27526
+      },
+      {
+        "_path": "site-packages/sacrebleu/significance.py",
+        "path_type": "hardlink",
+        "sha256": "54a9df587b436579669cdc8315e6cd600d00d660fe8b38370e09c0a7f53b3827",
+        "sha256_in_prefix": "54a9df587b436579669cdc8315e6cd600d00d660fe8b38370e09c0a7f53b3827",
+        "size_in_bytes": 18281
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "575ba73dd1093eb7c328d0d84755522eed5b5c25f416bf14bbccbda4d7195c60",
+        "sha256_in_prefix": "575ba73dd1093eb7c328d0d84755522eed5b5c25f416bf14bbccbda4d7195c60",
+        "size_in_bytes": 89
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_13a.py",
+        "path_type": "hardlink",
+        "sha256": "6c67ed0459c80dc9d5f6da1e9c2e9e8b7b05a073b85ec2b4fb6d2961a33665db",
+        "sha256_in_prefix": "6c67ed0459c80dc9d5f6da1e9c2e9e8b7b05a073b85ec2b4fb6d2961a33665db",
+        "size_in_bytes": 984
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_base.py",
+        "path_type": "hardlink",
+        "sha256": "e509c482dfb8e841a791d2ad2e181f13464b6bef5f2029d466896b094b0690a0",
+        "sha256_in_prefix": "e509c482dfb8e841a791d2ad2e181f13464b6bef5f2029d466896b094b0690a0",
+        "size_in_bytes": 431
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_char.py",
+        "path_type": "hardlink",
+        "sha256": "7c4e0804a136b412b6f1335cf6862b76158b3086e70f17d53cb5d39b8302ea70",
+        "sha256_in_prefix": "7c4e0804a136b412b6f1335cf6862b76158b3086e70f17d53cb5d39b8302ea70",
+        "size_in_bytes": 457
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_intl.py",
+        "path_type": "hardlink",
+        "sha256": "6f76c2d3cf9c7b13a41514db9ef5e78933aec7ef99d1ec36bf89fe955c6f74d4",
+        "sha256_in_prefix": "6f76c2d3cf9c7b13a41514db9ef5e78933aec7ef99d1ec36bf89fe955c6f74d4",
+        "size_in_bytes": 1868
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_ja_mecab.py",
+        "path_type": "hardlink",
+        "sha256": "98218df1ad2035b34a88e98fd01786a1acee9331c673fb7e1755705d9b71085f",
+        "sha256_in_prefix": "98218df1ad2035b34a88e98fd01786a1acee9331c673fb7e1755705d9b71085f",
+        "size_in_bytes": 1419
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_re.py",
+        "path_type": "hardlink",
+        "sha256": "a5425a2b778646f0526a04d91d21ac54e6bf9bf883091ecf9bbbf9eeca715868",
+        "sha256_in_prefix": "a5425a2b778646f0526a04d91d21ac54e6bf9bf883091ecf9bbbf9eeca715868",
+        "size_in_bytes": 1270
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_ter.py",
+        "path_type": "hardlink",
+        "sha256": "b7b90866f937c18a932ca56db3024aca0a3cc87b294e5972e9be6f043a46d1cb",
+        "sha256_in_prefix": "b7b90866f937c18a932ca56db3024aca0a3cc87b294e5972e9be6f043a46d1cb",
+        "size_in_bytes": 5391
+      },
+      {
+        "_path": "site-packages/sacrebleu/tokenizers/tokenizer_zh.py",
+        "path_type": "hardlink",
+        "sha256": "0255028722f059a0365481c5c50387f476f905b4f123326e96c86cb6fe6d9b97",
+        "sha256_in_prefix": "0255028722f059a0365481c5c50387f476f905b4f123326e96c86cb6fe6d9b97",
+        "size_in_bytes": 4722
+      },
+      {
+        "_path": "site-packages/sacrebleu/utils.py",
+        "path_type": "hardlink",
+        "sha256": "ffdb2fa48ddcc3ab1956abe61e638180cf557502c76ad574d4eaf3bf1dd6ab14",
+        "sha256_in_prefix": "ffdb2fa48ddcc3ab1956abe61e638180cf557502c76ad574d4eaf3bf1dd6ab14",
+        "size_in_bytes": 23572
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/__main__.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/compat.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/dataset.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/base.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/bleu.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/chrf.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/helpers.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/lib_ter.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/metrics/__pycache__/ter.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/sacrebleu.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/significance.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_13a.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_base.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_char.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_intl.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_ja_mecab.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_re.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_ter.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/tokenizers/__pycache__/tokenizer_zh.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacrebleu/__pycache__/utils.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "bin/sacrebleu",
+        "path_type": "unix_python_entry_point"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "sacrebleu",
+  "sha256": "616c707431b645d8d641f390f30ffc991a820af273fc02500a8e520c4596d4b4",
+  "size": 63437,
+  "subdir": "noarch",
+  "timestamp": 1634578633230,
+  "track_features": "",
+  "url": "https://repo.anaconda.com/pkgs/main/noarch/sacrebleu-2.0.0-pyhd3eb1b0_1.conda",
+  "version": "2.0.0"
+}

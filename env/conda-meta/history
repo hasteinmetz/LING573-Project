@@ -1,0 +1,210 @@
+==> 2022-04-14 09:18:49 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda create --prefix ./env
+# conda version: 4.12.0
+==> 2022-04-14 09:22:27 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install pytorch numpy pandas
+# conda version: 4.12.0
++defaults/noarch::certifi-2020.6.20-pyhd3eb1b0_3
++defaults/noarch::packaging-21.3-pyhd3eb1b0_0
++defaults/noarch::pycparser-2.21-pyhd3eb1b0_0
++defaults/noarch::pyparsing-3.0.4-pyhd3eb1b0_0
++defaults/noarch::python-dateutil-2.8.2-pyhd3eb1b0_0
++defaults/noarch::pytz-2021.3-pyhd3eb1b0_0
++defaults/noarch::six-1.16.0-pyhd3eb1b0_1
++defaults/noarch::typing-extensions-4.1.1-hd3eb1b0_0
++defaults/noarch::typing_extensions-4.1.1-pyh06a4308_0
++defaults/noarch::tzdata-2022a-hda174b7_0
++defaults/noarch::wheel-0.37.1-pyhd3eb1b0_0
++defaults/osx-64::blas-1.0-mkl
++defaults/osx-64::bottleneck-1.3.4-py310h4e76f89_0
++defaults/osx-64::bzip2-1.0.8-h1de35cc_0
++defaults/osx-64::ca-certificates-2022.3.29-hecd8cb5_0
++defaults/osx-64::cffi-1.15.0-py310hc55c11b_1
++defaults/osx-64::future-0.18.2-py310hecd8cb5_1
++defaults/osx-64::intel-openmp-2021.4.0-hecd8cb5_3538
++defaults/osx-64::libcxx-12.0.0-h2f01273_0
++defaults/osx-64::libffi-3.3-hb1e8313_2
++defaults/osx-64::mkl-2021.4.0-hecd8cb5_637
++defaults/osx-64::mkl-service-2.4.0-py310hca72f7f_0
++defaults/osx-64::mkl_fft-1.3.1-py310hf879493_0
++defaults/osx-64::mkl_random-1.2.2-py310hc081a56_0
++defaults/osx-64::ncurses-6.3-hca72f7f_2
++defaults/osx-64::ninja-1.10.2-py310haf03e11_3
++defaults/osx-64::numexpr-2.8.1-py310hdcd3fac_1
++defaults/osx-64::numpy-1.21.5-py310hdcd3fac_1
++defaults/osx-64::numpy-base-1.21.5-py310hfd2de13_1
++defaults/osx-64::openssl-1.1.1n-hca72f7f_0
++defaults/osx-64::pandas-1.4.1-py310he9d5cce_1
++defaults/osx-64::pip-21.2.4-py310hecd8cb5_0
++defaults/osx-64::python-3.10.4-hdfd78df_0
++defaults/osx-64::pytorch-1.10.2-cpu_py310h30e64cd_0
++defaults/osx-64::readline-8.1.2-hca72f7f_1
++defaults/osx-64::setuptools-61.2.0-py310hecd8cb5_0
++defaults/osx-64::sqlite-3.38.2-h707629a_0
++defaults/osx-64::tk-8.6.11-h7bc2e8c_0
++defaults/osx-64::xz-5.2.5-h1de35cc_0
++defaults/osx-64::zlib-1.2.12-h4dc903c_0
+# update specs: ['numpy', 'pytorch', 'pandas']
+==> 2022-04-14 09:23:04 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install tqdm
+# conda version: 4.12.0
++defaults/noarch::colorama-0.4.4-pyhd3eb1b0_0
++defaults/noarch::tqdm-4.63.0-pyhd3eb1b0_0
+# update specs: ['tqdm']
+==> 2022-04-14 09:24:26 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install boto3 requests regex sentencepiece sacremoses
+# conda version: 4.12.0
++defaults/noarch::boto3-1.21.32-pyhd3eb1b0_0
++defaults/noarch::botocore-1.24.32-pyhd3eb1b0_0
++defaults/noarch::charset-normalizer-2.0.4-pyhd3eb1b0_0
++defaults/noarch::idna-3.3-pyhd3eb1b0_0
++defaults/noarch::jmespath-0.10.0-pyhd3eb1b0_0
++defaults/noarch::joblib-1.1.0-pyhd3eb1b0_0
++defaults/noarch::pyopenssl-22.0.0-pyhd3eb1b0_0
++defaults/noarch::requests-2.27.1-pyhd3eb1b0_0
++defaults/noarch::s3transfer-0.5.0-pyhd3eb1b0_0
++defaults/noarch::sacremoses-0.0.43-pyhd3eb1b0_0
++defaults/noarch::urllib3-1.26.8-pyhd3eb1b0_0
++defaults/osx-64::brotlipy-0.7.0-py310hca72f7f_1002
++defaults/osx-64::click-8.0.4-py310hecd8cb5_0
++defaults/osx-64::cryptography-36.0.0-py310hf6deb26_0
++defaults/osx-64::pysocks-1.7.1-py310hecd8cb5_0
++defaults/osx-64::regex-2022.3.15-py310hca72f7f_0
++defaults/osx-64::sentencepiece-0.1.95-py310haf03e11_0
+# update specs: ['requests', 'sentencepiece', 'regex', 'sacremoses', 'boto3']
+==> 2022-04-14 09:31:31 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install -c conda-forge --prefix /Users/hillel/Documents/UW/sp2022/systems/repo/env jupyter -y
+# conda version: 4.12.0
+-defaults/noarch::certifi-2020.6.20-pyhd3eb1b0_3
+-defaults/osx-64::ca-certificates-2022.3.29-hecd8cb5_0
+-defaults/osx-64::openssl-1.1.1n-hca72f7f_0
+-defaults/osx-64::zlib-1.2.12-h4dc903c_0
++conda-forge/noarch::appnope-0.1.3-pyhd8ed1ab_0
++conda-forge/noarch::argon2-cffi-21.3.0-pyhd8ed1ab_0
++conda-forge/noarch::asttokens-2.0.5-pyhd8ed1ab_0
++conda-forge/noarch::attrs-21.4.0-pyhd8ed1ab_0
++conda-forge/noarch::backcall-0.2.0-pyh9f0ad1d_0
++conda-forge/noarch::backports-1.0-py_2
++conda-forge/noarch::backports.functools_lru_cache-1.6.4-pyhd8ed1ab_0
++conda-forge/noarch::beautifulsoup4-4.11.1-pyha770c72_0
++conda-forge/noarch::bleach-5.0.0-pyhd8ed1ab_0
++conda-forge/noarch::decorator-5.1.1-pyhd8ed1ab_0
++conda-forge/noarch::defusedxml-0.7.1-pyhd8ed1ab_0
++conda-forge/noarch::entrypoints-0.4-pyhd8ed1ab_0
++conda-forge/noarch::executing-0.8.3-pyhd8ed1ab_0
++conda-forge/noarch::flit-core-3.7.1-pyhd8ed1ab_0
++conda-forge/noarch::importlib_resources-5.7.0-pyhd8ed1ab_0
++conda-forge/noarch::ipython_genutils-0.2.0-py_1
++conda-forge/noarch::ipywidgets-7.7.0-pyhd8ed1ab_0
++conda-forge/noarch::jinja2-3.1.1-pyhd8ed1ab_0
++conda-forge/noarch::jsonschema-4.4.0-pyhd8ed1ab_0
++conda-forge/noarch::jupyter_client-7.2.2-pyhd8ed1ab_1
++conda-forge/noarch::jupyter_console-6.4.3-pyhd8ed1ab_0
++conda-forge/noarch::jupyterlab_pygments-0.2.2-pyhd8ed1ab_0
++conda-forge/noarch::jupyterlab_widgets-1.1.0-pyhd8ed1ab_0
++conda-forge/noarch::matplotlib-inline-0.1.3-pyhd8ed1ab_0
++conda-forge/noarch::nbclient-0.6.0-pyhd8ed1ab_0
++conda-forge/noarch::nbconvert-6.5.0-pyhd8ed1ab_0
++conda-forge/noarch::nbconvert-core-6.5.0-pyhd8ed1ab_0
++conda-forge/noarch::nbconvert-pandoc-6.5.0-pyhd8ed1ab_0
++conda-forge/noarch::nbformat-5.3.0-pyhd8ed1ab_0
++conda-forge/noarch::nest-asyncio-1.5.5-pyhd8ed1ab_0
++conda-forge/noarch::notebook-6.4.10-pyha770c72_0
++conda-forge/noarch::pandocfilters-1.5.0-pyhd8ed1ab_0
++conda-forge/noarch::parso-0.8.3-pyhd8ed1ab_0
++conda-forge/noarch::pexpect-4.8.0-pyh9f0ad1d_2
++conda-forge/noarch::pickleshare-0.7.5-py_1003
++conda-forge/noarch::prometheus_client-0.14.1-pyhd8ed1ab_0
++conda-forge/noarch::prompt-toolkit-3.0.29-pyha770c72_0
++conda-forge/noarch::prompt_toolkit-3.0.29-hd8ed1ab_0
++conda-forge/noarch::ptyprocess-0.7.0-pyhd3deb0d_0
++conda-forge/noarch::pure_eval-0.2.2-pyhd8ed1ab_0
++conda-forge/noarch::pygments-2.11.2-pyhd8ed1ab_0
++conda-forge/noarch::python-fastjsonschema-2.15.3-pyhd8ed1ab_0
++conda-forge/noarch::qtconsole-5.3.0-pyhd8ed1ab_0
++conda-forge/noarch::qtconsole-base-5.3.0-pyhd8ed1ab_0
++conda-forge/noarch::qtpy-2.0.1-pyhd8ed1ab_0
++conda-forge/noarch::send2trash-1.8.0-pyhd8ed1ab_0
++conda-forge/noarch::soupsieve-2.3.1-pyhd8ed1ab_0
++conda-forge/noarch::stack_data-0.2.0-pyhd8ed1ab_0
++conda-forge/noarch::tinycss2-1.1.1-pyhd8ed1ab_0
++conda-forge/noarch::traitlets-5.1.1-pyhd8ed1ab_0
++conda-forge/noarch::wcwidth-0.2.5-pyh9f0ad1d_2
++conda-forge/noarch::webencodings-0.5.1-py_1
++conda-forge/noarch::zipp-3.8.0-pyhd8ed1ab_0
++conda-forge/osx-64::argon2-cffi-bindings-21.2.0-py310h1961e1f_2
++conda-forge/osx-64::ca-certificates-2021.10.8-h033912b_0
++conda-forge/osx-64::certifi-2021.10.8-py310h2ec42d9_2
++conda-forge/osx-64::expat-2.2.10-h1c7c35f_0
++conda-forge/osx-64::gettext-0.19.8.1-h1f1d5ed_1
++conda-forge/osx-64::glib-2.55.0-0
++conda-forge/osx-64::icu-68.2-he49afe7_0
++conda-forge/osx-64::importlib-metadata-4.11.3-py310h2ec42d9_1
++conda-forge/osx-64::ipykernel-6.13.0-py310ha188af9_0
++conda-forge/osx-64::ipython-8.2.0-py310h2ec42d9_0
++conda-forge/osx-64::jedi-0.18.1-py310h2ec42d9_1
++conda-forge/osx-64::jpeg-9e-h0d85af4_0
++conda-forge/osx-64::jupyter-1.0.0-py310h2ec42d9_7
++conda-forge/osx-64::jupyter_core-4.9.2-py310h2ec42d9_0
++conda-forge/osx-64::krb5-1.17.2-h60d9502_0
++conda-forge/osx-64::libclang-11.1.0-default_he082bbe_1
++conda-forge/osx-64::libedit-3.1.20191231-h0678c8f_2
++conda-forge/osx-64::libiconv-1.15-h0b31af3_1006
++conda-forge/osx-64::libllvm11-11.1.0-hd011deb_3
++conda-forge/osx-64::libpng-1.6.37-h7cec526_2
++conda-forge/osx-64::libpq-12.3-h7049927_3
++conda-forge/osx-64::libsodium-1.0.18-hbcb3906_1
++conda-forge/osx-64::libzlib-1.2.11-h6c3fc93_1014
++conda-forge/osx-64::lz4-c-1.9.3-he49afe7_1
++conda-forge/osx-64::markupsafe-2.1.1-py310h1961e1f_1
++conda-forge/osx-64::mistune-0.8.4-py310he24745e_1005
++conda-forge/osx-64::mysql-common-8.0.28-h694c41f_0
++conda-forge/osx-64::mysql-libs-8.0.28-h115446f_0
++conda-forge/osx-64::openssl-1.1.1n-h6c3fc93_0
++conda-forge/osx-64::pandoc-2.18-h694c41f_0
++conda-forge/osx-64::pcre-8.45-he49afe7_0
++conda-forge/osx-64::psutil-5.9.0-py310h1961e1f_1
++conda-forge/osx-64::pyqt-5.12.3-py310h2ec42d9_8
++conda-forge/osx-64::pyqt-impl-5.12.3-py310hea9ccf3_8
++conda-forge/osx-64::pyqt5-sip-4.19.18-py310hd046c34_8
++conda-forge/osx-64::pyqtchart-5.12-py310hea9ccf3_8
++conda-forge/osx-64::pyqtwebengine-5.12.1-py310hea9ccf3_8
++conda-forge/osx-64::pyrsistent-0.18.1-py310h1961e1f_1
++conda-forge/osx-64::python_abi-3.10-2_cp310
++conda-forge/osx-64::pyzmq-22.3.0-py310hcce64c8_1
++conda-forge/osx-64::qt-5.12.9-h126340a_2
++conda-forge/osx-64::terminado-0.13.3-py310h2ec42d9_1
++conda-forge/osx-64::tornado-6.1-py310h1961e1f_3
++conda-forge/osx-64::widgetsnbextension-3.6.0-py310h2ec42d9_0
++conda-forge/osx-64::zeromq-4.3.4-he49afe7_1
++conda-forge/osx-64::zlib-1.2.11-h6c3fc93_1014
++conda-forge/osx-64::zstd-1.5.2-h582d3a0_0
++defaults/osx-64::dbus-1.13.18-h18a8e69_0
++defaults/osx-64::debugpy-1.5.1-py310he9d5cce_0
++defaults/osx-64::nspr-4.33-he9d5cce_0
++defaults/osx-64::nss-3.74-h47edf6a_0
+# update specs: ['jupyter']
+==> 2022-04-14 09:39:27 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install bitarray
+# conda version: 4.12.0
+-conda-forge/osx-64::ca-certificates-2021.10.8-h033912b_0
+-conda-forge/osx-64::certifi-2021.10.8-py310h2ec42d9_2
+-conda-forge/osx-64::openssl-1.1.1n-h6c3fc93_0
++defaults/noarch::certifi-2020.6.20-pyhd3eb1b0_3
++defaults/osx-64::bitarray-2.4.1-py310hca72f7f_0
++defaults/osx-64::ca-certificates-2022.3.29-hecd8cb5_0
++defaults/osx-64::openssl-1.1.1n-hca72f7f_0
+# update specs: ['bitarray']
+==> 2022-04-14 09:52:40 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install cython
+# conda version: 4.12.0
++defaults/osx-64::cython-0.29.28-py310he9d5cce_0
+# update specs: ['cython']
+==> 2022-04-14 09:54:37 <==
+# cmd: /Users/hillel/opt/anaconda3/bin/conda install sacrebleu
+# conda version: 4.12.0
++defaults/noarch::sacrebleu-2.0.0-pyhd3eb1b0_1
++defaults/osx-64::portalocker-2.3.0-py310hecd8cb5_0
++defaults/osx-64::tabulate-0.8.9-py310hecd8cb5_0
++defaults/osx-64::typing-3.10.0.0-py310hecd8cb5_0
+# update specs: ['sacrebleu']

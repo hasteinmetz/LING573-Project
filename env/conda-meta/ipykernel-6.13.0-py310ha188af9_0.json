@@ -1,0 +1,1185 @@
+{
+  "build": "py310ha188af9_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/osx-64",
+  "constrains": [],
+  "depends": [
+    "appnope",
+    "debugpy >=1.0",
+    "ipython >=7.23.1",
+    "jupyter_client >=6.1.12",
+    "matplotlib-inline >=0.1",
+    "nest-asyncio",
+    "packaging",
+    "psutil",
+    "python >=3.10,<3.11.0a0",
+    "python_abi 3.10.* *_cp310",
+    "tornado >=6.1",
+    "traitlets >=5.1.0"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/ipykernel-6.13.0-py310ha188af9_0",
+  "features": "",
+  "files": [
+    "lib/python3.10/site-packages/__pycache__/ipykernel_launcher.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/COPYING.md",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/INSTALLER",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/METADATA",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/RECORD",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/REQUESTED",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/WHEEL",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/direct_url.json",
+    "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/top_level.txt",
+    "lib/python3.10/site-packages/ipykernel/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/__main__.py",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/__main__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/_eventloop_macos.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/_version.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/compiler.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/connect.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/control.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/datapub.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/debugger.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/displayhook.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/embed.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/eventloops.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/heartbeat.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/iostream.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/ipkernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/jsonutil.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/kernelapp.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/kernelbase.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/kernelspec.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/log.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/parentpoller.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/pickleutil.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/serialize.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/trio_runner.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/__pycache__/zmqshell.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/_eventloop_macos.py",
+    "lib/python3.10/site-packages/ipykernel/_version.py",
+    "lib/python3.10/site-packages/ipykernel/comm/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/comm/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/comm/__pycache__/comm.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/comm/__pycache__/manager.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/comm/comm.py",
+    "lib/python3.10/site-packages/ipykernel/comm/manager.py",
+    "lib/python3.10/site-packages/ipykernel/compiler.py",
+    "lib/python3.10/site-packages/ipykernel/connect.py",
+    "lib/python3.10/site-packages/ipykernel/control.py",
+    "lib/python3.10/site-packages/ipykernel/datapub.py",
+    "lib/python3.10/site-packages/ipykernel/debugger.py",
+    "lib/python3.10/site-packages/ipykernel/displayhook.py",
+    "lib/python3.10/site-packages/ipykernel/embed.py",
+    "lib/python3.10/site-packages/ipykernel/eventloops.py",
+    "lib/python3.10/site-packages/ipykernel/gui/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/gui/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/gui/__pycache__/gtk3embed.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/gui/__pycache__/gtkembed.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/gui/gtk3embed.py",
+    "lib/python3.10/site-packages/ipykernel/gui/gtkembed.py",
+    "lib/python3.10/site-packages/ipykernel/heartbeat.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/blocking.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/channels.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/client.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/constants.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/ipkernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/manager.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/socket.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/blocking.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/channels.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/client.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/constants.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/ipkernel.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/manager.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/socket.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/test_kernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/test_kernelmanager.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/test_kernel.py",
+    "lib/python3.10/site-packages/ipykernel/inprocess/tests/test_kernelmanager.py",
+    "lib/python3.10/site-packages/ipykernel/iostream.py",
+    "lib/python3.10/site-packages/ipykernel/ipkernel.py",
+    "lib/python3.10/site-packages/ipykernel/jsonutil.py",
+    "lib/python3.10/site-packages/ipykernel/kernelapp.py",
+    "lib/python3.10/site-packages/ipykernel/kernelbase.py",
+    "lib/python3.10/site-packages/ipykernel/kernelspec.py",
+    "lib/python3.10/site-packages/ipykernel/log.py",
+    "lib/python3.10/site-packages/ipykernel/parentpoller.py",
+    "lib/python3.10/site-packages/ipykernel/pickleutil.py",
+    "lib/python3.10/site-packages/ipykernel/py.typed",
+    "lib/python3.10/site-packages/ipykernel/pylab/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/backend_inline.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/config.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/pylab/backend_inline.py",
+    "lib/python3.10/site-packages/ipykernel/pylab/config.py",
+    "lib/python3.10/site-packages/ipykernel/resources/logo-32x32.png",
+    "lib/python3.10/site-packages/ipykernel/resources/logo-64x64.png",
+    "lib/python3.10/site-packages/ipykernel/serialize.py",
+    "lib/python3.10/site-packages/ipykernel/tests/__init__.py",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/_asyncio_utils.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/conftest.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_async.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_connect.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_debugger.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_embed_kernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_eventloop.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_heartbeat.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_io.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_jsonutil.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_kernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_kernelspec.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_message_spec.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_pickleutil.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_start_kernel.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_zmq_shell.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/__pycache__/utils.cpython-310.pyc",
+    "lib/python3.10/site-packages/ipykernel/tests/_asyncio_utils.py",
+    "lib/python3.10/site-packages/ipykernel/tests/conftest.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_async.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_connect.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_debugger.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_embed_kernel.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_eventloop.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_heartbeat.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_io.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_jsonutil.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_kernel.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_kernelspec.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_message_spec.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_pickleutil.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_start_kernel.py",
+    "lib/python3.10/site-packages/ipykernel/tests/test_zmq_shell.py",
+    "lib/python3.10/site-packages/ipykernel/tests/utils.py",
+    "lib/python3.10/site-packages/ipykernel/trio_runner.py",
+    "lib/python3.10/site-packages/ipykernel/zmqshell.py",
+    "lib/python3.10/site-packages/ipykernel_launcher.py",
+    "share/jupyter/kernels/python3/kernel.json",
+    "share/jupyter/kernels/python3/logo-32x32.png",
+    "share/jupyter/kernels/python3/logo-64x64.png"
+  ],
+  "fn": "ipykernel-6.13.0-py310ha188af9_0.tar.bz2",
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/ipykernel-6.13.0-py310ha188af9_0",
+    "type": 1
+  },
+  "md5": "fbee611ea932215d63a9a2a6809f65ee",
+  "name": "ipykernel",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/ipykernel-6.13.0-py310ha188af9_0.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/python3.10/site-packages/__pycache__/ipykernel_launcher.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "f3e72c3b2b7a120223cb8e9d1bf16bac24443bc612298dbd6627ab827780a4c8",
+        "sha256_in_prefix": "f3e72c3b2b7a120223cb8e9d1bf16bac24443bc612298dbd6627ab827780a4c8",
+        "size_in_bytes": 488
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/COPYING.md",
+        "path_type": "hardlink",
+        "sha256": "ba965aedae4c645ea72938fde13aa4a703cfdf5596d8305cbd900098350425b8",
+        "sha256_in_prefix": "ba965aedae4c645ea72938fde13aa4a703cfdf5596d8305cbd900098350425b8",
+        "size_in_bytes": 2832
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "a7085d80a9ccee5b4a6f94d91ad6c069743fb58f99f73bef222647f06136dc16",
+        "sha256_in_prefix": "a7085d80a9ccee5b4a6f94d91ad6c069743fb58f99f73bef222647f06136dc16",
+        "size_in_bytes": 2398
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "953b34ed6f7666381d7130ed6c510219f8831a03ed600169c83a83c3d708b2b8",
+        "sha256_in_prefix": "953b34ed6f7666381d7130ed6c510219f8831a03ed600169c83a83c3d708b2b8",
+        "size_in_bytes": 10295
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "sha256_in_prefix": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "2036d8b80e202b8aea1c9282bda51fc97e2b2d3d7cd3406f7ad81987c2cda62c",
+        "sha256_in_prefix": "2036d8b80e202b8aea1c9282bda51fc97e2b2d3d7cd3406f7ad81987c2cda62c",
+        "size_in_bytes": 140
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel-6.13.0.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "f0f274ffc642fc7aa465ec5f40101b647e4944f5a96ab84b90b0592a1906f036",
+        "sha256_in_prefix": "f0f274ffc642fc7aa465ec5f40101b647e4944f5a96ab84b90b0592a1906f036",
+        "size_in_bytes": 29
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "eecdcaec221defb4496ab533f9bd345c0bf13a80b82b4159bdcd81adad0edbd3",
+        "sha256_in_prefix": "eecdcaec221defb4496ab533f9bd345c0bf13a80b82b4159bdcd81adad0edbd3",
+        "size_in_bytes": 229
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__main__.py",
+        "path_type": "hardlink",
+        "sha256": "8eff34fc08ad465577f981927b44fadceadd890a8426e66cca798024dbfd046b",
+        "sha256_in_prefix": "8eff34fc08ad465577f981927b44fadceadd890a8426e66cca798024dbfd046b",
+        "size_in_bytes": 101
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "d1701d0ff74bbdec8757b628108214f7e959f36db6bc211b8bb895b389aa650a",
+        "sha256_in_prefix": "d1701d0ff74bbdec8757b628108214f7e959f36db6bc211b8bb895b389aa650a",
+        "size_in_bytes": 343
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/__main__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "95180b03ef70bd0ae676f936bdb509b19f535edceb148eb4c62db506f1871feb",
+        "sha256_in_prefix": "95180b03ef70bd0ae676f936bdb509b19f535edceb148eb4c62db506f1871feb",
+        "size_in_bytes": 258
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/_eventloop_macos.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "da2872375796f11a75bd18b40c002026d90aa0e947f078a04fd3f7c33b76c4dc",
+        "sha256_in_prefix": "da2872375796f11a75bd18b40c002026d90aa0e947f078a04fd3f7c33b76c4dc",
+        "size_in_bytes": 2976
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/_version.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "a562a439039d50f672f5078a865c5c61eff15e86e292baa60d24265272a5a22c",
+        "sha256_in_prefix": "a562a439039d50f672f5078a865c5c61eff15e86e292baa60d24265272a5a22c",
+        "size_in_bytes": 768
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/compiler.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "5bc62e3a72229fc292f94d544f82690c6a04db3ccdc3409f8901a1026d9037ac",
+        "sha256_in_prefix": "5bc62e3a72229fc292f94d544f82690c6a04db3ccdc3409f8901a1026d9037ac",
+        "size_in_bytes": 2975
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/connect.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "d70f661382092ca2ea215ab05b949fac5a69679b996c0ccbcb6653d97ed397ee",
+        "sha256_in_prefix": "d70f661382092ca2ea215ab05b949fac5a69679b996c0ccbcb6653d97ed397ee",
+        "size_in_bytes": 3558
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/control.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "39bd60a9c682b9a447570fbe8298bc3d5158fb954a2f31454fa22f3acb77158d",
+        "sha256_in_prefix": "39bd60a9c682b9a447570fbe8298bc3d5158fb954a2f31454fa22f3acb77158d",
+        "size_in_bytes": 1190
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/datapub.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "cb5ca9295362a262d6d78ba3c89933328008514c228a7b638fd37ec8fb91bffc",
+        "sha256_in_prefix": "cb5ca9295362a262d6d78ba3c89933328008514c228a7b638fd37ec8fb91bffc",
+        "size_in_bytes": 2298
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/debugger.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "fdb0e8f284c4433e31c01fdf3932e2f20bb43a0c3d012834d5ddc076c0b2fe55",
+        "sha256_in_prefix": "fdb0e8f284c4433e31c01fdf3932e2f20bb43a0c3d012834d5ddc076c0b2fe55",
+        "size_in_bytes": 18595
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/displayhook.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b9ffe48c7f387037b824c73e54d1b57e8d0dccb493fde5b144daad4d2768b292",
+        "sha256_in_prefix": "b9ffe48c7f387037b824c73e54d1b57e8d0dccb493fde5b144daad4d2768b292",
+        "size_in_bytes": 3379
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/embed.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "795679af44e04438091d78da3e0a45db95a1962b1dd9ba24b11e98ce2eb92621",
+        "sha256_in_prefix": "795679af44e04438091d78da3e0a45db95a1962b1dd9ba24b11e98ce2eb92621",
+        "size_in_bytes": 1415
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/eventloops.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b9903c3587d83771e8eae073ea31ca6de18ba280d56a7d69eab2206096356d95",
+        "sha256_in_prefix": "b9903c3587d83771e8eae073ea31ca6de18ba280d56a7d69eab2206096356d95",
+        "size_in_bytes": 12390
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/heartbeat.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "140cf917ae24bdc4a6f525e642fc07eb53fe7d0cf14956dcb282d20e035dba4e",
+        "sha256_in_prefix": "140cf917ae24bdc4a6f525e642fc07eb53fe7d0cf14956dcb282d20e035dba4e",
+        "size_in_bytes": 2740
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/iostream.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "d239be0f8bdc8c63a51aadcc5f8cdfe446ef1a2c1c20459236632ffaf80ae388",
+        "sha256_in_prefix": "d239be0f8bdc8c63a51aadcc5f8cdfe446ef1a2c1c20459236632ffaf80ae388",
+        "size_in_bytes": 16956
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/ipkernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "8722e0614522a990933cca29af10fc36c2f6e4a30279e5eccc1e6efa1e58a443",
+        "sha256_in_prefix": "8722e0614522a990933cca29af10fc36c2f6e4a30279e5eccc1e6efa1e58a443",
+        "size_in_bytes": 15842
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/jsonutil.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "ccb66fdd9de1e769ada1ab7fccef6cebfedaa0c2754eb70e075f9793cad3138d",
+        "sha256_in_prefix": "ccb66fdd9de1e769ada1ab7fccef6cebfedaa0c2754eb70e075f9793cad3138d",
+        "size_in_bytes": 3244
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/kernelapp.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "9fff9578c669d507f505bfadae359c0c0fe4f3b86e5bb829e12915018e502d67",
+        "sha256_in_prefix": "9fff9578c669d507f505bfadae359c0c0fe4f3b86e5bb829e12915018e502d67",
+        "size_in_bytes": 19963
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/kernelbase.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b8e390b31fd66bb326af0477ca53e28447f23f27a84ec30e5436f779634c093e",
+        "sha256_in_prefix": "b8e390b31fd66bb326af0477ca53e28447f23f27a84ec30e5436f779634c093e",
+        "size_in_bytes": 32324
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/kernelspec.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "2eab6b21a9ab51005c23e6a8cb84e98e46cc1d46e0978317211773be2934bf81",
+        "sha256_in_prefix": "2eab6b21a9ab51005c23e6a8cb84e98e46cc1d46e0978317211773be2934bf81",
+        "size_in_bytes": 6599
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/log.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "109117eb7f3163792ad5b4a9e7975e7a5b068f50e07245292283714e500d1fcb",
+        "sha256_in_prefix": "109117eb7f3163792ad5b4a9e7975e7a5b068f50e07245292283714e500d1fcb",
+        "size_in_bytes": 1126
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/parentpoller.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "6ac8e1051bb84d607619a9408b2f1e0bc507bd8d5b1de6ffd86b5bc98a3a27e0",
+        "sha256_in_prefix": "6ac8e1051bb84d607619a9408b2f1e0bc507bd8d5b1de6ffd86b5bc98a3a27e0",
+        "size_in_bytes": 3480
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/pickleutil.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "1b0bfd7d2faace815716e628f2a74781ff2262c9b49162795ab47cf966ee0fec",
+        "sha256_in_prefix": "1b0bfd7d2faace815716e628f2a74781ff2262c9b49162795ab47cf966ee0fec",
+        "size_in_bytes": 12510
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/serialize.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "87081279a1e5a395e4e5e338138275b9a4cf38905e91b3a02d1a9981336c789d",
+        "sha256_in_prefix": "87081279a1e5a395e4e5e338138275b9a4cf38905e91b3a02d1a9981336c789d",
+        "size_in_bytes": 5324
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/trio_runner.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "06b90da49e1836566778b33c5f3061ac8f1d4f7f659aea345a81638146d77c2d",
+        "sha256_in_prefix": "06b90da49e1836566778b33c5f3061ac8f1d4f7f659aea345a81638146d77c2d",
+        "size_in_bytes": 2683
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/__pycache__/zmqshell.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "41e454137ac3ab41630ac226d5a3654b23324687a8fefff50cea55fbad70b09b",
+        "sha256_in_prefix": "41e454137ac3ab41630ac226d5a3654b23324687a8fefff50cea55fbad70b09b",
+        "size_in_bytes": 19980
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/_eventloop_macos.py",
+        "path_type": "hardlink",
+        "sha256": "9a30598e241f020d1e8586eb0f1a2e3021113c7df97673eb9addb2cf3aa9379d",
+        "sha256_in_prefix": "9a30598e241f020d1e8586eb0f1a2e3021113c7df97673eb9addb2cf3aa9379d",
+        "size_in_bytes": 4101
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/_version.py",
+        "path_type": "hardlink",
+        "sha256": "c85c3c4cf06c7724fae66e7695d6f2d2abc03b71a2060883fadd68be097ab297",
+        "sha256_in_prefix": "c85c3c4cf06c7724fae66e7695d6f2d2abc03b71a2060883fadd68be097ab297",
+        "size_in_bytes": 625
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "a9d9c8d096424d0bb19f5dcf146964985270623c657f853785c45eaf973c5de9",
+        "sha256_in_prefix": "a9d9c8d096424d0bb19f5dcf146964985270623c657f853785c45eaf973c5de9",
+        "size_in_bytes": 59
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "36439db7d6988be47ab13d6e51ee0614a2b86c82ac8915fe1d51787686e21b6e",
+        "sha256_in_prefix": "36439db7d6988be47ab13d6e51ee0614a2b86c82ac8915fe1d51787686e21b6e",
+        "size_in_bytes": 188
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/__pycache__/comm.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "52917e7a6e2b462f73d04911ee1fab4be1739f36014ccc65410dbd6360ea1bed",
+        "sha256_in_prefix": "52917e7a6e2b462f73d04911ee1fab4be1739f36014ccc65410dbd6360ea1bed",
+        "size_in_bytes": 5076
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/__pycache__/manager.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "3f834a4ccff134f5315ba7594403ae2384e0a82394906bed58faec18d47178ff",
+        "sha256_in_prefix": "3f834a4ccff134f5315ba7594403ae2384e0a82394906bed58faec18d47178ff",
+        "size_in_bytes": 3874
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/comm.py",
+        "path_type": "hardlink",
+        "sha256": "ecea63170b7507f156e67f488a3afcc8dc4af084d2895e2bc40fb85621710d6b",
+        "sha256_in_prefix": "ecea63170b7507f156e67f488a3afcc8dc4af084d2895e2bc40fb85621710d6b",
+        "size_in_bytes": 5627
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/comm/manager.py",
+        "path_type": "hardlink",
+        "sha256": "94b2984523ce240d987ece911779611484b14a86bf413bfad9515b15c3cc7e94",
+        "sha256_in_prefix": "94b2984523ce240d987ece911779611484b14a86bf413bfad9515b15c3cc7e94",
+        "size_in_bytes": 4048
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/compiler.py",
+        "path_type": "hardlink",
+        "sha256": "ed3b389d8ec8ec8c0e7f0d237d54263d398e2ae00ab9026e1e604f853da0f766",
+        "sha256_in_prefix": "ed3b389d8ec8ec8c0e7f0d237d54263d398e2ae00ab9026e1e604f853da0f766",
+        "size_in_bytes": 2620
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/connect.py",
+        "path_type": "hardlink",
+        "sha256": "2bcea407c41ba45cb7028203146b5609b6f36f312eb40c0bfe7c39a17a5698d9",
+        "sha256_in_prefix": "2bcea407c41ba45cb7028203146b5609b6f36f312eb40c0bfe7c39a17a5698d9",
+        "size_in_bytes": 3817
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/control.py",
+        "path_type": "hardlink",
+        "sha256": "f433044e1e9e9cb7965883c0c3c59e4260345f8c718248338af818b33355cb6a",
+        "sha256_in_prefix": "f433044e1e9e9cb7965883c0c3c59e4260345f8c718248338af818b33355cb6a",
+        "size_in_bytes": 787
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/datapub.py",
+        "path_type": "hardlink",
+        "sha256": "3985b63640b34ca1c7d78b6f3e5b76d64ed5fd1f48e2b46235cd56c30cc17b40",
+        "sha256_in_prefix": "3985b63640b34ca1c7d78b6f3e5b76d64ed5fd1f48e2b46235cd56c30cc17b40",
+        "size_in_bytes": 2225
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/debugger.py",
+        "path_type": "hardlink",
+        "sha256": "4edca5febd32e074ed001fb5c65e345bf3e9762929ef6eebd2c5bb3f03cab463",
+        "sha256_in_prefix": "4edca5febd32e074ed001fb5c65e345bf3e9762929ef6eebd2c5bb3f03cab463",
+        "size_in_bytes": 24274
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/displayhook.py",
+        "path_type": "hardlink",
+        "sha256": "fbe9f5066b918aa29bd2cb891cdcf3ec611fa45cbc5b2a7b593be98ee4019748",
+        "sha256_in_prefix": "fbe9f5066b918aa29bd2cb891cdcf3ec611fa45cbc5b2a7b593be98ee4019748",
+        "size_in_bytes": 2728
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/embed.py",
+        "path_type": "hardlink",
+        "sha256": "44dcdd0106dacc6cf8612705d5a50e56d939ba990487d4bcbcaa03bfde6bbc4d",
+        "sha256_in_prefix": "44dcdd0106dacc6cf8612705d5a50e56d939ba990487d4bcbcaa03bfde6bbc4d",
+        "size_in_bytes": 2062
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/eventloops.py",
+        "path_type": "hardlink",
+        "sha256": "4f6058857ba277c9f52c312e924dd67c70cfea3649237751b4237406c22b5869",
+        "sha256_in_prefix": "4f6058857ba277c9f52c312e924dd67c70cfea3649237751b4237406c22b5869",
+        "size_in_bytes": 13657
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "a70ee1b3e8a19ca7601eff3f3b4d22b7cac96fbb89c8df87dfd411e8ec606241",
+        "sha256_in_prefix": "a70ee1b3e8a19ca7601eff3f3b4d22b7cac96fbb89c8df87dfd411e8ec606241",
+        "size_in_bytes": 582
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b356c8b70c8654823d733f47682c6e4cdbea22c4df46de964a8b39fd2767d866",
+        "sha256_in_prefix": "b356c8b70c8654823d733f47682c6e4cdbea22c4df46de964a8b39fd2767d866",
+        "size_in_bytes": 371
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/__pycache__/gtk3embed.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "454f10a604759b0868526d3c8156d2a0f27dd7c9c2416196ed75938a4af65e2b",
+        "sha256_in_prefix": "454f10a604759b0868526d3c8156d2a0f27dd7c9c2416196ed75938a4af65e2b",
+        "size_in_bytes": 2756
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/__pycache__/gtkembed.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "31cdcc13f92d54e209ced0e842d8d4c025647bd127073a7aae3388628d60b360",
+        "sha256_in_prefix": "31cdcc13f92d54e209ced0e842d8d4c025647bd127073a7aae3388628d60b360",
+        "size_in_bytes": 2656
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/gtk3embed.py",
+        "path_type": "hardlink",
+        "sha256": "0900aeee04a56b1d1d3d231a2d22ff0c2c42f9069c618b27273c8089ebe92ef1",
+        "sha256_in_prefix": "0900aeee04a56b1d1d3d231a2d22ff0c2c42f9069c618b27273c8089ebe92ef1",
+        "size_in_bytes": 3218
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/gui/gtkembed.py",
+        "path_type": "hardlink",
+        "sha256": "3e240360c0b737a90d2a8d87d975c29d7b38836dfb178ba0754fbba5a820f8cc",
+        "sha256_in_prefix": "3e240360c0b737a90d2a8d87d975c29d7b38836dfb178ba0754fbba5a820f8cc",
+        "size_in_bytes": 3128
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/heartbeat.py",
+        "path_type": "hardlink",
+        "sha256": "ee8f57b216efcb6fb9deae584710734669b804bf1eccb02f379bae58c5670ae9",
+        "sha256_in_prefix": "ee8f57b216efcb6fb9deae584710734669b804bf1eccb02f379bae58c5670ae9",
+        "size_in_bytes": 4392
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "2f76ea51ca86b7b7bcaa54b40a05136f8d74035a533cf38dddb11bef860685ca",
+        "sha256_in_prefix": "2f76ea51ca86b7b7bcaa54b40a05136f8d74035a533cf38dddb11bef860685ca",
+        "size_in_bytes": 229
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "09305b20831c39d2d222f35e8b0f3a5526dd6875ffaaa6744040f1c3a451fff2",
+        "sha256_in_prefix": "09305b20831c39d2d222f35e8b0f3a5526dd6875ffaaa6744040f1c3a451fff2",
+        "size_in_bytes": 399
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/blocking.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "0c621cf5dc905d384c1c2900dbe3ba8ffd22cb37c023323b2fecd7ba718bbc74",
+        "sha256_in_prefix": "0c621cf5dc905d384c1c2900dbe3ba8ffd22cb37c023323b2fecd7ba718bbc74",
+        "size_in_bytes": 3189
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/channels.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "2931464128893cc469d063c8bbe24d404167f539ae03dfd465b076e6750cc63d",
+        "sha256_in_prefix": "2931464128893cc469d063c8bbe24d404167f539ae03dfd465b076e6750cc63d",
+        "size_in_bytes": 3830
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/client.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "5eb876b203a594cece1a80a4e5f67db5ddb18daa642aed798fb038bb7c79d0bd",
+        "sha256_in_prefix": "5eb876b203a594cece1a80a4e5f67db5ddb18daa642aed798fb038bb7c79d0bd",
+        "size_in_bytes": 6537
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/constants.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "e898e4f5e1df401d69913d3e0acc054e926a2c669b42c987fe09d3f6ad6a59a3",
+        "sha256_in_prefix": "e898e4f5e1df401d69913d3e0acc054e926a2c669b42c987fe09d3f6ad6a59a3",
+        "size_in_bytes": 219
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/ipkernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "d9bb0037645b5fe2982b16eee43952d50d0a6674df4f8e538b1d9c7bb8b7ab6e",
+        "sha256_in_prefix": "d9bb0037645b5fe2982b16eee43952d50d0a6674df4f8e538b1d9c7bb8b7ab6e",
+        "size_in_bytes": 6110
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/manager.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "1629cd7f40df73f24edf94bedb00aff87141cd8410b503b3ecc3cc7d9be16670",
+        "sha256_in_prefix": "1629cd7f40df73f24edf94bedb00aff87141cd8410b503b3ecc3cc7d9be16670",
+        "size_in_bytes": 3355
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/__pycache__/socket.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "2e1118ab9bf2eccce8cb0f78f8400779df395e760e1742561d6bcca4f129e5fb",
+        "sha256_in_prefix": "2e1118ab9bf2eccce8cb0f78f8400779df395e760e1742561d6bcca4f129e5fb",
+        "size_in_bytes": 1476
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/blocking.py",
+        "path_type": "hardlink",
+        "sha256": "315249b0f7562dc55068764638b2bf359c34c4344e07ced425d9219a1003fdc2",
+        "sha256_in_prefix": "315249b0f7562dc55068764638b2bf359c34c4344e07ced425d9219a1003fdc2",
+        "size_in_bytes": 3391
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/channels.py",
+        "path_type": "hardlink",
+        "sha256": "61098f166167e82a155016ba35be7b2698e52f3a1a262c0494e1a56298f817e8",
+        "sha256_in_prefix": "61098f166167e82a155016ba35be7b2698e52f3a1a262c0494e1a56298f817e8",
+        "size_in_bytes": 2572
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/client.py",
+        "path_type": "hardlink",
+        "sha256": "2a1452fd480f74645fe6e0ec4a2d35227fcb30986bda909f6bc8ee097cfa8ba5",
+        "sha256_in_prefix": "2a1452fd480f74645fe6e0ec4a2d35227fcb30986bda909f6bc8ee097cfa8ba5",
+        "size_in_bytes": 7265
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/constants.py",
+        "path_type": "hardlink",
+        "sha256": "bd59afcf2522a640ac08bb58c1dabe018e856e3ecb0f3a025d8d84da67a5bee5",
+        "sha256_in_prefix": "bd59afcf2522a640ac08bb58c1dabe018e856e3ecb0f3a025d8d84da67a5bee5",
+        "size_in_bytes": 303
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/ipkernel.py",
+        "path_type": "hardlink",
+        "sha256": "460e422d749fe0a2ac0d23c9130ee338a1463ffa155aaf5e4762579bc9d63bc6",
+        "sha256_in_prefix": "460e422d749fe0a2ac0d23c9130ee338a1463ffa155aaf5e4762579bc9d63bc6",
+        "size_in_bytes": 6694
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/manager.py",
+        "path_type": "hardlink",
+        "sha256": "179581ebe5b5f5a99d678f2d3473a7aa4fe8437b2b3ed4a62fe92c4b6a210312",
+        "sha256_in_prefix": "179581ebe5b5f5a99d678f2d3473a7aa4fe8437b2b3ed4a62fe92c4b6a210312",
+        "size_in_bytes": 2720
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/socket.py",
+        "path_type": "hardlink",
+        "sha256": "bc9ba945942ad62a12b0bdf16e0bc683a1918d4500afeb4e0cd4bb20d04325b1",
+        "sha256_in_prefix": "bc9ba945942ad62a12b0bdf16e0bc683a1918d4500afeb4e0cd4bb20d04325b1",
+        "size_in_bytes": 1340
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "5d51f447847cf501a4908e19af330ae26d9dfbe6d563c0c2264077636700ea5a",
+        "sha256_in_prefix": "5d51f447847cf501a4908e19af330ae26d9dfbe6d563c0c2264077636700ea5a",
+        "size_in_bytes": 159
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/test_kernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "3f1ef0ec5bb71251a41c6e09aeb8b04be6ed34f9fe4fae1d6c7b88d5b2caab1e",
+        "sha256_in_prefix": "3f1ef0ec5bb71251a41c6e09aeb8b04be6ed34f9fe4fae1d6c7b88d5b2caab1e",
+        "size_in_bytes": 5632
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/__pycache__/test_kernelmanager.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "63233277cbfbe6456a211a88ae2529a7a96510b6d59b5eb82dea4ed747772b8e",
+        "sha256_in_prefix": "63233277cbfbe6456a211a88ae2529a7a96510b6d59b5eb82dea4ed747772b8e",
+        "size_in_bytes": 3523
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/test_kernel.py",
+        "path_type": "hardlink",
+        "sha256": "93e6e4e3bf2bfbdb104b833af4b525ff80436d5903de4febe082c7952f32bfad",
+        "sha256_in_prefix": "93e6e4e3bf2bfbdb104b833af4b525ff80436d5903de4febe082c7952f32bfad",
+        "size_in_bytes": 5036
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/inprocess/tests/test_kernelmanager.py",
+        "path_type": "hardlink",
+        "sha256": "e0cbbcab5bf20bbcb820df9d31266e174168ac7cb237b81b5de3d431c2070147",
+        "sha256_in_prefix": "e0cbbcab5bf20bbcb820df9d31266e174168ac7cb237b81b5de3d431c2070147",
+        "size_in_bytes": 3279
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/iostream.py",
+        "path_type": "hardlink",
+        "sha256": "caac69fdcd2ed97f0985fe31a9cf9fa2fecc1cf2489e20621657f0a67ebb0b34",
+        "sha256_in_prefix": "caac69fdcd2ed97f0985fe31a9cf9fa2fecc1cf2489e20621657f0a67ebb0b34",
+        "size_in_bytes": 20105
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/ipkernel.py",
+        "path_type": "hardlink",
+        "sha256": "085c437e526274535291991e96838341857b4d23a24c109fd4104ca17cc9a0d6",
+        "sha256_in_prefix": "085c437e526274535291991e96838341857b4d23a24c109fd4104ca17cc9a0d6",
+        "size_in_bytes": 22790
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/jsonutil.py",
+        "path_type": "hardlink",
+        "sha256": "4ef730a2a84daf081f671714c46ae31f74d859a92a78fab04ecea73122886ac8",
+        "sha256_in_prefix": "4ef730a2a84daf081f671714c46ae31f74d859a92a78fab04ecea73122886ac8",
+        "size_in_bytes": 4977
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/kernelapp.py",
+        "path_type": "hardlink",
+        "sha256": "7e15713baabe4879c8f513024e67996c6a356232ea3379a05b8b62ceb7e75208",
+        "sha256_in_prefix": "7e15713baabe4879c8f513024e67996c6a356232ea3379a05b8b62ceb7e75208",
+        "size_in_bytes": 27451
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/kernelbase.py",
+        "path_type": "hardlink",
+        "sha256": "bb05a2ca87fd01b540f3521b116b090f928f3a94c5d5566ee4e5dca1b418b4dd",
+        "sha256_in_prefix": "bb05a2ca87fd01b540f3521b116b090f928f3a94c5d5566ee4e5dca1b418b4dd",
+        "size_in_bytes": 44856
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/kernelspec.py",
+        "path_type": "hardlink",
+        "sha256": "60e0b972e5c0d2f1649cccd139a047742bf12f2d37ed55901a456ddb1c74d00c",
+        "sha256_in_prefix": "60e0b972e5c0d2f1649cccd139a047742bf12f2d37ed55901a456ddb1c74d00c",
+        "size_in_bytes": 7710
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/log.py",
+        "path_type": "hardlink",
+        "sha256": "57c8482b235c09a4d45103236d2df0bb60e043b97a20a61143a1b92056538ca0",
+        "sha256_in_prefix": "57c8482b235c09a4d45103236d2df0bb60e043b97a20a61143a1b92056538ca0",
+        "size_in_bytes": 798
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/parentpoller.py",
+        "path_type": "hardlink",
+        "sha256": "73a18183a0f5ee383d3b785855507b50517070a72d3150291023df8592a69c63",
+        "sha256_in_prefix": "73a18183a0f5ee383d3b785855507b50517070a72d3150291023df8592a69c63",
+        "size_in_bytes": 4093
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pickleutil.py",
+        "path_type": "hardlink",
+        "sha256": "5c85f616d8e842727dc437222c5679a4900ce4c9a113313f537ad954396929c0",
+        "sha256_in_prefix": "5c85f616d8e842727dc437222c5679a4900ce4c9a113313f537ad954396929c0",
+        "size_in_bytes": 12645
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "dfa480acd9f7b10c13a78a317551ff92e44203bf93f73c9828c50b3f8b44fd43",
+        "sha256_in_prefix": "dfa480acd9f7b10c13a78a317551ff92e44203bf93f73c9828c50b3f8b44fd43",
+        "size_in_bytes": 149
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/backend_inline.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "dc056e156cdd77ff4fae63418a3ed03db5f121b2976b0ba02c49813632fb5b8f",
+        "sha256_in_prefix": "dc056e156cdd77ff4fae63418a3ed03db5f121b2976b0ba02c49813632fb5b8f",
+        "size_in_bytes": 444
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/__pycache__/config.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "4d0fe45f2eea1dd4546b99e5341c2f3c035dc15cdc0cdfd76891b914fd7f1081",
+        "sha256_in_prefix": "4d0fe45f2eea1dd4546b99e5341c2f3c035dc15cdc0cdfd76891b914fd7f1081",
+        "size_in_bytes": 463
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/backend_inline.py",
+        "path_type": "hardlink",
+        "sha256": "0de26d580180d4fcb954207b004bdfdbee6a954f764d09b2377acb6103257133",
+        "sha256_in_prefix": "0de26d580180d4fcb954207b004bdfdbee6a954f764d09b2377acb6103257133",
+        "size_in_bytes": 418
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/pylab/config.py",
+        "path_type": "hardlink",
+        "sha256": "52af625f6479fa62ce4478b0fc5fcc7983161ff0a5405f6bba279b6ed4dacf48",
+        "sha256_in_prefix": "52af625f6479fa62ce4478b0fc5fcc7983161ff0a5405f6bba279b6ed4dacf48",
+        "size_in_bytes": 336
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/resources/logo-32x32.png",
+        "path_type": "hardlink",
+        "sha256": "e32b5c282072d717887b60da73178fdd35a65dc3caeacba7a026e5a4255cc997",
+        "sha256_in_prefix": "e32b5c282072d717887b60da73178fdd35a65dc3caeacba7a026e5a4255cc997",
+        "size_in_bytes": 1084
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/resources/logo-64x64.png",
+        "path_type": "hardlink",
+        "sha256": "5c9063b436cedf0567480fe487ece0d1479ea9545f310cba93fa184ccbab290d",
+        "sha256_in_prefix": "5c9063b436cedf0567480fe487ece0d1479ea9545f310cba93fa184ccbab290d",
+        "size_in_bytes": 2180
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/serialize.py",
+        "path_type": "hardlink",
+        "sha256": "c6aed0b64e2d43288c5e57987f8bdf64401bc4c548f1b2150bd0c59b2ad9aebe",
+        "sha256_in_prefix": "c6aed0b64e2d43288c5e57987f8bdf64401bc4c548f1b2150bd0c59b2ad9aebe",
+        "size_in_bytes": 6325
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "0376bfdffbf6294bce1c3d8e08eef5499b88f56c9bf942f4417514a9294626c5",
+        "sha256_in_prefix": "0376bfdffbf6294bce1c3d8e08eef5499b88f56c9bf942f4417514a9294626c5",
+        "size_in_bytes": 901
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "60a94b10ad8f8943190e753a64fcf0df9a742c74e7d3bc803969d350b48285dc",
+        "sha256_in_prefix": "60a94b10ad8f8943190e753a64fcf0df9a742c74e7d3bc803969d350b48285dc",
+        "size_in_bytes": 907
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/_asyncio_utils.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "17865521514475994706b9627eb22fcbbc64a39724dc1a12d66d0c352e526efc",
+        "sha256_in_prefix": "17865521514475994706b9627eb22fcbbc64a39724dc1a12d66d0c352e526efc",
+        "size_in_bytes": 694
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/conftest.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "5bc1da732536366059d627c32acf08c3ca7f4b2bcc44b5d2661bdfffeaadfa7d",
+        "sha256_in_prefix": "5bc1da732536366059d627c32acf08c3ca7f4b2bcc44b5d2661bdfffeaadfa7d",
+        "size_in_bytes": 504
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_async.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "377cacee0c0422810ab9c7fe628cef9aa08aa59dd7db251c6e8d902eccbc820c",
+        "sha256_in_prefix": "377cacee0c0422810ab9c7fe628cef9aa08aa59dd7db251c6e8d902eccbc820c",
+        "size_in_bytes": 2116
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_connect.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "5da519e6e936613d991d29a1575a71670c804eea7ab4536910e48a9612cc0d19",
+        "sha256_in_prefix": "5da519e6e936613d991d29a1575a71670c804eea7ab4536910e48a9612cc0d19",
+        "size_in_bytes": 4523
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_debugger.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "52821cb344c6deeb7f5be737be2f07a56b268b0003b3238f00a6c4e73b3a1f28",
+        "sha256_in_prefix": "52821cb344c6deeb7f5be737be2f07a56b268b0003b3238f00a6c4e73b3a1f28",
+        "size_in_bytes": 5707
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_embed_kernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "ff048750456a59f8396ba7c384994b100f37e9d2ec7d69367799d3ab7ca5c184",
+        "sha256_in_prefix": "ff048750456a59f8396ba7c384994b100f37e9d2ec7d69367799d3ab7ca5c184",
+        "size_in_bytes": 3990
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_eventloop.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b519ddcff0ee9b95115249e4e407b8b9fc7c74ba48943c52ea24f7ab96563cb3",
+        "sha256_in_prefix": "b519ddcff0ee9b95115249e4e407b8b9fc7c74ba48943c52ea24f7ab96563cb3",
+        "size_in_bytes": 1255
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_heartbeat.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "8fe8f7cf5c06070d3b06013107fd519e39e7a24277b259debe5598f8586df187",
+        "sha256_in_prefix": "8fe8f7cf5c06070d3b06013107fd519e39e7a24277b259debe5598f8586df187",
+        "size_in_bytes": 1871
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_io.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "c214033108a08f750f8a991fa04c97ae8ad2d680f7f17520f8d2b8e362c19390",
+        "sha256_in_prefix": "c214033108a08f750f8a991fa04c97ae8ad2d680f7f17520f8d2b8e362c19390",
+        "size_in_bytes": 1557
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_jsonutil.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "185458114a31d1313d44159a2ed1b538fc76739ccca3cfda5af1d786d6208d53",
+        "sha256_in_prefix": "185458114a31d1313d44159a2ed1b538fc76739ccca3cfda5af1d786d6208d53",
+        "size_in_bytes": 3389
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_kernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "24dfdcb2f0b3e72b1b57ebba0612234fd81e2253b7d0a3ef11d33fc8240da4fa",
+        "sha256_in_prefix": "24dfdcb2f0b3e72b1b57ebba0612234fd81e2253b7d0a3ef11d33fc8240da4fa",
+        "size_in_bytes": 15589
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_kernelspec.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "2ca14acbe7cdd06d1354f80edf9f9d2c63f6fed0febdedbb24f1ad55ac50c920",
+        "sha256_in_prefix": "2ca14acbe7cdd06d1354f80edf9f9d2c63f6fed0febdedbb24f1ad55ac50c920",
+        "size_in_bytes": 4767
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_message_spec.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "756d475df8be3aece81a265ba973cdff0bcb7f8a7ceaabe9cfb5a11ce7acdde0",
+        "sha256_in_prefix": "756d475df8be3aece81a265ba973cdff0bcb7f8a7ceaabe9cfb5a11ce7acdde0",
+        "size_in_bytes": 16763
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_pickleutil.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "2536864ba027529ff751cba093a95c747a414daea436e2ff922451414bb99556",
+        "sha256_in_prefix": "2536864ba027529ff751cba093a95c747a414daea436e2ff922451414bb99556",
+        "size_in_bytes": 2509
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_start_kernel.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "3a06d4150a66f4bbbb28e651b9e42f3c0a2f231a70ddaf5fefa304edf0f4f240",
+        "sha256_in_prefix": "3a06d4150a66f4bbbb28e651b9e42f3c0a2f231a70ddaf5fefa304edf0f4f240",
+        "size_in_bytes": 1569
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/test_zmq_shell.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "42b4cd96f6f5008b5326a163c51f16a760120ec5b58875201f3db7359803da17",
+        "sha256_in_prefix": "42b4cd96f6f5008b5326a163c51f16a760120ec5b58875201f3db7359803da17",
+        "size_in_bytes": 6415
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/__pycache__/utils.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "9faf86a37e542ffa1375d8433a85c4b10facc0ec6a8de40a7df4f7a9b6594c8e",
+        "sha256_in_prefix": "9faf86a37e542ffa1375d8433a85c4b10facc0ec6a8de40a7df4f7a9b6594c8e",
+        "size_in_bytes": 5666
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/_asyncio_utils.py",
+        "path_type": "hardlink",
+        "sha256": "c67b0079a81cbfe10867536daeafa938b7993e037729e78330f025e99d610779",
+        "sha256_in_prefix": "c67b0079a81cbfe10867536daeafa938b7993e037729e78330f025e99d610779",
+        "size_in_bytes": 363
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/conftest.py",
+        "path_type": "hardlink",
+        "sha256": "2a3eb6d5707c659390c990f4ec53a906c3e32e635f64da7cdffbc73dc124fc4e",
+        "sha256_in_prefix": "2a3eb6d5707c659390c990f4ec53a906c3e32e635f64da7cdffbc73dc124fc4e",
+        "size_in_bytes": 636
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_async.py",
+        "path_type": "hardlink",
+        "sha256": "bf5bceaf65aa29ff6d7cd4b6e8b6051defde2d258d7d17dd41c3d90702b3656d",
+        "sha256_in_prefix": "bf5bceaf65aa29ff6d7cd4b6e8b6051defde2d258d7d17dd41c3d90702b3656d",
+        "size_in_bytes": 1800
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_connect.py",
+        "path_type": "hardlink",
+        "sha256": "70bf96a641f560fa1895da36d615e3d0bc7653cc895d3559fd153e4d9d476607",
+        "sha256_in_prefix": "70bf96a641f560fa1895da36d615e3d0bc7653cc895d3559fd153e4d9d476607",
+        "size_in_bytes": 4200
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_debugger.py",
+        "path_type": "hardlink",
+        "sha256": "3acabe15262b282a1eb829cb8e42362bd5b2208501b16e6e4a9c414f6d215c6f",
+        "sha256_in_prefix": "3acabe15262b282a1eb829cb8e42362bd5b2208501b16e6e4a9c414f6d215c6f",
+        "size_in_bytes": 7717
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_embed_kernel.py",
+        "path_type": "hardlink",
+        "sha256": "93b870923d87576d26ed2bf6d765925a55f008ba5506e8b89213fdd740251eb5",
+        "sha256_in_prefix": "93b870923d87576d26ed2bf6d765925a55f008ba5506e8b89213fdd740251eb5",
+        "size_in_bytes": 5362
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_eventloop.py",
+        "path_type": "hardlink",
+        "sha256": "3215d2d5c20c7fd1d784bfb93a6d9259dae3755227edba55a6956c92d18a6d1f",
+        "sha256_in_prefix": "3215d2d5c20c7fd1d784bfb93a6d9259dae3755227edba55a6956c92d18a6d1f",
+        "size_in_bytes": 958
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_heartbeat.py",
+        "path_type": "hardlink",
+        "sha256": "09caad89103fc82554a596bf0f1cdd89c51d0def9d7cd7ddb96a9700f3c47446",
+        "sha256_in_prefix": "09caad89103fc82554a596bf0f1cdd89c51d0def9d7cd7ddb96a9700f3c47446",
+        "size_in_bytes": 1889
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_io.py",
+        "path_type": "hardlink",
+        "sha256": "881945c297d781ee6ee074f68b50eadd09a825cf818226f92e6ce5541ea7ce9e",
+        "sha256_in_prefix": "881945c297d781ee6ee074f68b50eadd09a825cf818226f92e6ce5541ea7ce9e",
+        "size_in_bytes": 1360
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_jsonutil.py",
+        "path_type": "hardlink",
+        "sha256": "d178a05e9437e6172975de700f1c08229c74bde374d3957f8c415cac76b3747a",
+        "sha256_in_prefix": "d178a05e9437e6172975de700f1c08229c74bde374d3957f8c415cac76b3747a",
+        "size_in_bytes": 3396
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_kernel.py",
+        "path_type": "hardlink",
+        "sha256": "a86e478daf7404d4aa0b6c000567de6c3899ba8269be17a1d098a7ffa5cf9c81",
+        "sha256_in_prefix": "a86e478daf7404d4aa0b6c000567de6c3899ba8269be17a1d098a7ffa5cf9c81",
+        "size_in_bytes": 19108
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_kernelspec.py",
+        "path_type": "hardlink",
+        "sha256": "11de3433b78f723d2c73c9b2018845aaf602679c29ca842be1d59636ec8feb07",
+        "sha256_in_prefix": "11de3433b78f723d2c73c9b2018845aaf602679c29ca842be1d59636ec8feb07",
+        "size_in_bytes": 4095
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_message_spec.py",
+        "path_type": "hardlink",
+        "sha256": "99669573e996b56acb460ee42c2c7d5065b2269f46bb7dbe057dc3849a0d0e02",
+        "sha256_in_prefix": "99669573e996b56acb460ee42c2c7d5065b2269f46bb7dbe057dc3849a0d0e02",
+        "size_in_bytes": 16136
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_pickleutil.py",
+        "path_type": "hardlink",
+        "sha256": "7a98021c648248c4f54f785b9c25dcb783ce0b8055ab58f7e4f955b0de3237df",
+        "sha256_in_prefix": "7a98021c648248c4f54f785b9c25dcb783ce0b8055ab58f7e4f955b0de3237df",
+        "size_in_bytes": 1272
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_start_kernel.py",
+        "path_type": "hardlink",
+        "sha256": "fbec31cd5b095c8b791169ca316f4e0eea1dea9a0b47efb4e9a1a0fd8ae07312",
+        "sha256_in_prefix": "fbec31cd5b095c8b791169ca316f4e0eea1dea9a0b47efb4e9a1a0fd8ae07312",
+        "size_in_bytes": 1875
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/test_zmq_shell.py",
+        "path_type": "hardlink",
+        "sha256": "808bdf72507cc16374ae147ed9ea679e9dcc62b2bce14eb7b3cf87ddc9180490",
+        "sha256_in_prefix": "808bdf72507cc16374ae147ed9ea679e9dcc62b2bce14eb7b3cf87ddc9180490",
+        "size_in_bytes": 5699
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/tests/utils.py",
+        "path_type": "hardlink",
+        "sha256": "21291a701ae579fe914979a787998575ffd4711b21e83c5145bf1e832ff45afc",
+        "sha256_in_prefix": "21291a701ae579fe914979a787998575ffd4711b21e83c5145bf1e832ff45afc",
+        "size_in_bytes": 5673
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/trio_runner.py",
+        "path_type": "hardlink",
+        "sha256": "d35d5f9d56b0567a59908bb0ff685a078f68e98ddcf587e4b4b74e955d8a32dd",
+        "sha256_in_prefix": "d35d5f9d56b0567a59908bb0ff685a078f68e98ddcf587e4b4b74e955d8a32dd",
+        "size_in_bytes": 2040
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel/zmqshell.py",
+        "path_type": "hardlink",
+        "sha256": "36f3894b411f451520f469b91843725f2a109dd927cd23d9608f932de9bee2fc",
+        "sha256_in_prefix": "36f3894b411f451520f469b91843725f2a109dd927cd23d9608f932de9bee2fc",
+        "size_in_bytes": 23110
+      },
+      {
+        "_path": "lib/python3.10/site-packages/ipykernel_launcher.py",
+        "path_type": "hardlink",
+        "sha256": "ca386380a6c4c135f8be563073b095422f299e0bfa40bb1eb353f99f4c5d5761",
+        "sha256_in_prefix": "ca386380a6c4c135f8be563073b095422f299e0bfa40bb1eb353f99f4c5d5761",
+        "size_in_bytes": 452
+      },
+      {
+        "_path": "share/jupyter/kernels/python3/kernel.json",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/Users/runner/miniforge3/conda-bld/ipykernel_1649684340534/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold",
+        "sha256": "e45b1f057aecdf68264b669a57b1df7ca4909ac3d816993f64600d5c52c931db",
+        "sha256_in_prefix": "71b344c7a6d338d2935d87cb7934c433a66dc74f5eecf17dd651894ac68fdd09",
+        "size_in_bytes": 453
+      },
+      {
+        "_path": "share/jupyter/kernels/python3/logo-32x32.png",
+        "path_type": "hardlink",
+        "sha256": "e32b5c282072d717887b60da73178fdd35a65dc3caeacba7a026e5a4255cc997",
+        "sha256_in_prefix": "e32b5c282072d717887b60da73178fdd35a65dc3caeacba7a026e5a4255cc997",
+        "size_in_bytes": 1084
+      },
+      {
+        "_path": "share/jupyter/kernels/python3/logo-64x64.png",
+        "path_type": "hardlink",
+        "sha256": "5c9063b436cedf0567480fe487ece0d1479ea9545f310cba93fa184ccbab290d",
+        "sha256_in_prefix": "5c9063b436cedf0567480fe487ece0d1479ea9545f310cba93fa184ccbab290d",
+        "size_in_bytes": 2180
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "a6ce040c1cb0347fa4f29a224269ca0de4197ad45abed08a7778b5402ba09a07",
+  "size": 191336,
+  "subdir": "osx-64",
+  "timestamp": 1649684502773,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/osx-64/ipykernel-6.13.0-py310ha188af9_0.tar.bz2",
+  "version": "6.13.0"
+}

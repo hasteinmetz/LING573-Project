@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /Users/hillel/Documents/UW/sp2022/systems/repo/env/bin/python -m PyQt5.uic.pyuic ${1+"$@"}

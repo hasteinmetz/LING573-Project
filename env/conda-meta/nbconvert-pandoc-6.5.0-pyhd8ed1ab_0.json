@@ -1,0 +1,36 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "nbconvert-core 6.5.0 pyhd8ed1ab_0",
+    "pandoc",
+    "python >=3.7"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/nbconvert-pandoc-6.5.0-pyhd8ed1ab_0",
+  "features": "",
+  "files": [],
+  "fn": "nbconvert-pandoc-6.5.0-pyhd8ed1ab_0.tar.bz2",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/nbconvert-pandoc-6.5.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "d7421adfc67100021d87032447066129",
+  "name": "nbconvert-pandoc",
+  "noarch": "python",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/nbconvert-pandoc-6.5.0-pyhd8ed1ab_0.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "737fe95e66f8cacc7a5228df132c6f8979f5dc23144e4037575b857aa9f322cb",
+  "size": 4556,
+  "subdir": "noarch",
+  "timestamp": 1649676752508,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/nbconvert-pandoc-6.5.0-pyhd8ed1ab_0.tar.bz2",
+  "version": "6.5.0"
+}

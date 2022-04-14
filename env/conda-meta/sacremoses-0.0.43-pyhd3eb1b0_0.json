@@ -1,0 +1,675 @@
+{
+  "build": "pyhd3eb1b0_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/noarch",
+  "constrains": [],
+  "depends": [
+    "click",
+    "joblib",
+    "python",
+    "regex",
+    "six",
+    "tqdm"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/sacremoses-0.0.43-pyhd3eb1b0_0",
+  "features": "",
+  "files": [
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/INSTALLER",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/METADATA",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/RECORD",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/REQUESTED",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/WHEEL",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/direct_url.json",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/entry_points.txt",
+    "lib/python3.10/site-packages/sacremoses-0.0.43.dist-info/top_level.txt",
+    "lib/python3.10/site-packages/sacremoses/__init__.py",
+    "lib/python3.10/site-packages/sacremoses/chinese.py",
+    "lib/python3.10/site-packages/sacremoses/cli.py",
+    "lib/python3.10/site-packages/sacremoses/corpus.py",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ca",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.cs",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.de",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.el",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.en",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.es",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.fi",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.fr",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ga",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.hu",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.is",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.it",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.lt",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.lv",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.nl",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.pl",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.pt",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ro",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ru",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sk",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sl",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sv",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ta",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.yue",
+    "lib/python3.10/site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.zh",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/CJK.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/CJKSymbols.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Close_Punctuation.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Currency_Symbol.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Han.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Hangul.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Hangul_Syllables.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Hiragana.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsAlnum-unichars-au.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsAlnum.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsAlpha-unichars-au.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsAlpha.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsLower.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsN.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsPf.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsPi.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsSc.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsSo.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/IsUpper.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Katakana.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Line_Separator.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Lowercase_Letter.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Number.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Open_Punctuation.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Punctuation.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Separator.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Symbol.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Titlecase_Letter.txt",
+    "lib/python3.10/site-packages/sacremoses/data/perluniprops/Uppercase_Letter.txt",
+    "lib/python3.10/site-packages/sacremoses/normalize.py",
+    "lib/python3.10/site-packages/sacremoses/sent_tokenize.py",
+    "lib/python3.10/site-packages/sacremoses/subwords.py",
+    "lib/python3.10/site-packages/sacremoses/tokenize.py",
+    "lib/python3.10/site-packages/sacremoses/truecase.py",
+    "lib/python3.10/site-packages/sacremoses/util.py",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/chinese.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/cli.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/corpus.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/normalize.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/sent_tokenize.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/subwords.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/tokenize.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/truecase.cpython-310.pyc",
+    "lib/python3.10/site-packages/sacremoses/__pycache__/util.cpython-310.pyc",
+    "bin/sacremoses"
+  ],
+  "fn": "sacremoses-0.0.43-pyhd3eb1b0_0.conda",
+  "legacy_bz2_md5": "426be2a9182929b5f457fd1a01858f1b",
+  "license": "LGPL-2.1-or-later",
+  "license_family": "LGPL",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/sacremoses-0.0.43-pyhd3eb1b0_0",
+    "type": 1
+  },
+  "md5": "ecbc0dd955c94ccd1a4b45cefd69be10",
+  "name": "sacremoses",
+  "noarch": "python",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/sacremoses-0.0.43-pyhd3eb1b0_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "8320e099ca2d5a7634f00e8578867187100e83380dfdd5d07b6e745a3543ed40",
+        "sha256_in_prefix": "8320e099ca2d5a7634f00e8578867187100e83380dfdd5d07b6e745a3543ed40",
+        "size_in_bytes": 446
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "b55ca1ffda938733eaf71ff2e3b0012c34492569b92d54aea80a2ca4952e8125",
+        "sha256_in_prefix": "b55ca1ffda938733eaf71ff2e3b0012c34492569b92d54aea80a2ca4952e8125",
+        "size_in_bytes": 7880
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "7b0c04b9e8a8d42d977874ef4f5ee7f1d6542603afc82582b7459534b0a53fda",
+        "sha256_in_prefix": "7b0c04b9e8a8d42d977874ef4f5ee7f1d6542603afc82582b7459534b0a53fda",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "7039a1e199f4aec96be29425ce5911344eb78db67dd666e8124af567f9e69b80",
+        "sha256_in_prefix": "7039a1e199f4aec96be29425ce5911344eb78db67dd666e8124af567f9e69b80",
+        "size_in_bytes": 83
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/entry_points.txt",
+        "path_type": "hardlink",
+        "sha256": "11bb80dfc8eaf4809fa83e5288460dd1669b81e2cc36349fddafce5d71f4e292",
+        "sha256_in_prefix": "11bb80dfc8eaf4809fa83e5288460dd1669b81e2cc36349fddafce5d71f4e292",
+        "size_in_bytes": 49
+      },
+      {
+        "_path": "site-packages/sacremoses-0.0.43.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "289ee3aec4bdb3c063f4267a91b5d07e3b27cca92e2ee56fb9bac2388612a2d1",
+        "sha256_in_prefix": "289ee3aec4bdb3c063f4267a91b5d07e3b27cca92e2ee56fb9bac2388612a2d1",
+        "size_in_bytes": 11
+      },
+      {
+        "_path": "site-packages/sacremoses/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "5677b2e641dcabcafd1429267642dcff0b93253a2043f00b89873d64b348cd22",
+        "sha256_in_prefix": "5677b2e641dcabcafd1429267642dcff0b93253a2043f00b89873d64b348cd22",
+        "size_in_bytes": 204
+      },
+      {
+        "_path": "site-packages/sacremoses/chinese.py",
+        "path_type": "hardlink",
+        "sha256": "d4896cf05023c9340d8c53cb6d2959373133201705db99f662d02188c500129f",
+        "sha256_in_prefix": "d4896cf05023c9340d8c53cb6d2959373133201705db99f662d02188c500129f",
+        "size_in_bytes": 28953
+      },
+      {
+        "_path": "site-packages/sacremoses/cli.py",
+        "path_type": "hardlink",
+        "sha256": "e8154d8ffa253071f9555794fbb584da50fa83dafe96848a6b8c3d0d2bd03ebb",
+        "sha256_in_prefix": "e8154d8ffa253071f9555794fbb584da50fa83dafe96848a6b8c3d0d2bd03ebb",
+        "size_in_bytes": 9058
+      },
+      {
+        "_path": "site-packages/sacremoses/corpus.py",
+        "path_type": "hardlink",
+        "sha256": "69add80115db5f2556e5512e9dd7f781ff4ef1aec4f1b917658b3a782fd29248",
+        "sha256_in_prefix": "69add80115db5f2556e5512e9dd7f781ff4ef1aec4f1b917658b3a782fd29248",
+        "size_in_bytes": 5159
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ca",
+        "path_type": "hardlink",
+        "sha256": "1e914d0c47be142edd52eecd241f0d9055f7c08095d7a51df15350d28ffa5093",
+        "sha256_in_prefix": "1e914d0c47be142edd52eecd241f0d9055f7c08095d7a51df15350d28ffa5093",
+        "size_in_bytes": 324
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.cs",
+        "path_type": "hardlink",
+        "sha256": "ea4a99eac36237a22ea1d312f2881abd7ca831eec9d3b1513c3ac0a78ac1e073",
+        "sha256_in_prefix": "ea4a99eac36237a22ea1d312f2881abd7ca831eec9d3b1513c3ac0a78ac1e073",
+        "size_in_bytes": 1892
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.de",
+        "path_type": "hardlink",
+        "sha256": "caec29277f3cb15748430cdcd41dc341d3d01aab7ef849cda131818b3e52df83",
+        "sha256_in_prefix": "caec29277f3cb15748430cdcd41dc341d3d01aab7ef849cda131818b3e52df83",
+        "size_in_bytes": 1768
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.el",
+        "path_type": "hardlink",
+        "sha256": "d08c8ffc224910d37c9c3a0e919cea9bc6da721cb12249d6ceea4d89bdc8bbd8",
+        "sha256_in_prefix": "d08c8ffc224910d37c9c3a0e919cea9bc6da721cb12249d6ceea4d89bdc8bbd8",
+        "size_in_bytes": 17034
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.en",
+        "path_type": "hardlink",
+        "sha256": "82ed99e34cd69b449f150d17b369041604861d1b9b2a7932794d1269785596ad",
+        "sha256_in_prefix": "82ed99e34cd69b449f150d17b369041604861d1b9b2a7932794d1269785596ad",
+        "size_in_bytes": 1327
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.es",
+        "path_type": "hardlink",
+        "sha256": "c93467ede290beb7d3fbda03598f3f7c8423f70a95d13bb459e7fe1accc5381e",
+        "sha256_in_prefix": "c93467ede290beb7d3fbda03598f3f7c8423f70a95d13bb459e7fe1accc5381e",
+        "size_in_bytes": 835
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.fi",
+        "path_type": "hardlink",
+        "sha256": "b4d09661817c5e85d841b588f47eb48339817441dcd444572e8473f02e99d659",
+        "sha256_in_prefix": "b4d09661817c5e85d841b588f47eb48339817441dcd444572e8473f02e99d659",
+        "size_in_bytes": 1281
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.fr",
+        "path_type": "hardlink",
+        "sha256": "e161a38a19b805b2b1df9eebc4c3aaac810c3e82a337732d20b58167b1bdf4f5",
+        "sha256_in_prefix": "e161a38a19b805b2b1df9eebc4c3aaac810c3e82a337732d20b58167b1bdf4f5",
+        "size_in_bytes": 1162
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ga",
+        "path_type": "hardlink",
+        "sha256": "aaff8e3d1490c2524eb3eda582f144e600c32470eb79979b31d264494ba31ec6",
+        "sha256_in_prefix": "aaff8e3d1490c2524eb3eda582f144e600c32470eb79979b31d264494ba31ec6",
+        "size_in_bytes": 171
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.hu",
+        "path_type": "hardlink",
+        "sha256": "f3f0bdd5ed6900cd35f8e256c5166f5321c6ebbd298c7034d2307a728742a14e",
+        "sha256_in_prefix": "f3f0bdd5ed6900cd35f8e256c5166f5321c6ebbd298c7034d2307a728742a14e",
+        "size_in_bytes": 1608
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.is",
+        "path_type": "hardlink",
+        "sha256": "9f22564c27bd2bb87bd5e0464c578b8ed2183d8f9b9fb71dadff1d765c45d36e",
+        "sha256_in_prefix": "9f22564c27bd2bb87bd5e0464c578b8ed2183d8f9b9fb71dadff1d765c45d36e",
+        "size_in_bytes": 1059
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.it",
+        "path_type": "hardlink",
+        "sha256": "4e8ecd84556d155949cd503e6e2bf0909291e2503c7bcafcad625038cdcfd794",
+        "sha256_in_prefix": "4e8ecd84556d155949cd503e6e2bf0909291e2503c7bcafcad625038cdcfd794",
+        "size_in_bytes": 1563
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.lt",
+        "path_type": "hardlink",
+        "sha256": "846f3cda2795a218bfe181159165e71cf0ce92a63491784518f56bd22b22460e",
+        "sha256_in_prefix": "846f3cda2795a218bfe181159165e71cf0ce92a63491784518f56bd22b22460e",
+        "size_in_bytes": 7082
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.lv",
+        "path_type": "hardlink",
+        "sha256": "b52631e328cda3c25f973a8ad8248c8e89b91b413c2f42c31a3849b84b0a56e1",
+        "sha256_in_prefix": "b52631e328cda3c25f973a8ad8248c8e89b91b413c2f42c31a3849b84b0a56e1",
+        "size_in_bytes": 1223
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.nl",
+        "path_type": "hardlink",
+        "sha256": "de3605637841a69626f1605e2dad21880f2016ce8adbb10396d1a8e11539c518",
+        "sha256_in_prefix": "de3605637841a69626f1605e2dad21880f2016ce8adbb10396d1a8e11539c518",
+        "size_in_bytes": 1582
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.pl",
+        "path_type": "hardlink",
+        "sha256": "c56bfa8260f2d2cd780cb84476a8d5afdd2d5df0df531b313c0135a411134a31",
+        "sha256_in_prefix": "c56bfa8260f2d2cd780cb84476a8d5afdd2d5df0df531b313c0135a411134a31",
+        "size_in_bytes": 1311
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.pt",
+        "path_type": "hardlink",
+        "sha256": "4477f9ad690e262c04bc057f4757e12b16777892f80016539130f3b7eebd58b4",
+        "sha256_in_prefix": "4477f9ad690e262c04bc057f4757e12b16777892f80016539130f3b7eebd58b4",
+        "size_in_bytes": 1792
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ro",
+        "path_type": "hardlink",
+        "sha256": "43beedf98c092da62d4d29389130d5601996ed18b1a112b80861fc9f7730b047",
+        "sha256_in_prefix": "43beedf98c092da62d4d29389130d5601996ed18b1a112b80861fc9f7730b047",
+        "size_in_bytes": 104
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ru",
+        "path_type": "hardlink",
+        "sha256": "15079357ab2f2499d2ef589e52585655cffa9d59bdfee6ec36fce118285c4e6f",
+        "sha256_in_prefix": "15079357ab2f2499d2ef589e52585655cffa9d59bdfee6ec36fce118285c4e6f",
+        "size_in_bytes": 1649
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sk",
+        "path_type": "hardlink",
+        "sha256": "029aa208e8dbc9934a3f60c594ada0ec5d0077b99246d9f1f7275f32d085c21d",
+        "sha256_in_prefix": "029aa208e8dbc9934a3f60c594ada0ec5d0077b99246d9f1f7275f32d085c21d",
+        "size_in_bytes": 2460
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sl",
+        "path_type": "hardlink",
+        "sha256": "4303aa819c8aee30311f35ac844ee8401b5b8423ee39082a83b41b9c04ed8729",
+        "sha256_in_prefix": "4303aa819c8aee30311f35ac844ee8401b5b8423ee39082a83b41b9c04ed8729",
+        "size_in_bytes": 356
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.sv",
+        "path_type": "hardlink",
+        "sha256": "ec7a929d818dd4b8fdcb00054c67882e5c2217619e659e1ab82670338955f105",
+        "sha256_in_prefix": "ec7a929d818dd4b8fdcb00054c67882e5c2217619e659e1ab82670338955f105",
+        "size_in_bytes": 184
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.ta",
+        "path_type": "hardlink",
+        "sha256": "7afe57117ad940da63514751a0efcce0f954b735610e167ebc86ae9ba9e10c00",
+        "sha256_in_prefix": "7afe57117ad940da63514751a0efcce0f954b735610e167ebc86ae9ba9e10c00",
+        "size_in_bytes": 2675
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.yue",
+        "path_type": "hardlink",
+        "sha256": "974c67a789865c659d4ce9d4d9bdf55f6e36086481b5d816d42694440bc5ffca",
+        "sha256_in_prefix": "974c67a789865c659d4ce9d4d9bdf55f6e36086481b5d816d42694440bc5ffca",
+        "size_in_bytes": 663
+      },
+      {
+        "_path": "site-packages/sacremoses/data/nonbreaking_prefixes/nonbreaking_prefix.zh",
+        "path_type": "hardlink",
+        "sha256": "f592ff187794ca1a00b10d9a2f35b99d33fabb0f27fa990c3a488f6a94571532",
+        "sha256_in_prefix": "f592ff187794ca1a00b10d9a2f35b99d33fabb0f27fa990c3a488f6a94571532",
+        "size_in_bytes": 662
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/CJK.txt",
+        "path_type": "hardlink",
+        "sha256": "f5e1005885c36f5dd199e07d07a78f30f80ccdd2da3ddcedf5450529e2845b03",
+        "sha256_in_prefix": "f5e1005885c36f5dd199e07d07a78f30f80ccdd2da3ddcedf5450529e2845b03",
+        "size_in_bytes": 115779
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/CJKSymbols.txt",
+        "path_type": "hardlink",
+        "sha256": "35774f048697859b6571262210511c0b324cdeaa739342429443adf0a1d15ba0",
+        "sha256_in_prefix": "35774f048697859b6571262210511c0b324cdeaa739342429443adf0a1d15ba0",
+        "size_in_bytes": 205
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Close_Punctuation.txt",
+        "path_type": "hardlink",
+        "sha256": "36eeabfdec22f929c20ba0320b90500271faed2a74b29cce38b92f89d3dfdf69",
+        "sha256_in_prefix": "36eeabfdec22f929c20ba0320b90500271faed2a74b29cce38b92f89d3dfdf69",
+        "size_in_bytes": 214
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Currency_Symbol.txt",
+        "path_type": "hardlink",
+        "sha256": "f4553edf27f3016bc7796aca90cdcf98d2b1660732958eeca97fe91cb209457a",
+        "sha256_in_prefix": "f4553edf27f3016bc7796aca90cdcf98d2b1660732958eeca97fe91cb209457a",
+        "size_in_bytes": 149
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Han.txt",
+        "path_type": "hardlink",
+        "sha256": "1da36e2243ba025ee2a58c5ee6f74178966f06b148c49ec0049f7b8d495c26cb",
+        "sha256_in_prefix": "1da36e2243ba025ee2a58c5ee6f74178966f06b148c49ec0049f7b8d495c26cb",
+        "size_in_bytes": 299457
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Hangul.txt",
+        "path_type": "hardlink",
+        "sha256": "69fc69377ce3b089348448aa9946fed50b40d2b4aea01b0a5805cd445dcbe3e9",
+        "sha256_in_prefix": "69fc69377ce3b089348448aa9946fed50b40d2b4aea01b0a5805cd445dcbe3e9",
+        "size_in_bytes": 35325
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Hangul_Syllables.txt",
+        "path_type": "hardlink",
+        "sha256": "2a668294832c2a0ff1f7c1886963d708df96bf24c370b6e537d82836b2943d90",
+        "sha256_in_prefix": "2a668294832c2a0ff1f7c1886963d708df96bf24c370b6e537d82836b2943d90",
+        "size_in_bytes": 33564
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Hiragana.txt",
+        "path_type": "hardlink",
+        "sha256": "87d31577a1e54b5c00ba24cb1ebd5a69d4c4adc802a9271f0bf0388225ba99aa",
+        "sha256_in_prefix": "87d31577a1e54b5c00ba24cb1ebd5a69d4c4adc802a9271f0bf0388225ba99aa",
+        "size_in_bytes": 437
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsAlnum-unichars-au.txt",
+        "path_type": "hardlink",
+        "sha256": "b9744688c6dbb631ea446f5257c29fafbd82a0b4c18e75be2a24d108744e2c5b",
+        "sha256_in_prefix": "b9744688c6dbb631ea446f5257c29fafbd82a0b4c18e75be2a24d108744e2c5b",
+        "size_in_bytes": 425929
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsAlnum.txt",
+        "path_type": "hardlink",
+        "sha256": "e0e4d5536faec4a2dfb87e81ca959469e328477cbd17980e296484bcd0690a6b",
+        "sha256_in_prefix": "e0e4d5536faec4a2dfb87e81ca959469e328477cbd17980e296484bcd0690a6b",
+        "size_in_bytes": 31881
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsAlpha-unichars-au.txt",
+        "path_type": "hardlink",
+        "sha256": "ea7636aa4a10ee13bde0d745e496665a1b358a3134016ce23b9d1a6b09d40a08",
+        "sha256_in_prefix": "ea7636aa4a10ee13bde0d745e496665a1b358a3134016ce23b9d1a6b09d40a08",
+        "size_in_bytes": 424029
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsAlpha.txt",
+        "path_type": "hardlink",
+        "sha256": "c8b2677a3a307e1bbcc93e90a3aeb4970270f28707fcf4733d53370c07f289ca",
+        "sha256_in_prefix": "c8b2677a3a307e1bbcc93e90a3aeb4970270f28707fcf4733d53370c07f289ca",
+        "size_in_bytes": 30821
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsLower.txt",
+        "path_type": "hardlink",
+        "sha256": "59f87508684232f8fecc1868960f3ab550e3be28700e3b5a76208705d3ba99e9",
+        "sha256_in_prefix": "59f87508684232f8fecc1868960f3ab550e3be28700e3b5a76208705d3ba99e9",
+        "size_in_bytes": 6829
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsN.txt",
+        "path_type": "hardlink",
+        "sha256": "b39d19ae130b8526ebdfd010b88dad695a61983bb831a270e05062f6ba6b0d14",
+        "sha256_in_prefix": "b39d19ae130b8526ebdfd010b88dad695a61983bb831a270e05062f6ba6b0d14",
+        "size_in_bytes": 2081
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsPf.txt",
+        "path_type": "hardlink",
+        "sha256": "f8619f2ddfd7c63b10290c7ab4d868fd3b98da3d1e6da411691167b6fdabec57",
+        "sha256_in_prefix": "f8619f2ddfd7c63b10290c7ab4d868fd3b98da3d1e6da411691167b6fdabec57",
+        "size_in_bytes": 29
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsPi.txt",
+        "path_type": "hardlink",
+        "sha256": "16e58a42cd6462e830d6edc15de02ec925999b897eed1504eb9bc66738b4af46",
+        "sha256_in_prefix": "16e58a42cd6462e830d6edc15de02ec925999b897eed1504eb9bc66738b4af46",
+        "size_in_bytes": 35
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsSc.txt",
+        "path_type": "hardlink",
+        "sha256": "f4553edf27f3016bc7796aca90cdcf98d2b1660732958eeca97fe91cb209457a",
+        "sha256_in_prefix": "f4553edf27f3016bc7796aca90cdcf98d2b1660732958eeca97fe91cb209457a",
+        "size_in_bytes": 149
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsSo.txt",
+        "path_type": "hardlink",
+        "sha256": "720612794517f22be981ffe8ea4b7865a2a54180d42053d412b1ff151ce8c3fd",
+        "sha256_in_prefix": "720612794517f22be981ffe8ea4b7865a2a54180d42053d412b1ff151ce8c3fd",
+        "size_in_bytes": 6947
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/IsUpper.txt",
+        "path_type": "hardlink",
+        "sha256": "028cc842b41ae6070460593cfde23a7464888307168832207741ceb94796e55c",
+        "sha256_in_prefix": "028cc842b41ae6070460593cfde23a7464888307168832207741ceb94796e55c",
+        "size_in_bytes": 5687
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Katakana.txt",
+        "path_type": "hardlink",
+        "sha256": "97a2eded8653759f773aa27e9bd91ab25cc97d674eafde199ea0102c112ddacf",
+        "sha256_in_prefix": "97a2eded8653759f773aa27e9bd91ab25cc97d674eafde199ea0102c112ddacf",
+        "size_in_bytes": 1063
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Line_Separator.txt",
+        "path_type": "hardlink",
+        "sha256": "e1eefe9c266415e925638de4dd389e5224e64e93ffadf000ac343479a50ba7e4",
+        "sha256_in_prefix": "e1eefe9c266415e925638de4dd389e5224e64e93ffadf000ac343479a50ba7e4",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Lowercase_Letter.txt",
+        "path_type": "hardlink",
+        "sha256": "18e7914759b0157ebe30f83abe401da3acaed860f49976a4f219b0e47335c76f",
+        "sha256_in_prefix": "18e7914759b0157ebe30f83abe401da3acaed860f49976a4f219b0e47335c76f",
+        "size_in_bytes": 3539
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Number.txt",
+        "path_type": "hardlink",
+        "sha256": "bdd4091ffb857b47bb10e10c82f750e30419aa7a3ce6da39dae92f77efa28476",
+        "sha256_in_prefix": "bdd4091ffb857b47bb10e10c82f750e30419aa7a3ce6da39dae92f77efa28476",
+        "size_in_bytes": 45664
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Open_Punctuation.txt",
+        "path_type": "hardlink",
+        "sha256": "1c3c61b9d9c51afc8f016663cdf0c6ceedcdf2d1c603c3c1a6abf4e724da2aa4",
+        "sha256_in_prefix": "1c3c61b9d9c51afc8f016663cdf0c6ceedcdf2d1c603c3c1a6abf4e724da2aa4",
+        "size_in_bytes": 220
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Punctuation.txt",
+        "path_type": "hardlink",
+        "sha256": "e2f503ffac0d4c69620ff0ce22a6b4a28b328363602a74270efbbe92ed0efcac",
+        "sha256_in_prefix": "e2f503ffac0d4c69620ff0ce22a6b4a28b328363602a74270efbbe92ed0efcac",
+        "size_in_bytes": 1682
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Separator.txt",
+        "path_type": "hardlink",
+        "sha256": "3d13f1e1ca15c997a8f0325092384acbc7f3d6885eac370658aaac13ab1cd51e",
+        "sha256_in_prefix": "3d13f1e1ca15c997a8f0325092384acbc7f3d6885eac370658aaac13ab1cd51e",
+        "size_in_bytes": 77
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Symbol.txt",
+        "path_type": "hardlink",
+        "sha256": "d57b6f965049bb8a0b2f43e17bb32a71bd4ca82bc86766c059ca80273660c99e",
+        "sha256_in_prefix": "d57b6f965049bb8a0b2f43e17bb32a71bd4ca82bc86766c059ca80273660c99e",
+        "size_in_bytes": 9804
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Titlecase_Letter.txt",
+        "path_type": "hardlink",
+        "sha256": "fabb3e205241fd09f27e5bf259c0b4275382f6eb55ce4d6a6d7de8fefe68e8e1",
+        "sha256_in_prefix": "fabb3e205241fd09f27e5bf259c0b4275382f6eb55ce4d6a6d7de8fefe68e8e1",
+        "size_in_bytes": 89
+      },
+      {
+        "_path": "site-packages/sacremoses/data/perluniprops/Uppercase_Letter.txt",
+        "path_type": "hardlink",
+        "sha256": "df6fa9b7160e2297817d63f1f975fe68d1d427ce3bfdc3695c607a1114e8b810",
+        "sha256_in_prefix": "df6fa9b7160e2297817d63f1f975fe68d1d427ce3bfdc3695c607a1114e8b810",
+        "size_in_bytes": 2701
+      },
+      {
+        "_path": "site-packages/sacremoses/normalize.py",
+        "path_type": "hardlink",
+        "sha256": "a2565f29067fc50a734374da220cf7ff4bed998ecceccf9acfb0d85e5264d383",
+        "sha256_in_prefix": "a2565f29067fc50a734374da220cf7ff4bed998ecceccf9acfb0d85e5264d383",
+        "size_in_bytes": 5953
+      },
+      {
+        "_path": "site-packages/sacremoses/sent_tokenize.py",
+        "path_type": "hardlink",
+        "sha256": "f3655e3c69971aede69cfd4396c5901a36daabfe62867882bced30ee01bcf2aa",
+        "sha256_in_prefix": "f3655e3c69971aede69cfd4396c5901a36daabfe62867882bced30ee01bcf2aa",
+        "size_in_bytes": 3093
+      },
+      {
+        "_path": "site-packages/sacremoses/subwords.py",
+        "path_type": "hardlink",
+        "sha256": "c12a9a72ba913b004fa6c1fa69d7faebb9d27113e1203df65bf6f1fb3063118e",
+        "sha256_in_prefix": "c12a9a72ba913b004fa6c1fa69d7faebb9d27113e1203df65bf6f1fb3063118e",
+        "size_in_bytes": 8594
+      },
+      {
+        "_path": "site-packages/sacremoses/tokenize.py",
+        "path_type": "hardlink",
+        "sha256": "779f6d5c6e419689fa90a9b621fda8e75d9ff58c5f916a131fe49786f73b7878",
+        "sha256_in_prefix": "779f6d5c6e419689fa90a9b621fda8e75d9ff58c5f916a131fe49786f73b7878",
+        "size_in_bytes": 31737
+      },
+      {
+        "_path": "site-packages/sacremoses/truecase.py",
+        "path_type": "hardlink",
+        "sha256": "d32d1a4a831a57a584276b497ee32036fcc9d7759a8d7dd4cc248db9ad85bb45",
+        "sha256_in_prefix": "d32d1a4a831a57a584276b497ee32036fcc9d7759a8d7dd4cc248db9ad85bb45",
+        "size_in_bytes": 19233
+      },
+      {
+        "_path": "site-packages/sacremoses/util.py",
+        "path_type": "hardlink",
+        "sha256": "bb2b608e30d98912aebc3ee4e3d21b08ba6b5aaeb7f3644d630d785d36eccee4",
+        "sha256_in_prefix": "bb2b608e30d98912aebc3ee4e3d21b08ba6b5aaeb7f3644d630d785d36eccee4",
+        "size_in_bytes": 6880
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/chinese.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/cli.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/corpus.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/normalize.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/sent_tokenize.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/subwords.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/tokenize.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/truecase.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.10/site-packages/sacremoses/__pycache__/util.cpython-310.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "bin/sacremoses",
+        "path_type": "unix_python_entry_point"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "sacremoses",
+  "sha256": "f01809a9011eec5666f983beac0b8b62945a73e00de89564aa0bb6d37fcf6241",
+  "size": 290879,
+  "subdir": "noarch",
+  "timestamp": 1633107359459,
+  "track_features": "",
+  "url": "https://repo.anaconda.com/pkgs/main/noarch/sacremoses-0.0.43-pyhd3eb1b0_0.conda",
+  "version": "0.0.43"
+}

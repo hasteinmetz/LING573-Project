@@ -1,0 +1,215 @@
+{
+  "build": "py310h2ec42d9_1",
+  "build_number": 1,
+  "channel": "https://conda.anaconda.org/conda-forge/osx-64",
+  "constrains": [],
+  "depends": [
+    "ptyprocess",
+    "python >=3.10,<3.11.0a0",
+    "python_abi 3.10.* *_cp310",
+    "tornado >=4"
+  ],
+  "extracted_package_dir": "/Users/hillel/opt/anaconda3/pkgs/terminado-0.13.3-py310h2ec42d9_1",
+  "features": "",
+  "files": [
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/INSTALLER",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/LICENSE",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/METADATA",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/RECORD",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/REQUESTED",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/WHEEL",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/direct_url.json",
+    "lib/python3.10/site-packages/terminado-0.13.3.dist-info/top_level.txt",
+    "lib/python3.10/site-packages/terminado/__init__.py",
+    "lib/python3.10/site-packages/terminado/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/__pycache__/management.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/__pycache__/uimodule.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/__pycache__/websocket.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/_static/terminado.js",
+    "lib/python3.10/site-packages/terminado/management.py",
+    "lib/python3.10/site-packages/terminado/tests/__init__.py",
+    "lib/python3.10/site-packages/terminado/tests/__pycache__/__init__.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/tests/__pycache__/basic_test.cpython-310.pyc",
+    "lib/python3.10/site-packages/terminado/tests/basic_test.py",
+    "lib/python3.10/site-packages/terminado/uimod_embed.js",
+    "lib/python3.10/site-packages/terminado/uimodule.py",
+    "lib/python3.10/site-packages/terminado/websocket.py"
+  ],
+  "fn": "terminado-0.13.3-py310h2ec42d9_1.tar.bz2",
+  "license": "BSD-2-Clause",
+  "license_family": "BSD",
+  "link": {
+    "source": "/Users/hillel/opt/anaconda3/pkgs/terminado-0.13.3-py310h2ec42d9_1",
+    "type": 1
+  },
+  "md5": "5c23d0fa6c5d25ca4db139d901b0a69e",
+  "name": "terminado",
+  "package_tarball_full_path": "/Users/hillel/opt/anaconda3/pkgs/terminado-0.13.3-py310h2ec42d9_1.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "b7f40d8937cf1bde1d5b2d2e7df9b6fde4e558dcb3128ae7a0126c3298ba1be8",
+        "sha256_in_prefix": "b7f40d8937cf1bde1d5b2d2e7df9b6fde4e558dcb3128ae7a0126c3298ba1be8",
+        "size_in_bytes": 1523
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "ca8bbfe166b531ac2d9f53500edcd027be3b60311a963600c289080bb4e466a9",
+        "sha256_in_prefix": "ca8bbfe166b531ac2d9f53500edcd027be3b60311a963600c289080bb4e466a9",
+        "size_in_bytes": 784
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "254b412cfc3fa5607e56859f082ae37db069ed023c3b23def7735ff49c1cfe97",
+        "sha256_in_prefix": "254b412cfc3fa5607e56859f082ae37db069ed023c3b23def7735ff49c1cfe97",
+        "size_in_bytes": 1659
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "sha256_in_prefix": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "91fbc198e690a853a1d2878fdd0e4dd385570a4104a0b290a6c20c7ad6dabdc1",
+        "sha256_in_prefix": "91fbc198e690a853a1d2878fdd0e4dd385570a4104a0b290a6c20c7ad6dabdc1",
+        "size_in_bytes": 97
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado-0.13.3.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "368d54b6c205afb81fc835d6e53cc1825f52c8241ce40ce71744b02d96b848ec",
+        "sha256_in_prefix": "368d54b6c205afb81fc835d6e53cc1825f52c8241ce40ce71744b02d96b848ec",
+        "size_in_bytes": 10
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "c9451ccfb5be3359bdff10dfeb31dc0ecd194665741cb56ef8441b2a68efbe92",
+        "sha256_in_prefix": "c9451ccfb5be3359bdff10dfeb31dc0ecd194665741cb56ef8441b2a68efbe92",
+        "size_in_bytes": 545
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "1b07988e2fa19b48c83aa3b4a07c9f14ee3b88cd8a22cef084f64d6f36c5e3d8",
+        "sha256_in_prefix": "1b07988e2fa19b48c83aa3b4a07c9f14ee3b88cd8a22cef084f64d6f36c5e3d8",
+        "size_in_bytes": 509
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/__pycache__/management.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "30d80beac921abff99b9b76afda078a3c9b1cc078860097a7451b95b7af7589b",
+        "sha256_in_prefix": "30d80beac921abff99b9b76afda078a3c9b1cc078860097a7451b95b7af7589b",
+        "size_in_bytes": 12961
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/__pycache__/uimodule.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "0f10080447baead2ed5d131e8ec7d4cac9630bdfa3f6c3a20842be0153693eab",
+        "sha256_in_prefix": "0f10080447baead2ed5d131e8ec7d4cac9630bdfa3f6c3a20842be0153693eab",
+        "size_in_bytes": 1338
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/__pycache__/websocket.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "b0ca3137b0cbec22a9c73dc558957f782935063461bcc46eca151258f063f1f2",
+        "sha256_in_prefix": "b0ca3137b0cbec22a9c73dc558957f782935063461bcc46eca151258f063f1f2",
+        "size_in_bytes": 4344
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/_static/terminado.js",
+        "path_type": "hardlink",
+        "sha256": "8ed7f7ad9fa878b61ae0c9ea3cc785dedb7aa28be0f3ed1b9a797f947f34b241",
+        "sha256_in_prefix": "8ed7f7ad9fa878b61ae0c9ea3cc785dedb7aa28be0f3ed1b9a797f947f34b241",
+        "size_in_bytes": 1218
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/management.py",
+        "path_type": "hardlink",
+        "sha256": "da756995f22cab9a17d913fe9fc82722e7c6c4a69a22c08cf4bdf2a97a0ef011",
+        "sha256_in_prefix": "da756995f22cab9a17d913fe9fc82722e7c6c4a69a22c08cf4bdf2a97a0ef011",
+        "size_in_bytes": 13358
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/tests/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/tests/__pycache__/__init__.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "ed6ca1e74f6d93b157481352f94e69121990da7fe18e81eff090822c7c1cd41b",
+        "sha256_in_prefix": "ed6ca1e74f6d93b157481352f94e69121990da7fe18e81eff090822c7c1cd41b",
+        "size_in_bytes": 149
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/tests/__pycache__/basic_test.cpython-310.pyc",
+        "path_type": "hardlink",
+        "sha256": "81335741af7cfdf4f4e7bbdd996acad1c4d1c06b4565d4a5eba1dc5872e4e6bf",
+        "sha256_in_prefix": "81335741af7cfdf4f4e7bbdd996acad1c4d1c06b4565d4a5eba1dc5872e4e6bf",
+        "size_in_bytes": 9921
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/tests/basic_test.py",
+        "path_type": "hardlink",
+        "sha256": "ed11ce6044e554bef69f2fe9538cd5a0b032f611d3eb133d4f53234cbf8cdc4f",
+        "sha256_in_prefix": "ed11ce6044e554bef69f2fe9538cd5a0b032f611d3eb133d4f53234cbf8cdc4f",
+        "size_in_bytes": 9786
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/uimod_embed.js",
+        "path_type": "hardlink",
+        "sha256": "dfc4d44b8a2d42994abcfd517b7d5c6e44723f491dbb2bf8c8e839c8a9f96452",
+        "sha256_in_prefix": "dfc4d44b8a2d42994abcfd517b7d5c6e44723f491dbb2bf8c8e839c8a9f96452",
+        "size_in_bytes": 773
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/uimodule.py",
+        "path_type": "hardlink",
+        "sha256": "16d38842ac41bcf0e8c5ec474e3d0a4e206d2a55d38877744fa6b193f40da41e",
+        "sha256_in_prefix": "16d38842ac41bcf0e8c5ec474e3d0a4e206d2a55d38877744fa6b193f40da41e",
+        "size_in_bytes": 1012
+      },
+      {
+        "_path": "lib/python3.10/site-packages/terminado/websocket.py",
+        "path_type": "hardlink",
+        "sha256": "0acb231a027d50988728c091f5f3fd095d0ec4d81945c33ec8ade581c87d78e6",
+        "sha256_in_prefix": "0acb231a027d50988728c091f5f3fd095d0ec4d81945c33ec8ade581c87d78e6",
+        "size_in_bytes": 4598
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "686a356226141fc466f2a9cd7719b7db2a5688565067895b84e8f461f6f51dc6",
+  "size": 27620,
+  "subdir": "osx-64",
+  "timestamp": 1649104217579,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/osx-64/terminado-0.13.3-py310h2ec42d9_1.tar.bz2",
+  "version": "0.13.3"
+}
