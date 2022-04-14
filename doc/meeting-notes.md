@@ -13,6 +13,9 @@
   - Make embeddings from RoBERTA
   - Train a classifier
   - Evaluate the classifier
+- Other work:
+  - Ask Brandon for shared space
+  - Decide on collaboration software
 
 ## 4-11
 
