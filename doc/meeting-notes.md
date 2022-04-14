@@ -9,11 +9,18 @@
     - Are there going to be a lot of unknown tokens?
   - Make embeddings from RoBERTA
   - Train a classifier
+    - Get SVM set up and then try to get RNN
+    - Maybe just add a on-layer classifier layer on top? (This we'd need to train)
   - Evaluate the classifier
 - Other work:
   - Set up Anaconda environment
   - Ask Brandon for shared space
   - Decide on collaboration software
+- Dividing up the work:
+  - Eli: split up data and preprocessing
+  - Avani: forward embeddings from the text
+  - Hilly: one-layer classifier
+  - Pangbo: evaluation & SVM
 
 ## 4-11
 
