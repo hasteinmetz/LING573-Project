@@ -1,3 +1,5 @@
+# FOLLOWING RNN TUTORIAL: https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html
+
 from torch import cat, zeros, tensor
 from torch import nn
 import torch.functional as nn_functions
