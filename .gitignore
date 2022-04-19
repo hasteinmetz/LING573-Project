@@ -1,2 +1,4 @@
 env/*
 !env/environment.yml
+.DS_*
+*/.DS_*
