@@ -1,5 +1,13 @@
 # Meeting notes
 
+## 4-19
+
+- Moving to Hyak (some overhead so might be tough)
+  - Git not working :/ but stick with it for not
+- How to divide up the dev set -- reach out to Gina and Haotian about th    is.
+  - For now switching to 80/10/10
+- Getting rid of staging to be just main branch
+
 ## 4-14
 
 - Have embeddings... need to decide evaluation.
