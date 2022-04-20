@@ -1,4 +1,5 @@
 env/*
-!env/environment.yml
 .DS_*
 */.DS_*
+*.log
+.vscode/*
