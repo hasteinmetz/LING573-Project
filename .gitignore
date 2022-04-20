@@ -1,0 +1,5 @@
+env/*
+.DS_*
+*/.DS_*
+*.log
+.vscode/*
