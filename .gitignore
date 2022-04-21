@@ -1,0 +1,7 @@
+env/*
+.DS_*
+*/.DS_*
+*.log
+.vscode/*
+src/data/glove*
+log
