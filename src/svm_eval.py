@@ -22,7 +22,7 @@ def argparser():
 
 
 def load_raw_data(filepath):
-     # load sentences and labels from csv
+    # load sentences and labels from csv
     sentences, labels = [], []
     with open(filepath, 'r') as datafile:
         data = csv.reader(datafile)

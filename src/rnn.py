@@ -28,6 +28,7 @@ class RNN(nn.Module):
         self.softmax = nn.Sigmoid()
         self.loss_fn = loss_fn
         self.activation = nn.Tanh()
+        self.dropout = nn.Dropout(p=0.1)
 
         # define the layers and their sizes
         self.input_to_hidden = nn.Linear(self.input_size + self.hidden_size,
@@ -40,6 +41,8 @@ class RNN(nn.Module):
         input_vector.resize_(1, input_vector.size()[0]) # resize the input vector
         # debug: print(f"after: {input_vector.size()}")
         combined_vector = torch.cat((input_vector, hidden), -1)
+        # dropout some values
+        combined_vector = self.dropout(combined_vector)
         # debug: print(f"combined: {combined_vector.size()}")
         hidden = self.activation(self.input_to_hidden(combined_vector))
         output = self.softmax(self.input_to_output(combined_vector))
@@ -137,7 +140,7 @@ def create_and_train_rnn(
 def test_on_imdb():
     sentences, labels = utils.read_data_from_file('src/data/hahackathon_prepo1_train.csv')
     embeddings = get_embeddings(sentences)
-    rnn = create_and_train_rnn(embeddings, labels, 100, nn.BCELoss(), 0.01, 10)
+    rnn = create_and_train_rnn(embeddings, labels, 768, nn.BCELoss(), 0.001, 5)
 
 def debug():
     embeddings = load_embeddings('src/data/glove.6B.50d.txt')
