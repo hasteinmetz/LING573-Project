@@ -3,3 +3,4 @@ env/*
 */.DS_*
 *.log
 .vscode/*
+*__pycache__*
