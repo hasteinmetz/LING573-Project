@@ -10,7 +10,7 @@ def get_embeddings(data: List[str], output_path: str) -> None:
 	tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 	model = RobertaModel.from_pretrained("roberta-base")
 
-	inputs = tokenizer(data, return_tensors="pt")
+	inputs = tokenizer(data, return_tensors="pt", padding=True)
 
 	print("running inputs through RoBERTA Base to generate embeddings...")
 	# no_grad means don't perform gradient descent/backprop
@@ -31,7 +31,7 @@ def get_embeddings(data: List[str], output_path: str) -> None:
 
 	print("saving embeddings to file at {}".format(output_path))
 	#write embedding to output file
-	torch.save(sentence_embeddings.cpu(), output_path)
+	torch.save(sentence_embeddings, output_path)
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
