@@ -1,4 +1,34 @@
 # Meeting notes
+## 4-20
+
+- Dev data is not a sample of test and train
+  - Eli will replit to 80-10-10 and push to main
+- cite tutorials in code
+- RNN Classifier
+  - how to get the RNN to work with pytorch native implementation
+  - gradient descent updating every parameter ?
+  - Pangbo can ask classmate who is knowledgeable about pytorch
+  - most recent stuff is in hilly (branch name)
+- Embeddings
+  - works on a single input sentencing, updating now to work on a list of input strings
+  - will output embeddings to a separate file (size will be [768])
+  - will push polished version by EOD 4/20
+- Swap RNN for simple Neural Network
+  - check out article from Pangbo
+- Conda on Dryas
+  - copy-paste environment file & use instructions from Shane
+- Next sync 4/23 Saturday 5:30pm 
+  - finish our subtasks by then
+  - finish remaining documentation (overleaf, readme)
+  - put everything together and make sure it runs
+
+## 4-19
+
+- Moving to Hyak (some overhead so might be tough)
+  - Git not working :/ but stick with it for not
+- How to divide up the dev set -- reach out to Gina and Haotian about th    is.
+  - For now switching to 80/10/10
+- Getting rid of staging to be just main branch
 
 ## 4-14
 
