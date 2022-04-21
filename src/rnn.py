@@ -92,16 +92,21 @@ def train_rnn(model: RNN, batch: torch_tensor, true_labels: list[int], optimizer
     return model_outputs, loss
 
 
+def my_collate(batch, max_length):
+    batch = [torch_cat((x, torch_zeros((x.size()[], max_length-x.size()[]))), 1) for x in batch]
+
 def batch_data(embeddings: list[np.array], labels: list[int], 
         batch_size: int) -> DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
-    new_dataset = SentenceData(embeddings, labels)
     # convert labels to a tensor
-    class_label = np.zeros((len(labels), len(set(labels))), dtype=np.float32)
-    for i, label in enumerate(labels):
-        class_label[i, int(label)] = 1
-    labels = torch_tensor(class_label)
-    batched_data = DataLoader(new_dataset, batch_size=batch_size, shuffle=True)
+    class_labels = []
+    for label in labels:
+        zeros = [0] * len(set(labels))
+        zeros[int(label)] = 1
+        class_labels.append(torch_tensor(zeros))
+    labels = class_labels
+    new_dataset = SentenceData(embeddings, labels)
+    batched_data = DataLoader(new_dataset, batch_size=batch_size, shuffle=True, collate_fn=my_collate)
     return batched_data
 
 
@@ -141,7 +146,7 @@ def create_and_train_rnn(
     no_classes = len(set(labels))
     input_vector_dim = sentences_as_embeddings[0].shape[1] # size of the embeddings (taken from first sentence)
     # debug: print(f'input_vector: {input_vector_dim}')
-    rnn = RNN(hidden_size, loss_function, input_vector_dim, no_classes)
+    rnn = RNN(input_vector_dim, hidden_size, loss_function, no_classes)
     opt = optimizer(rnn.parameters(), learning_rate)
     training_iterations(rnn, sentences_as_embeddings, labels, opt, epochs)
     return rnn
@@ -162,7 +167,7 @@ def test_on_imdb():
             else:
                 val = np.zeros(len(embeddings['a']))
             vectors.append(val)
-        sentences.append(vectors)
+        sentences.append(torch_tensor(np.asarray(vectors, dtype=np.float32)))
         labels.append(label)
     rnn = create_and_train_rnn(sentences, labels, 100, nn.NLLLoss(), optim.SGD, 0.01, 5)
 
