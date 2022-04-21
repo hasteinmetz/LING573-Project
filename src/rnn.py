@@ -107,7 +107,7 @@ def training_iterations(model: RNN, sentences, labels, epochs: int = 2, learning
             losses.append(loss.item())
             outputs.append(output.argmax())
 
-            if (batch + 1) % 100 == 0:
+            if (batch + 1) % 1000 == 0:
 
                 current_iter = ((i) * len(labels)) + batch + 1
                 print(f"loss: {np.mean(losses):>7f} [{current_iter:>5d}/{len(labels) * epochs:>5d}]")
@@ -157,7 +157,7 @@ def test_on_imdb():
             vectors.append(val)
         sentences.append(torch_tensor(np.asarray(vectors, dtype=np.float32)))
         labels.append(label)
-    rnn = create_and_train_rnn(sentences, labels, 100, nn.BCELoss(), 0.005, 5)
+    rnn = create_and_train_rnn(sentences, labels, 100, nn.BCELoss(), 0.01, 10)
 
 def load_embeddings(file: str):
     '''load pretrained embeddings from a .txt file. 
@@ -188,7 +188,7 @@ def debug():
                 sentence.append(val)
             sentences.append(sentence)
             labels.append(int(row[1]))
-    rnn = create_and_train_rnn(sentences, labels, 50, nn.NLLLoss(), 0.0, 100)
+    rnn = create_and_train_rnn(sentences, labels, 50, nn.NLLLoss(), 0.01, 100)
 
 if __name__ == '__main__':
     test_on_imdb()
