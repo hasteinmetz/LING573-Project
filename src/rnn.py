@@ -96,6 +96,11 @@ def batch_data(embeddings: list[np.array], labels: list[int],
         batch_size: int) -> DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
     new_dataset = SentenceData(embeddings, labels)
+    # convert labels to a tensor
+    class_label = np.zeros((len(labels), len(set(labels))), dtype=np.float32)
+    for i, label in enumerate(labels):
+        class_label[i, int(label)] = 1
+    labels = torch_tensor(class_label)
     batched_data = DataLoader(new_dataset, batch_size=batch_size, shuffle=True)
     return batched_data
 
