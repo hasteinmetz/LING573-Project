@@ -9,9 +9,11 @@ This notebook uses Markdown. Use '#' to create headings. When you make a change 
 #### Stuff that needs to be done on classifier:
 - Tune hyperparamers
 - Test on dev set
-- Compare to SVM model
 - Decide whether to add additional layers
 - Print outputs to pretty graphs
+
+#### Training RNN 
+- Training with 768 hidden layers, BCELoss(), LR=0.005, epochs=5, results in the loss functions going down, but accuracy staying about the same. Getting accuracy scores hovering around 60%.
 
 ### 4-11 Hilly
 - Read the ACL paper on shared task--they used BERT as a baseline.
