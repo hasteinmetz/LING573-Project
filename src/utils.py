@@ -2,6 +2,8 @@
 script for common functions
 """
 from typing import *
+import csv
+from numpy import asarray
 
 def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> List[List[str]]:
 	'''
@@ -21,7 +23,7 @@ def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> 
 	return data
 
 # TODO: is str the right type for label?
-def read_data_from_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> Tuple[List[str], List[str]]:
+def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[str], List[str]]:
 	'''
 	arguments:
 		- file_path: full file path pointing to input file, expects two columns with following schema (Text, Label)
@@ -30,12 +32,11 @@ def read_data_from_file(file_path: str, seperator: str = ',', encoding: str = 'u
 
 	parses given file, returning a tuple with two lists, one representing the input data text and the other representing output data labels
 	'''
-
-	data, labels = [], []
-	with open(file_path) as f:
-		for line in f:
-			contents = line.strip()
-			data.append(contents[0])
-			labels.append(contents[1])
+	sentences, labels = [], []
+	with open(filepath, 'r', encoding=encoding) as datafile:
+		data = csv.reader(datafile)
+		for row in data:
+			sentences.append(row[0])
+			labels.append(int(row[1]))
+	return sentences, asarray(labels, dtype=int)
 	
-	return data, labels
