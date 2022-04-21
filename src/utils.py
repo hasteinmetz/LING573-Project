@@ -15,7 +15,7 @@ def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> 
 	data = []
 	with open(file_path) as f:
 		for line in f:
-			contents = line.strip().split(separator)
+			contents = line.strip().split(seperator)
 			data.append(contents)
 	
 	return data
