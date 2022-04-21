@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import torch
-from transformers import RobertaTokenizer, RobertaForMaskedLM
+from transformers import RobertaTokenizer, RobertaModel
 
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
-model = RobertaForMaskedLM.from_pretrained('roberta-base')
+model = RobertaModel.from_pretrained('roberta-base')
 text = "The capital of Japan is <mask>."
 inputs = tokenizer(text, return_tensors='pt')
 with torch.no_grad():

@@ -1,4 +1,4 @@
-name: base
+name: project-env
 channels:
   - huggingface
   - conda-forge
@@ -11,7 +11,6 @@ dependencies:
   - charset-normalizer=2.0.12=pyhd8ed1ab_0
   - click=8.1.2=py39h2804cbe_0
   - colorama=0.4.4=pyh9f0ad1d_0
-  - conda=4.12.0=py39h2804cbe_0
   - conda-package-handling=1.8.0=py39hb18efdd_0
   - cryptography=36.0.2=py39hbe5e4b8_0
   - dataclasses=0.8=pyhc8e2a94_3
@@ -73,3 +72,4 @@ dependencies:
   - yaml=0.2.5=h3422bc3_2
   - zipp=3.8.0=pyhd8ed1ab_0
   - zlib=1.2.11=hee7b306_1013
+prefix: /opt/homebrew/Caskroom/miniforge/base/envs/project-env
