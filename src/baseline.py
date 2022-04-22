@@ -48,5 +48,6 @@ if __name__ == '__main__':
 	else:
 		print("unsupported file format {} . Please use either a .tsv or a .csv for the input data")
 	
+	print(len(input_sentences))
 	if input_sentences != None:
 		get_embeddings(input_sentences, args.output_file)
