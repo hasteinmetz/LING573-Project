@@ -47,6 +47,7 @@ dependencies:
   - requests=2.27.1
   - s3transfer=0.5.0
   - sacremoses=0.0.43
+  - scikit-learn=1.0.2
   - sentencepiece=0.1.95
   - setuptools=61.2.0
   - six=1.16.0
