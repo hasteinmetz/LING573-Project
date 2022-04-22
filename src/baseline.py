@@ -3,6 +3,7 @@ from typing import *
 import argparse
 from transformers import RobertaTokenizer, RobertaModel
 import utils
+from sklearn.metrics import accuracy_score, f1_score
 
 
 def get_embeddings(data: List[str], output_path: str) -> None:
@@ -33,6 +34,16 @@ def get_embeddings(data: List[str], output_path: str) -> None:
 	#write embedding to output file
 	torch.save(sentence_embeddings, output_path)
 
+	
+def eval_metrics(y_true, y_pred) -> None:
+	#accuracy
+	accuracy = accuracy_score(y_true, y_pred)
+	print('accuracy: ', str(accuracy))
+	#f1 score
+	f1 = f1_score(y_true, y_pred)
+	print('f1 score: ', str(f1))
+	
+	
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--input_sentences', help="path to input data file")
@@ -50,3 +61,7 @@ if __name__ == '__main__':
 	
 	if input_sentences != None:
 		get_embeddings(input_sentences, args.output_file)
+	
+	#eval
+	eval_metrics(y_true, y_pred)
+	
