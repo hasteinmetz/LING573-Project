@@ -5,4 +5,4 @@ env/*
 .vscode/*
 src/data/glove*
 log
-*__pycache__*
+*/__pycache__/*
