@@ -34,7 +34,7 @@ def read_data_from_file(file_path: str, seperator: str = ',', encoding: str = 'u
 	data, labels = [], []
 	with open(file_path) as f:
 		for line in f:
-			contents = line.strip()
+			contents = line.strip().split(seperator)
 			data.append(contents[0])
 			labels.append(contents[1])
 	
