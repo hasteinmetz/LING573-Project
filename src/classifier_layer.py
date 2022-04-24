@@ -12,6 +12,7 @@ import re
 from functools import reduce
 import csv
 import argparse
+from random_seed import load_random_seed
 
 class NNClassifier(nn.Module):
     def __init__(self, input_size: int, hidden_size: int, output_size: int, output_fn = None) -> None:
@@ -51,55 +52,53 @@ class SentenceData(torch.utils.data.Dataset):
         return self.data[id], self.labels[id]
 
 def train(model: NNClassifier, batched_data: torch.utils.data.DataLoader, 
-        loss_fn: nn.modules.loss._Loss, optimizer: torch.optim, epochs: int
+        loss_fn: nn.modules.loss._Loss, optimizer: torch.optim, epoch: int, epochs: int
         ) -> NNClassifier:
     '''Train the classifier on training data in batch and return the model'''
-    # loop over epochs
-    for i in range(epochs):
-        # loop over the batched data
-        for batch, (X, y) in enumerate(batched_data):
+    # loop over the batched data
+    for batch, (X, y) in enumerate(batched_data):
 
-            # get the model predictions
-            y_hats = model.forward(X)
+        # get the model predictions
+        y_hats = model.forward(X)
 
-            # initialize the gradient calculation
-            optimizer.zero_grad()
+        # initialize the gradient calculation
+        optimizer.zero_grad()
 
-            # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
+        # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
 
-            # calculate the loss
-            loss = loss_fn(y_hats, y)
+        # calculate the loss
+        loss = loss_fn(y_hats, y)
 
-            # perform backpropogation
-            loss.backward()
-            optimizer.step()
+        # perform backpropogation
+        loss.backward()
+        optimizer.step()
 
-            if batch % 64 == 0:
-                loss = loss.item()
-                current = (batch * len(X)) + (len(X) * i * len(batched_data))
-                total = len(X) * epochs * len(batched_data)
-                print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
-                correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
-                print(f"\tcorrect: {correct}/{len(X)}")
+        if batch % 64 == 0:
+            loss = loss.item()
+            current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
+            total = len(X) * epochs * len(batched_data)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
+            correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
+            print(f"\tcorrect: {correct}/{len(X)}")
 
     return model
 
 
 def batch_data(embeddings: list[np.array], labels: list[int], epoch: int,
-        batch_size: int, random_seeds: list[int] = []) -> torch.utils.data.DataLoader:
+        batch_size: int, random_seeds: list[int]) -> torch.utils.data.DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
-    if len(random_seeds) > 0:
-        new_dataset = SentenceData(embeddings, labels)
-        batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size, shuffle=True)
-        return batched_data
-    else:
+    if isinstance(random_seeds, list):
         '''Use random labels'''
-        dataset = np.asarray((embeddings, labels))
-        random_seed = random_seeds[epoch]
+        dataset = (embeddings, labels)
+        random_seed = random_seeds[epoch+1]
         np.random.seed(random_seed)
         np.random.shuffle(dataset)
-        new_dataset = SentenceData(dataset[0,:], dataset[1,:])
+        new_dataset = SentenceData(dataset[0], dataset[1])
         batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size)
+        return batched_data
+    else:
+        new_dataset = SentenceData(embeddings, labels)
+        batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size, shuffle=True)
         return batched_data
 
 
@@ -118,7 +117,7 @@ def argparser():
     parser.add_argument('--learning_rate', help="(float) learning rate of the classifier", type=float)
     parser.add_argument('--batch_size', help="(int) batch size of mini-batches for training", type=int)
     parser.add_argument('--epochs', help="(int) number of epochs for training", type=int)
-    parser.add_argument('--random_seeds', help="(file) txt file of random seeds", type=int)
+    parser.add_argument('--random_seeds', help="(file) txt file of random seeds", default='None')
     args = parser.parse_args()
     return args
 
@@ -153,11 +152,23 @@ def main():
     optimizer = torch.optim.SGD(classifier.parameters(), lr=args.learning_rate)
     loss_fn = nn.BCELoss()
 
-    # batch the data
-    batched_data = batch_data(embeddings, labels, args.batch_size)
+    # get random seeds (optional)
+    if args.random_seeds != "None":
+        random_seeds = load_random_seed(args.epochs)
+        torch.manual_seed(random_seeds[0])
+    else:
+        random_seeds = None
 
-    # train the classifier
-    classifier = train(classifier, batched_data, loss_fn, optimizer, args.epochs)
+    print(random_seeds)
+
+    # loop over epochs
+    epochs = args.epochs
+    for i in range(epochs):
+        # batch the data
+        batched_data = batch_data(embeddings, labels, i, args.batch_size, random_seeds)
+
+        # train the classifier
+        classifier = train(classifier, batched_data, loss_fn, optimizer, i, epochs)
 
 if __name__ == '__main__':
     main()
