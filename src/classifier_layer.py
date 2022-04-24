@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 PyTorch class and various functions to train a classifier on RoBERTa embeddings
 References:

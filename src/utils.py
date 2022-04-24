@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 script for common functions
 """
