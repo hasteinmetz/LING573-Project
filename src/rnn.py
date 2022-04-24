@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # FOLLOWING RNN TUTORIAL: https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html
 
 import torch

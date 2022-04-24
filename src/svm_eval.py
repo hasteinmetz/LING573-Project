@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, f1_score
 from torch import load as load_binary_file
