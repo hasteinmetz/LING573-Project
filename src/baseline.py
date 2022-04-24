@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 from tkinter import W
 import torch
@@ -7,33 +8,9 @@ import numpy as np
 from typing import *
 from transformers import RobertaTokenizer, RobertaModel
 from sklearn.metrics import accuracy_score, f1_score
-from classifier_layer import NNClassifier, batch_data, load_embeddings, train
+from classifier_layer import NNClassifier, batch_data, load_embeddings, load_random_seed, train
 
 nn = torch.nn
-
-def get_embeddings(data: List[str]) -> None:
-	print("initializing models to get embeddings...")
-	tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-	model = RobertaModel.from_pretrained("roberta-base")
-
-	inputs = tokenizer(data, return_tensors="pt", padding=True)
-
-	print("running inputs through RoBERTA Base to generate embeddings...")
-	# no_grad means don't perform gradient descent/backprop
-	# run when model is in eval mode, which it is by default when loading using pre-trained method
-	with torch.no_grad():
-		outputs = model(**inputs)
-
-
-	# get vector representing last hidden state
-	# shape (batch_size, input_len, 768)
-	# batch_size = number of input sentences
-	# input_len depends on how tokenizer decides to prepare input sentence
-	# 768 is the dimension of the layer
-	last_hidden_states = outputs.last_hidden_state
-
-	# get sentence embedding
-	sentence_embeddings = torch.mean(last_hidden_states, dim=1).squeeze()
 
 def eval_metrics(y_true, y_pred) -> None:
 	#accuracy
@@ -43,6 +20,8 @@ def eval_metrics(y_true, y_pred) -> None:
 	f1 = f1_score(y_true, y_pred)
 	print('f1 score: ', str(f1))
 	
+
+
 def get_labels_tensor(labels: List[int], num_labels: int):
 	class_labels = np.zeros((len(labels), num_labels), dtype=np.float32)
 	for i, label in enumerate(labels):
@@ -67,6 +46,7 @@ def main(args: argparse.Namespace):
 	# shape (batch_size, input_len, 768)
 	last_hidden_states = train_output.last_hidden_state
 	train_embeddings = torch.mean(last_hidden_states, dim=1).squeeze()
+	print(train_embeddings)
 	embedding_size = train_embeddings[0].size()[0]
 	num_labels = len(set(train_labels))
 
@@ -75,14 +55,24 @@ def main(args: argparse.Namespace):
 	optimizer = torch.optim.SGD(classifier_layer.parameters(), lr=args.learning_rate)
 	loss_fn = nn.BCELoss()
 
+    # get random seeds (optional)
+	if args.random_seeds != "None":
+		random_seeds = load_random_seed(args.epochs)
+		torch.manual_seed(random_seeds[0])
+	else:
+		random_seeds = None
+	
 	# set up classifier layer
-	print("setting up classifier layer...")
+	print("setting up and training classifier layer...")
 	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
-	train_batched_data = batch_data(train_embeddings, train_labels_tensor, args.batch_size)
-
-	# train the classifier
-	print("training classifier...")
-	classifier = train(classifier_layer, train_batched_data, loss_fn, optimizer, args.epochs)
+	classifier = train(
+		classifier_layer, 
+		train_embeddings, 
+		train_labels_tensor, 
+		args.batch_size, 
+		loss_fn, 
+		optimizer, 
+		args.epochs)
 
 	# get embeddings
 	print("running inputs through RoBERTA Base to generate embeddings...")
@@ -120,6 +110,7 @@ if __name__ == '__main__':
 	parser.add_argument('--learning_rate', help="(float) learning rate of the classifier", type=float)
 	parser.add_argument('--batch_size', help="(int) batch size of mini-batches for training", type=int)
 	parser.add_argument('--epochs', help="(int) number of epochs for training", type=int)
+	parser.add_argument('--random_seeds', help="(file) txt file of random seeds", default='None')
 	parser.add_argument('--output_file', help="path to output data file")
 	args = parser.parse_args()
 
