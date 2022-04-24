@@ -1,9 +1,9 @@
 """
 script for common functions
 """
-from typing import *
 import csv
-from numpy import asarray
+import numpy as np
+from typing import *
 
 def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> List[List[str]]:
 	'''
@@ -22,8 +22,7 @@ def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> 
 	
 	return data
 
-# TODO: is str the right type for label?
-def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[str], List[str]]:
+def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[str], np.ndarray]:
 	'''
 	arguments:
 		- file_path: full file path pointing to input file, expects two columns with following schema (Text, Label)
@@ -38,5 +37,11 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 		for row in data:
 			sentences.append(row[0])
 			labels.append(int(row[1]))
-	return sentences, asarray(labels, dtype=int)
-	
+	return sentences, np.asarray(labels, dtype=int)
+
+def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, encoding: str = 'utf-8') -> None:
+	with open(filepath, "w", newline='', encoding="utf-8") as my_csv:  # create training data file
+		my_writer = csv.writer(my_csv)
+		for i in range(len(data)):
+			my_writer.writerow([data[i], labels[i]])
+	my_csv.close()
