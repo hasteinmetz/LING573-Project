@@ -2,20 +2,16 @@ name: 573-project
 channels:
   - defaults
 dependencies:
-  - jmespath=0.10.0
   - sacremoses=0.0.43
-  - botocore=1.24.32
   - click=8.0.4
   - ninja=1.10.2
   - openssl
   - sqlite=3.38.2
   - importlib_metadata=4.11.3
-  - torchtext=0.11.2
   - zipp=3.7.0
   - zlib=1.2.11
   - tqdm=4.63.0
   - xz=5.2.5
-  - nltk=3.7
   - transformers
   - regex=2022.3.15
   - requests=2.27.1
@@ -25,13 +21,10 @@ dependencies:
   - brotlipy=0.7.0
   - typing-extensions=4.1.1
   - pip=21.2.4
-  - scikit-learn=1.0.2
+  - scikit-learn
   - packaging=21.3
   - pytorch=1.10.2
-  - boto3=1.21.32
   - yaml=0.2.5
-  - python-dateutil=2.8.2
-  - libcxx=12.0.0
   - mkl=2021.4.0
   - pyyaml=6.0
   - typing_extensions=4.1.1
@@ -42,13 +35,11 @@ dependencies:
   - cryptography=36.0.0
   - pyopenssl=22.0.0
   - cffi=1.15.0
-  - libgfortran=3.0.1
   - importlib-metadata=4.11.3
   - mkl-service=2.4.0
   - colorama=0.4.4
   - mkl_random=1.2.2
-  - scipy=1.7.3
-  - sentencepiece=0.1.95
+  - scipy
   - numpy=1.21.5
   - tzdata=2022a
   - intel-openmp=2021.4.0
@@ -67,11 +58,7 @@ dependencies:
   - six=1.16.0
   - blas=1.0
   - ca-certificates
-  - llvm-openmp=12.0.0
-  - protobuf=3.19.1
   - certifi
   - future=0.18.2
   - idna=3.3
-  - libprotobuf=3.19.1
   - joblib=1.1.0
-  - s3transfer=0.5.0
