@@ -42,6 +42,7 @@ def main(args: argparse.Namespace):
 	# np.random.shuffle(train_sentences)
 	# np.random.shuffle(train_labels)
 	# train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
+
 	training_inputs = tokenizer(train_sentences, return_tensors="pt", padding=True)
 	print("running inputs through RoBERTA Base to generate embeddings...")
 	with torch.no_grad():
