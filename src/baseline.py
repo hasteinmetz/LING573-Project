@@ -46,7 +46,6 @@ def main(args: argparse.Namespace):
 	# shape (batch_size, input_len, 768)
 	last_hidden_states = train_output.last_hidden_state
 	train_embeddings = torch.mean(last_hidden_states, dim=1).squeeze()
-	print(train_embeddings)
 	embedding_size = train_embeddings[0].size()[0]
 	num_labels = len(set(train_labels))
 
@@ -69,6 +68,7 @@ def main(args: argparse.Namespace):
 		classifier_layer, 
 		train_embeddings, 
 		train_labels_tensor, 
+		args.random_seeds,
 		args.batch_size, 
 		loss_fn, 
 		optimizer, 
