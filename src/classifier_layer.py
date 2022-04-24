@@ -8,8 +8,6 @@ import torch
 nn = torch.nn
 import numpy as np
 from typing import *
-import re
-from functools import reduce
 import csv
 import argparse
 from random_seed import load_random_seed
@@ -23,12 +21,7 @@ class NNClassifier(nn.Module):
         '''
         super(NNClassifier, self).__init__()
         self.hidden = nn.Linear(input_size, hidden_size)
-        # TODO: Find a random seed for these layers
-        self.hidden.weight.data.fill_(0.0001)
-        self.hidden.bias.data.fill_(0.0001)
         self.classifier = nn.Linear(hidden_size, output_size)
-        self.classifier.weight.data.fill_(0.0001)
-        self.classifier.bias.data.fill_(0.0001)
         self.output_fn = output_fn
 
     def forward(self, sentence_embeddings):
@@ -52,35 +45,43 @@ class SentenceData(torch.utils.data.Dataset):
     def __getitem__(self, id):
         return self.data[id], self.labels[id]
 
-def train(model: NNClassifier, batched_data: torch.utils.data.DataLoader, 
-        loss_fn: nn.modules.loss._Loss, optimizer: torch.optim, epoch: int, epochs: int
+def train(model: NNClassifier, embeddings: list[str], labels: list[str], 
+        random_seeds: list[int], batch_size: int, loss_fn: nn.modules.loss._Loss, 
+        optimizer: torch.optim, epochs: int
         ) -> NNClassifier:
     '''Train the classifier on training data in batch and return the model'''
-    # loop over the batched data
-    for batch, (X, y) in enumerate(batched_data):
 
-        # get the model predictions
-        y_hats = model.forward(X)
+    # loop over epochs
+    for i in range(epochs):
 
-        # initialize the gradient calculation
-        optimizer.zero_grad()
+        # batch the data
+        batched_data = batch_data(embeddings, labels, i, batch_size, random_seeds)
 
-        # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
+        # loop over the batched data
+        for batch, (X, y) in enumerate(batched_data):
 
-        # calculate the loss
-        loss = loss_fn(y_hats, y)
+            # get the model predictions
+            y_hats = model.forward(X)
 
-        # perform backpropogation
-        loss.backward()
-        optimizer.step()
+            # initialize the gradient calculation
+            optimizer.zero_grad()
 
-        if batch % 64 == 0:
-            loss = loss.item()
-            current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
-            total = len(X) * epochs * len(batched_data)
-            print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
-            correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
-            print(f"\tcorrect: {correct}/{len(X)}")
+            # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
+
+            # calculate the loss
+            loss = loss_fn(y_hats, y)
+
+            # perform backpropogation
+            loss.backward()
+            optimizer.step()
+
+            if batch % 64 == 0:
+                loss = loss.item()
+                current = (batch * len(X)) + (len(X) * i * len(batched_data))
+                total = len(X) * epochs * len(batched_data)
+                print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
+                correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
+                print(f"\tcorrect: {correct}/{len(X)}")
 
     return model
 
@@ -160,16 +161,16 @@ def main():
     else:
         random_seeds = None
 
-    print(random_seeds)
-
-    # loop over epochs
-    epochs = args.epochs
-    for i in range(epochs):
-        # batch the data
-        batched_data = batch_data(embeddings, labels, i, args.batch_size, random_seeds)
-
-        # train the classifier
-        classifier = train(classifier, batched_data, loss_fn, optimizer, i, epochs)
+    # train the classifier
+    classifier = train(
+        classifier, 
+        embeddings, 
+        labels, 
+        random_seeds, 
+        args.batch_size, 
+        loss_fn, 
+        optimizer, 
+        args.epochs)
 
 if __name__ == '__main__':
     main()
