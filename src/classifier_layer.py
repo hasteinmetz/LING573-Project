@@ -47,8 +47,8 @@ class SentenceData(torch.utils.data.Dataset):
     def __getitem__(self, id):
         return self.data[id], self.labels[id]
 
-def train(model: NNClassifier, embeddings: list[str], labels: list[str], 
-        random_seeds: list[int], batch_size: int, loss_fn: nn.modules.loss._Loss, 
+def train(model: NNClassifier, embeddings: List[str], labels: List[str], 
+        random_seeds: List[int], batch_size: int, loss_fn: nn.modules.loss._Loss, 
         optimizer: torch.optim, epochs: int
         ) -> NNClassifier:
     '''Train the classifier on training data in batch and return the model'''
@@ -79,7 +79,7 @@ def train(model: NNClassifier, embeddings: list[str], labels: list[str],
 
             if batch % 64 == 0:
                 loss = loss.item()
-                current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
+                current = (batch * len(X)) + (len(X) * i * len(batched_data))
                 total = len(X) * epochs * len(batched_data)
                 print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
                 correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
@@ -88,8 +88,8 @@ def train(model: NNClassifier, embeddings: list[str], labels: list[str],
     return model
 
 
-def batch_data(embeddings: list[np.array], labels: list[int], epoch: int,
-        batch_size: int, random_seeds: list[int]) -> torch.utils.data.DataLoader:
+def batch_data(embeddings: List[np.array], labels: List[int], epoch: int,
+        batch_size: int, random_seeds: List[int]) -> torch.utils.data.DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
     if isinstance(random_seeds, list):
         '''Use random labels'''
