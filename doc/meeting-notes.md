@@ -1,4 +1,19 @@
 # Meeting notes
+## 4-23
+- test everything on condor
+-   1) make sure conda environment can be recreated on dryas/patas
+    - libcxx might cause problems, try running code on condor w/o it. if it works, we can just remove the requirement from the .yml file
+    - remove your ling572 anaconda folder completely (rm -Rf [path_to_anaconda folder]
+    - https://www.shane.st/teaching/575/spr22/patas-gpu.pdf <- follow to reinstall conda
+    - google 'conda cheat sheet' for a list of helpful commands
+-  2) set up condor file
+    - request gpu!! 
+- just use dev data for d2 and following parameters for baseline.py (parameters)
+- python baseline.py --train_sentences data/hahackathon_prepo1_dev.csv --dev_sentences data/hahackathon_prepo1_dev.csv --hidden_layer 100 --learning_rate 0.001 --batch_size 64 --epochs 1 --output_file outputs/d2_out.txt
+- write instructions on how to run everything
+- in bash script, save metrics output to D2_score.out for deliverable checkin
+
+
 ## 4-20
 
 - Dev data is not a sample of test and train
