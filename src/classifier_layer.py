@@ -22,6 +22,7 @@ class NNClassifier(nn.Module):
         '''
         super(NNClassifier, self).__init__()
         self.hidden = nn.Linear(input_size, hidden_size)
+        # TODO: Find a random seed for these layers
         self.hidden.weight.data.fill_(0.0001)
         self.hidden.bias.data.fill_(0.0001)
         self.classifier = nn.Linear(hidden_size, output_size)
@@ -89,6 +90,7 @@ def batch_data(embeddings: list[np.array], labels: list[int],
         batch_size: int, shuffle: bool = True) -> torch.utils.data.DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
     new_dataset = SentenceData(embeddings, labels)
+    # TODO: Find a way to get a random seed for this shuffle
     batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size, shuffle=shuffle)
     return batched_data
 
