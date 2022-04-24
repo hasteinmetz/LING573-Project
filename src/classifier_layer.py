@@ -86,13 +86,22 @@ def train(model: NNClassifier, batched_data: torch.utils.data.DataLoader,
     return model
 
 
-def batch_data(embeddings: list[np.array], labels: list[int], 
-        batch_size: int, shuffle: bool = True) -> torch.utils.data.DataLoader:
+def batch_data(embeddings: list[np.array], labels: list[int], epoch: int,
+        batch_size: int, random_seeds: list[int] = []) -> torch.utils.data.DataLoader:
     '''Combine combine labels and embeddings into a single list to feed to train''' 
-    new_dataset = SentenceData(embeddings, labels)
-    # TODO: Find a way to get a random seed for this shuffle
-    batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size, shuffle=shuffle)
-    return batched_data
+    if len(random_seeds) > 0:
+        new_dataset = SentenceData(embeddings, labels)
+        batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size, shuffle=True)
+        return batched_data
+    else:
+        '''Use random labels'''
+        dataset = np.asarray((embeddings, labels))
+        random_seed = random_seeds[epoch]
+        np.random.seed(random_seed)
+        np.random.shuffle(dataset)
+        new_dataset = SentenceData(dataset[0,:], dataset[1,:])
+        batched_data = torch.utils.data.DataLoader(new_dataset, batch_size=batch_size)
+        return batched_data
 
 
 def load_embeddings(file: str):
@@ -110,6 +119,7 @@ def argparser():
     parser.add_argument('--learning_rate', help="(float) learning rate of the classifier", type=float)
     parser.add_argument('--batch_size', help="(int) batch size of mini-batches for training", type=int)
     parser.add_argument('--epochs', help="(int) number of epochs for training", type=int)
+    parser.add_argument('--random_seeds', help="(file) txt file of random seeds", type=int)
     args = parser.parse_args()
     return args
 
@@ -149,56 +159,6 @@ def main():
 
     # train the classifier
     classifier = train(classifier, batched_data, loss_fn, optimizer, args.epochs)
-
-def debug():
-    '''Make sure the classifier works using movie review data'''
-
-    # load NLTK data
-    from nltk.corpus import movie_reviews
-    positive = movie_reviews.fileids('pos')
-    negative = movie_reviews.fileids('neg')
-
-    # filter punctuations in movie reviews
-    training = [(filter(lambda x: re.search(r'\w', x), movie_reviews.words(f)), 1.) for f in positive]
-    training.extend([(filter(lambda x: re.search(r'\w', x), movie_reviews.words(f)), 0.) for f in negative])
-    
-    # load embedddings and change words to their embeddings
-    embeddings = load_embeddings('src/data/glove.6B.50d.txt')
-    sentences, labels = [], []
-    embedding_size, no_labels = len(embeddings['a']), 2
-    for sentence, label in training:
-        vectors = []
-        for i, word in enumerate(sentence):
-            if word in embeddings:
-                val = embeddings[word]
-            else:
-                val = np.zeros(embedding_size, np.float32)
-            vectors.append(val)
-        # get the average vector of the document
-        centroid_vector = reduce(lambda x,y: x+y, vectors)/i
-        sentences.append(centroid_vector)
-        labels.append(label)
-
-    # initialize the classifier, batch the data, and train the classifier
-    classifier = NNClassifier(embedding_size, no_labels, nn.Softmax())
-    batched_data = batch_data(sentences, labels, 64)
-    optimizer = torch.optim.SGD(classifier.parameters(), lr=0.001)
-    loss_fn = nn.NLLLoss()
-    train(classifier, batched_data, loss_fn, optimizer, 1000)
-
-    size = len(batched_data.dataset)
-    num_batches = len(batched_data)
-    test_loss, correct = 0, 0
-    with torch.no_grad():
-        for X, y in batched_data:
-            pred = classifier(X)
-            y = y.long()
-            test_loss += loss_fn(pred, y).item()
-            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-
-    test_loss /= num_batches
-    correct /= size
-    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 if __name__ == '__main__':
     main()
