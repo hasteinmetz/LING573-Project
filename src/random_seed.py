@@ -6,17 +6,19 @@ import numpy as np
 
 def write_random_seed(no_epochs=100):
     '''Get a random array of numbers to use as random seeds'''
-    random_arr = np.random.randint(low=0, high=10000, size=(no_epochs,))
+    random_arr = np.random.randint(low=0, high=10000, size=(no_epochs+1,))
     np.savetxt(f'random_seeds_{no_epochs}.txt', random_arr)
     return random_arr
 
-def load_random_seed(no_epochs=100):
+def load_random_seed(filname, no_epochs=100):
     '''Load a random array of numbers to use as random seeds.
     If no file exists then create a random array of numbers'''
     try:
-        seedfile = load_random_seed(f'random_seeds_{no_epochs}.txt', 'r')
-        return seedfile
-    except ValueError(f"No 'random_seeds_{no_epochs}.txt' found. Creating new values"):
+        seedfile = open(filname, 'r')
+        seeds = [int(x) for x in seedfile.readlines()]
+        seedfile.close()
+        return seeds
+    except Exception:
         random_arr = write_random_seed(no_epochs)
         return random_arr
 
