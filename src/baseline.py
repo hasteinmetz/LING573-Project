@@ -38,6 +38,10 @@ def main(args: argparse.Namespace):
 	tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 	model = RobertaModel.from_pretrained("roberta-base")
 
+	# change the dimensions of the input sentences for debugging only
+	# np.random.shuffle(train_sentences)
+	# np.random.shuffle(train_labels)
+	# train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
 	training_inputs = tokenizer(train_sentences, return_tensors="pt", padding=True)
 	print("running inputs through RoBERTA Base to generate embeddings...")
 	with torch.no_grad():
@@ -62,6 +66,7 @@ def main(args: argparse.Namespace):
 		random_seeds = None
 	
 	# set up classifier layer
+	print(train_labels)
 	print("setting up and training classifier layer...")
 	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
 	classifier = train(
@@ -82,10 +87,11 @@ def main(args: argparse.Namespace):
 	last_hidden_states = dev_output.last_hidden_state
 	dev_embeddings = torch.mean(last_hidden_states, dim=1).squeeze()
 	dev_labels_tensor = get_labels_tensor(dev_labels, num_labels)
-	dev_batched_data = batch_data(dev_embeddings, dev_labels_tensor, args.batch_size)
+	dev_batched_data = batch_data(dev_embeddings, dev_labels_tensor, epoch=0, 
+		batch_size=args.batch_size, random_seeds=args.random_seeds)
 
 	print("running model prediction...")
-	dev_batched_data = batch_data(dev_embeddings, dev_labels, args.batch_size)
+
 	Y = []
 	with torch.no_grad():
 		for X, y in dev_batched_data:
