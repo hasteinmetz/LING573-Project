@@ -62,28 +62,28 @@ def train(model: NNClassifier, embeddings: list[str], labels: list[str],
         # loop over the batched data
         for batch, (X, y) in enumerate(batched_data):
 
-        # get the model predictions
-        y_hats = model.forward(X)
+            # get the model predictions
+            y_hats = model.forward(X)
 
-        # initialize the gradient calculation
-        optimizer.zero_grad()
+            # initialize the gradient calculation
+            optimizer.zero_grad()
 
-        # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
+            # print(torch.argmax(y_hats, dim=1), torch.argmax(y, dim=1))
 
-        # calculate the loss
-        loss = loss_fn(y_hats, y)
+            # calculate the loss
+            loss = loss_fn(y_hats, y)
 
-        # perform backpropogation
-        loss.backward()
-        optimizer.step()
+            # perform backpropogation
+            loss.backward()
+            optimizer.step()
 
-        if batch % 64 == 0:
-            loss = loss.item()
-            current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
-            total = len(X) * epochs * len(batched_data)
-            print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
-            correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
-            print(f"\tcorrect: {correct}/{len(X)}")
+            if batch % 64 == 0:
+                loss = loss.item()
+                current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
+                total = len(X) * epochs * len(batched_data)
+                print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
+                correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()
+                print(f"\tcorrect: {correct}/{len(X)}")
 
     return model
 
