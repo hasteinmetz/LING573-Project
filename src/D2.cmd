@@ -1,4 +1,4 @@
-executable 		  = run.sh 
+executable 		  = src/run.sh 
 getenv     		  = true
 arguments		  = 
 transfer_output_files     = outputs/baseline_output.csv
