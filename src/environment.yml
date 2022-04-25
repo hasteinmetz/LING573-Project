@@ -62,3 +62,4 @@ dependencies:
   - future=0.18.2
   - idna=3.3
   - joblib=1.1.0
+  - typing
