@@ -77,9 +77,9 @@ def train(model: NNClassifier, embeddings: List[str], labels: List[str],
             loss.backward()
             optimizer.step()
 
-            if batch % 64 == 0:
+            if batch % batch_size == 0:
                 loss = loss.item()
-                current = (batch * len(X)) + (len(X) * epoch * len(batched_data))
+                current = (batch * len(X)) + (len(X) * i * len(batched_data))
                 total = len(X) * epochs * len(batched_data)
                 print(f"loss: {loss:>7f}  [{current:>5d}/{total:>5d}]")
                 correct = (torch.argmax(y_hats, dim=1)==torch.argmax(y, dim=1)).type(torch.float).sum().item()

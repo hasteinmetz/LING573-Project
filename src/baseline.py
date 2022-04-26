@@ -9,6 +9,7 @@ from typing import *
 from transformers import RobertaTokenizer, RobertaModel
 from sklearn.metrics import accuracy_score, f1_score
 from classifier_layer import NNClassifier, batch_data, load_embeddings, load_random_seed, train
+from sklearn.neural_network import MLPClassifier
 
 nn = torch.nn
 
@@ -39,9 +40,9 @@ def main(args: argparse.Namespace):
 	model = RobertaModel.from_pretrained("roberta-base")
 
 	# change the dimensions of the input sentences for debugging only
-	# np.random.shuffle(train_sentences)
-	# np.random.shuffle(train_labels)
-	# train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
+	np.random.shuffle(train_sentences)
+	np.random.shuffle(train_labels)
+	train_sentences, train_labels = train_sentences[0:2500], train_labels[0:2500]
 
 	training_inputs = tokenizer(train_sentences, return_tensors="pt", padding=True)
 	print("running inputs through RoBERTA Base to generate embeddings...")
@@ -54,6 +55,7 @@ def main(args: argparse.Namespace):
 	print(train_embeddings)
 	embedding_size = train_embeddings[0].size()[0]
 	num_labels = len(set(train_labels))
+	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
 
 	# intialize classifier layer
 	classifier_layer = NNClassifier(embedding_size, args.hidden_layer, num_labels, output_fn=nn.Sigmoid())
@@ -68,9 +70,7 @@ def main(args: argparse.Namespace):
 		random_seeds = None
 	
 	# set up classifier layer
-	print(train_labels)
 	print("setting up and training classifier layer...")
-	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
 	classifier = train(
 		classifier_layer, 
 		train_embeddings, 
@@ -80,6 +80,10 @@ def main(args: argparse.Namespace):
 		loss_fn, 
 		optimizer, 
 		args.epochs)
+
+	print("training scikit classifier")
+	nnclassifier = MLPClassifier(solver='adam', random_state=1)
+	nnclassifier.fit(np.asarray(train_embeddings), np.asarray(train_labels_tensor))
 
 	# get embeddings
 	print("running inputs through RoBERTA Base to generate embeddings...")
@@ -94,17 +98,23 @@ def main(args: argparse.Namespace):
 
 	print("running model prediction...")
 
-	Y = []
+	Y, Y_all = [], []
 	with torch.no_grad():
 		for X, y in dev_batched_data:
 			pred_label = classifier(X)
+			Y_all.append(pred_label)
 			# Y is a list of tensor
 			Y.append(torch.argmax(pred_label, dim=1))
 
 	predicted_labels = torch.cat(Y)
 
 	y_pred = predicted_labels.numpy()
+	print(dev_labels, y_pred, Y_all)
 	eval_metrics(dev_labels, y_pred)
+
+	score = nnclassifier.score(np.asarray(dev_embeddings), np.asarray(dev_labels_tensor))
+	print(f"scikit learn score: {score}")
+	print(f"params: {nnclassifier.get_params()}")
 
 	#write results to output file
 	utils.write_output_to_file(args.output_file, dev_sentences, y_pred, encoding='utf-8')
