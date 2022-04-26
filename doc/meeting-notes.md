@@ -1,4 +1,31 @@
 # Meeting notes
+
+## 4-25
+- Eli worked on some sections already
+- Project Report Tasks @ 9:00am
+    1) [Pangbo] to include table in results section & fill out the rest
+        - no baseline to compare with
+        - only trained on dev set
+    2) [Eli] Approach
+        - potentially fine-tuning LM
+        - potentially using semantic features
+        - potentially switching classifier layer to an RNN
+        - using pre-trained LM b/c dataset is smol
+    4) [Avani] Discussion
+        - why are we considering the above three options in hopes of improving results
+        - why we did what we did
+        - error analysis (need to pretrain classifier layer! also, accuracy mimics positive example distribution in dataset. randomizing initial weights)
+    6) [Hilly] Conclusion (few lines okay), Introduction
+    7) [Eli] Abstract - just needs to be filled out
+    8) Final review across all sections for typos, proper citations, any missing info as per D2 spec
+      
+- Model Tasks
+    - [Avani] rerun d2 script on train data
+    - [Hilly] debug results to make sure they are what we expect
+    - [Eli] fine tune underlying LM on joke corpus (on one epoch)
+    - [Avani] see if classifier layer can directly ingest embeddings (right after each batch is fed through as opposed to only after all batches have gone through) might not be necessary?
+    - [Pangbo] read up on other approaches (semantic features, etc)
+
 ## 4-23
 - test everything on condor
 -   1) make sure conda environment can be recreated on dryas/patas
