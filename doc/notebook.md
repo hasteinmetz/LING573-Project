@@ -4,6 +4,22 @@ Use this file to document any important changes you've made or any records of ru
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
 
+### 5-1 Hilly
+
+- Got the following working:
+  - Randomization
+  - Model is now learning and generating output
+- Current results:
+  - SVM: ~89%
+  - Neural network (scikit): ~90%
+  - Neural network (PyTorch):
+- Thinking of ideas for the new enhanced system:
+  - Ensemble classifier that learns weights of fine-tuned BERT & feature vector
+    - Need to brainstorm what to include in the feature vector:
+      - Punctuation
+      - Repeated letters
+      - (Something with wordnet? Semantic/syntactice parse?)
+
 ### 4-21 Hilly
 
 #### Stuff that needs to be done on classifier:
