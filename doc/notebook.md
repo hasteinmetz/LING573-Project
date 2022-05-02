@@ -12,7 +12,7 @@ This notebook uses Markdown. Use '#' to create headings. When you make a change 
 - Current results:
   - SVM: ~89%
   - Neural network (scikit): ~90%
-  - Neural network (PyTorch):
+  - Neural network (PyTorch): ~90%
 - Thinking of ideas for the new enhanced system:
   - Ensemble classifier that learns weights of fine-tuned BERT & feature vector
     - Need to brainstorm what to include in the feature vector:
