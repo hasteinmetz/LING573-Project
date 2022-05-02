@@ -23,7 +23,6 @@ def eval_metrics(y_true, y_pred) -> None:
 	print('f1 score: ', str(f1))
 	
 
-
 def get_labels_tensor(labels: List[int], num_labels: int):
 	class_labels = np.zeros((len(labels), num_labels), dtype=np.float32)
 	for i, label in enumerate(labels):
@@ -57,7 +56,6 @@ def main(args: argparse.Namespace):
 	# shape (batch_size, input_len, 768)
 	last_hidden_states = train_output.last_hidden_state
 	train_embeddings = torch.mean(last_hidden_states, dim=1).squeeze()
-	print(train_embeddings)
 	embedding_size = train_embeddings[0].size()[0]
 	num_labels = len(set(train_labels))
 	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
@@ -73,7 +71,9 @@ def main(args: argparse.Namespace):
 
     # get random seeds (optional)
 	if args.random_seeds != "None":
+		print(f'loading random seeds from {args.random_seeds}')
 		random_seeds = load_random_seed(args.random_seeds, args.epochs)
+		print(f'setting torch seed to {random_seeds[0]}')
 		torch.manual_seed(random_seeds[0])
 	else:
 		random_seeds = None
@@ -92,9 +92,9 @@ def main(args: argparse.Namespace):
 		optimizer, 
 		args.epochs)
 
-	print("training scikit classifier")
-	nnclassifier = MLPClassifier(solver='adam', random_state=1)
-	nnclassifier.fit(np.asarray(train_embeddings), np.asarray(train_labels_tensor))
+	# print("training scikit classifier")
+	# nnclassifier = MLPClassifier(solver='adam', random_state=1)
+	# nnclassifier.fit(np.asarray(train_embeddings), np.asarray(train_labels_tensor))
 
 	# get embeddings
 	print("running inputs through RoBERTA Base to generate embeddings...")
@@ -116,19 +116,15 @@ def main(args: argparse.Namespace):
 	with torch.no_grad():
 		for X, y in dev_batched_data:
 			pred_label = classifier_layer(X)
-			y_correct.append(y)
+			y_correct.extend(list(torch.argmax(y, dim=1).numpy()))
 			Y_all.append(pred_label)
 			# Y is a list of tensor
-			Y.append(torch.argmax(pred_label, dim=1))
+			Y.extend(list(torch.argmax(pred_label, dim=1).numpy()))
 
-	predicted_labels = torch.cat(Y)
-	actual_labels = torch.cat(y_correct)
 
-	y_pred = predicted_labels.numpy()
-	print(y_correct, y_pred, Y_all)
-	eval_metrics(y_pred, y_correct.numpy())
+	eval_metrics(y_correct, Y)
 
-	score = nnclassifier.score(np.asarray(dev_embeddings), np.asarray(dev_labels_tensor))
+	# score = nnclassifier.score(np.asarray(dev_embeddings), np.asarray(dev_labels_tensor))
 	svm_score = svm.score(dev_embeddings.numpy(), dev_labels)
 	print(f"SVM score: {svm_score}")
 	print(f"scikit learn score: {score}")
