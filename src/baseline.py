@@ -10,6 +10,7 @@ from transformers import RobertaTokenizer, RobertaModel
 from sklearn.metrics import accuracy_score, f1_score
 from classifier_layer import NNClassifier, batch_data, load_embeddings, load_random_seed, train
 from sklearn.neural_network import MLPClassifier
+from sklearn.svm import SVC
 
 nn = torch.nn
 
@@ -31,6 +32,10 @@ def get_labels_tensor(labels: List[int], num_labels: int):
 
 
 def main(args: argparse.Namespace):
+	# check if cuda is avaiable
+	device = "cuda" if torch.cuda.is_available() else "cpu"
+	print(f"Using {device} device")
+
 	print("parsing data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
 	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
@@ -40,9 +45,9 @@ def main(args: argparse.Namespace):
 	model = RobertaModel.from_pretrained("roberta-base")
 
 	# change the dimensions of the input sentences for debugging only
-	np.random.shuffle(train_sentences)
-	np.random.shuffle(train_labels)
-	train_sentences, train_labels = train_sentences[0:2500], train_labels[0:2500]
+	# np.random.shuffle(train_sentences)
+	# np.random.shuffle(train_labels)
+	# train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
 
 	training_inputs = tokenizer(train_sentences, return_tensors="pt", padding=True)
 	print("running inputs through RoBERTA Base to generate embeddings...")
@@ -56,22 +61,28 @@ def main(args: argparse.Namespace):
 	embedding_size = train_embeddings[0].size()[0]
 	num_labels = len(set(train_labels))
 	train_labels_tensor = get_labels_tensor(train_labels, num_labels)
+	
+	svm = SVC()
+	svm.fit(train_embeddings.numpy(), train_labels)
 
 	# intialize classifier layer
-	classifier_layer = NNClassifier(embedding_size, args.hidden_layer, num_labels, output_fn=nn.Sigmoid())
-	optimizer = torch.optim.SGD(classifier_layer.parameters(), lr=args.learning_rate)
-	loss_fn = nn.BCELoss()
+	classifier_layer = NNClassifier(embedding_size, args.hidden_layer, num_labels, 
+		output_fn=nn.Sigmoid(), activation_fn=nn.ReLU())
+	optimizer = torch.optim.Adam(classifier_layer.parameters(), lr=args.learning_rate)
+	loss_fn = nn.CrossEntropyLoss()
 
     # get random seeds (optional)
 	if args.random_seeds != "None":
-		random_seeds = load_random_seed(args.epochs)
+		random_seeds = load_random_seed(args.random_seeds, args.epochs)
 		torch.manual_seed(random_seeds[0])
 	else:
 		random_seeds = None
+
+	classifier_layer.train()
 	
 	# set up classifier layer
 	print("setting up and training classifier layer...")
-	classifier = train(
+	classifier_layer = train(
 		classifier_layer, 
 		train_embeddings, 
 		train_labels_tensor, 
@@ -96,23 +107,30 @@ def main(args: argparse.Namespace):
 	dev_batched_data = batch_data(dev_embeddings, dev_labels_tensor, epoch=0, 
 		batch_size=args.batch_size, random_seeds=args.random_seeds)
 
+
 	print("running model prediction...")
 
-	Y, Y_all = [], []
+	classifier_layer.eval()
+
+	Y, Y_all, y_correct = [], [], []
 	with torch.no_grad():
 		for X, y in dev_batched_data:
-			pred_label = classifier(X)
+			pred_label = classifier_layer(X)
+			y_correct.append(y)
 			Y_all.append(pred_label)
 			# Y is a list of tensor
 			Y.append(torch.argmax(pred_label, dim=1))
 
 	predicted_labels = torch.cat(Y)
+	actual_labels = torch.cat(y_correct)
 
 	y_pred = predicted_labels.numpy()
-	print(dev_labels, y_pred, Y_all)
-	eval_metrics(dev_labels, y_pred)
+	print(y_correct, y_pred, Y_all)
+	eval_metrics(y_pred, y_correct.numpy())
 
 	score = nnclassifier.score(np.asarray(dev_embeddings), np.asarray(dev_labels_tensor))
+	svm_score = svm.score(dev_embeddings.numpy(), dev_labels)
+	print(f"SVM score: {svm_score}")
 	print(f"scikit learn score: {score}")
 	print(f"params: {nnclassifier.get_params()}")
 

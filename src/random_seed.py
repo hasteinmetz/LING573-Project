@@ -10,16 +10,16 @@ def write_random_seed(filename, no_epochs=100):
     np.savetxt(f'{filename}_{no_epochs}.txt', random_arr)
     return random_arr
 
-def load_random_seed(filname, no_epochs=100):
+def load_random_seed(filename, no_epochs=100):
     '''Load a random array of numbers to use as random seeds.
     If no file exists then create a random array of numbers'''
     try:
-        seedfile = open(filname, 'r')
+        seedfile = open(filename, 'r')
         seeds = [int(x) for x in seedfile.readlines()]
         seedfile.close()
         return seeds
     except Exception:
-        random_arr = write_random_seed(filname, no_epochs)
+        random_arr = write_random_seed(filename, no_epochs)
         return random_arr
 
 if __name__ == '__main__':

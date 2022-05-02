@@ -1,8 +1,8 @@
 executable 		  = src/run.sh 
 getenv     		  = true
 arguments		  = 
-transfer_output_files     = outputs/baseline_output.csv, log
-output			  = outputs/condor.out
+transfer_output_files     = outputs/d2/d2_out.txt, adam_log
+output			  = outputs/condo.out
 error      		  = outputs/condor.error
 log        		  = outputs/condor.log
 request_GPUs              = 1
