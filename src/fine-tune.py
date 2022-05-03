@@ -15,6 +15,7 @@ from transformers import RobertaTokenizer
 from transformers import RobertaForSequenceClassification as RobertaModel
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 from datasets import load_metric
+import pandas as pd
 
 
 class FineTuneDataSet(torch.utils.data.Dataset):
@@ -140,11 +141,29 @@ def main(args: argparse.Namespace):
     trainer.train()
 
     # evaluate the model's performance
-    print(f"\n({get_time(start_time)}) Evaluating the Transformer model\n")
-    y_pred = evaluate(trainer, dev_data, ['f1', 'accuracy'])
+    print(f"\n({get_time(start_time)}) Evaluating the Transformer model on training data\n")
+    y_pred_train = evaluate(trainer, train_data, ['f1', 'accuracy'])
+
+    print(f"\n({get_time(start_time)}) Evaluating the Transformer model on dev data\n")
+    y_pred_dev = evaluate(trainer, dev_data, ['f1', 'accuracy'])
 
     #write results to output file
-    utils.write_output_to_file(args.output_file, dev_data.sentences, y_pred, encoding='utf-8')
+    train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
+    dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_train, 'correct_label': dev_data.labels}
+    train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
+    train_out.to_csv(args.output_file, index=False, encoding='utf-8')
+
+    # write missing examples to one particular file
+    df = pd.concat((train_out, dev_out), axis=0)
+
+    # filter the data so that only negative examples are there
+    data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
+    data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
+
+    # save the model
+    if args.save_file != 'None':
+        roberta_model.save_pretrained(args.save_file)
+
     print(f"({get_time(start_time)}) Done!")
 
 if __name__ == '__main__':
@@ -156,6 +175,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', help="(int) number of epochs for training", type=int)
     parser.add_argument('--debug', help="(1 or 0) train on a smaller training set for debugging", default=0, type=int)
     parser.add_argument('--output_file', help="path to output data file")
+    parser.add_argument('--save_file', help="path to save the pretrained model", default='None', type=str)
     args = parser.parse_args()
 
     main(args)

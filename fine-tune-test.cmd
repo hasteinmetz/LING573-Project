@@ -1,7 +1,7 @@
 executable 		            = src/fine-tune.sh 
 getenv     		            = true
-arguments		            = 
-transfer_output_files       = outputs/test/fine-tune_results.txt
+arguments		            = "--debug 1"
+transfer_output_files       = outputs/test/fine-tune_results.csv, src/data/roberta-misclassified-examples.csv, src/models/roberta-fine-tuned
 output			            = outputs/test/ft.out
 error      		            = outputs/test/ft.error
 log        		            = outputs/test/ft.log
