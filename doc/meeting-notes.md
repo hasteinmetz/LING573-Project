@@ -1,5 +1,32 @@
 # Meeting notes
 
+## 5-1
+
+- Fine-tuning RoBERTa model -- Eli found a tutorial.
+- Look into how to get the GPU to work on Condor.
+- (Need code to create model but can also just provide model.)
+- Late fusion of classifiers in order to get lexical features?
+    - Looks like it could be easier.
+    - Might be better for the data.
+- Features to add to second model:
+    - TF-IDF
+    - POS tagging
+    - Punctuation counts
+- Steps:
+    1. Look into late fusion
+    2. Talk to Haotian
+    3. Get a skeleton up and going
+- Other things to do:
+    - Figure out how to get GPUs to work on Patas/Dryas
+    - Look into what examples are/aren't being picked up
+
+### To do:
+
+- [Hilly] Save model and modify to print out the wrong sentences
+- [Avani] Look into late fusion
+- [Eli] Get GPU stuff working
+- [Pangbo] Look into lexical feature classifiers
+
 ## 4-25
 - Eli worked on some sections already
 - Project Report Tasks @ 9:00am
