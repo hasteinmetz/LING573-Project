@@ -6,6 +6,7 @@
 '''
 
 import torch
+from torch.utils.data import DataLoader, Dataset
 import utils
 import argparse
 import numpy as np
@@ -18,7 +19,7 @@ from datasets import load_metric
 import pandas as pd
 
 
-class FineTuneDataSet(torch.utils.data.Dataset):
+class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
     and behaves list a list but also stores sentences and labels for
     future use'''
@@ -32,7 +33,7 @@ class FineTuneDataSet(torch.utils.data.Dataset):
             self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
             self.input_ids = self.encodings['input_ids']
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int,):
         if not hasattr(self, 'encodings'):
             raise AttributeError("Did not initialize encodings or input_ids")
         else:
@@ -44,74 +45,76 @@ class FineTuneDataSet(torch.utils.data.Dataset):
         return len(self.labels)
 
 
-def get_time(start_time: float):
+def get_time(start_time: float) -> str:
     minutes, sec = divmod(time.time() - start_time, 60)
     return f"{str(round(minutes))}min {str(round(sec))}sec"
 
 
-def evaluate(trainer: Trainer, test_data: torch.utils.data.Dataset, metrics: List[Callable]):
+def metrics(measure, evalpred: EvalPrediction) -> tuple:
+    '''Helper function to compute the f1 and accuracy scores using
+    the Transformers package's data structures'''
+    logits, labels = evalpred
+    predictions = np.argmax(logits, axis=-1)
+    return measure.compute(predictions=predictions, references=labels)
+
+
+def evaluate(model: RobertaModel, batch_size: int, 
+    test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
     '''Evaluate model performance on the test texts'''
-    # get test text predictions
-    predictions = trainer.predict(test_data)
-    pred_argmax = np.argmax(predictions.predictions, axis = -1)
-    print(f"Predictions argmax: (size = {pred_argmax.shape}\n{pred_argmax}")
-    print(f"Predictions label_ids: (size = {predictions.label_ids.shape}\n{predictions.label_ids}")
-    values = f""
-    for metric in metrics:
-        evaluate = load_metric(metric)
-        val = evaluate.compute(predictions=pred_argmax, references=predictions.label_ids)
-        values += f"{metric}:\n\t {val}\n"
+    # set the model to eval mode
+    model.eval()
+    model.to(device)
+
+    # create a list of metrics to store data
+    metrics = []
+    for metric in measures:
+        m = load_metric(metric)
+        metrics.append(m)
+
+    # convert dataset to a pytorch format and batch the data
+    eval_dataloader = DataLoader(test_data, batch_size=batch_size)
+
+    # iterate through batches to get outputs
+    for batch in eval_dataloader:
+        batch['labels'] = batch.pop('label')
+        labels = batch['labels']
+
+        # assign each element of the batch to the device
+        batch = {k: v.to(device) for k, v in batch.items()}
+        with torch.no_grad():
+            outputs = model(**batch)
+        
+        # get batched results
+        logits = outputs.logits
+        pred_argmax = torch.argmax(logits, dim = -1)
+
+        # add batched results to metrics
+        for m in metrics:
+            m.add_batch(predictions=pred_argmax, references=labels)
+    
+    # output metrics to standard output
+    values = f"" # empty string 
+    for m in metrics:
+        val = m.compute()
+        values += f"{m.name}:\n\t {val}\n"
     print(values)
-    return pred_argmax
 
 
-def main(args: argparse.Namespace):
-    # get starting time
-    start_time = time.time()
-
-    # check if cuda is avaiable
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"({get_time(start_time)}) Using {device} device")
-
-    print(f"({get_time(start_time)}) Reading data in from files...\n")
-    # initialize roberta tokenizer and pretrained model
-    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-
-    # read in the training and development data
-    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
-    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
-
-    # change the dimensions of the input sentences only when debugging (--debug 1)
-    if args.debug == 1:
-        np.random.shuffle(train_sentences)
-        np.random.shuffle(train_labels)
-        train_sentences, train_labels = train_sentences[0:50], train_labels[0:50]
-    if args.debug == 1:
-        np.random.shuffle(dev_sentences)
-        np.random.shuffle(dev_labels)
-        dev_sentences, dev_labels = dev_sentences[0:50], dev_labels[0:50]
-
-    # load data into dataloader
-    train_data = FineTuneDataSet(train_sentences, train_labels)
-    dev_data = FineTuneDataSet(dev_sentences, dev_labels)
-
-    # get roberta encodings for each sentence
-    train_data.tokenize_data(tokenizer)
-    dev_data.tokenize_data(tokenizer)
-
-    print(f"({get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n")
-
-    # create a data collator to obtain the encoding (and padding) for each sentence
-    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-
-    # initialize metrics
-    accuracy = load_metric("accuracy")
-    def metrics(evalpred: EvalPrediction) -> tuple:
-        '''Helper function to compute the f1 and accuracy scores using
-        the Transformers package's data structures'''
-        logits, labels = evalpred
-        predictions = np.argmax(logits, axis=-1)
-        return accuracy.compute(predictions=predictions, references=labels)
+def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
+                    data_collator: DataCollatorWithPadding, tokenizer: RobertaTokenizer, 
+                    comp_measure: Callable, start_time: float) -> RobertaModel:
+    '''**Fine-tune the RoBERTa model using input data**
+        Args:
+            - args: arguments passed into the program
+                - learning_rate: learning rate of model
+                - batch_size: batch size to train model (keep this below 50)
+                - epochs: number of times to iterate over the data
+            - train_data: the training data to be used
+            - dev_data: the dataset to evaluate on
+            - tokenizer: the tokenizer to be used to encode sentences
+            - comp_measure: the measurement you want to report at each :evaluation_strategy:
+            - start_time: the time the program began running
+    '''
 
     # initialize model
     roberta_model = RobertaModel.from_pretrained('roberta-base')
@@ -127,29 +130,94 @@ def main(args: argparse.Namespace):
         evaluation_strategy="epoch"
     )
 
-    # fine-tune the model
+    # create a trainer
     print(f"({get_time(start_time)}) Fine-tuning the model...\n")
-    trainer = Trainer(
+    fine_tuned_model = Trainer(
         model=roberta_model,
         args=fine_tune_args,
         train_dataset=train_data,
         eval_dataset=dev_data,
         tokenizer=tokenizer,
         data_collator=data_collator,
-        compute_metrics=metrics,
+        compute_metrics=comp_measure,
     )
-    trainer.train()
+
+    #fine-tune the model
+    fine_tuned_model.train()
+    
+    return fine_tuned_model.model
+
+def main(args: argparse.Namespace) -> None:
+    # get starting time
+    start_time = time.time()
+
+    # check if cuda is avaiable
+    if torch.cuda.is_available():
+        device = "cuda"
+        torch.device(device)
+        print(f"({get_time(start_time)}) Using {device} device")
+        print(f"Using the GPU:{torch.cuda.get_device_name(0)}")
+    else:
+        device = "cpu"
+        torch.device(device)
+        print(f"({get_time(start_time)}) Using {device} device")
+
+    print(f"({get_time(start_time)}) Reading data in from files...\n")
+    # initialize roberta tokenizer and pretrained model
+    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+
+    # read in the training and development data
+    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
+    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
+
+    # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
+    if args.debug == 1:
+        np.random.shuffle(train_sentences)
+        np.random.shuffle(train_labels)
+        train_sentences, train_labels = train_sentences[0:50], train_labels[0:50]
+    if args.debug == 1:
+        np.random.shuffle(dev_sentences)
+        np.random.shuffle(dev_labels)
+        dev_sentences, dev_labels = dev_sentences[0:50], dev_labels[0:50]
+
+    # load data into dataloader
+    train_data = FineTuneDataSet(train_sentences, train_labels)
+    dev_data = FineTuneDataSet(dev_sentences, dev_labels)
+
+    # get roberta encodings for each sentence (see FineTuneDataSet class)
+    train_data.tokenize_data(tokenizer)
+    dev_data.tokenize_data(tokenizer)
+
+    print(f"({get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n")
+
+    # create a data collator to obtain the encoding (and padding) for each sentence
+    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+
+    # initialize metrics
+    accuracy = load_metric("accuracy")
+    get_accuracy = lambda x: metrics(accuracy, x)
+
+    # if there is no existing model, then train a new model
+    if args.model_folder != 'None':
+        try:
+            roberta_model = RobertaModel.from_pretrained(args.model_folder)
+            print(f"({get_time(start_time)}) Using model saved to folder {args.model_folder}")
+        except FileNotFoundError(args.model_folder) as err:
+            print(f"({get_time(start_time)}) Could not get model from folder {args.model_folder}...")
+    else:
+        roberta_model = train_new_model(args, train_data, dev_data, data_collator,
+                                        tokenizer, get_accuracy, start_time)
 
     # evaluate the model's performance
     print(f"\n({get_time(start_time)}) Evaluating the Transformer model on training data\n")
-    y_pred_train = evaluate(trainer, train_data, ['f1', 'accuracy'])
+    y_pred_train = evaluate(roberta_model, args.batch_size, train_data, ['f1', 'accuracy'], device)
 
     print(f"\n({get_time(start_time)}) Evaluating the Transformer model on dev data\n")
-    y_pred_dev = evaluate(trainer, dev_data, ['f1', 'accuracy'])
+    y_pred_dev = evaluate(roberta_model, args.batch_size, dev_data, ['f1', 'accuracy'], device)
 
     #write results to output file
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
-    dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_train, 'correct_label': dev_data.labels}
+    dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
     train_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
@@ -166,6 +234,7 @@ def main(args: argparse.Namespace):
 
     print(f"({get_time(start_time)}) Done!")
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_sentences', help="path to input training data file")
@@ -175,6 +244,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', help="(int) number of epochs for training", type=int)
     parser.add_argument('--debug', help="(1 or 0) train on a smaller training set for debugging", default=0, type=int)
     parser.add_argument('--output_file', help="path to output data file")
+    parser.add_argument('--model_folder', help="path to load a pretrained model from a folder", default='None', type=str)
     parser.add_argument('--save_file', help="path to save the pretrained model", default='None', type=str)
     args = parser.parse_args()
 
