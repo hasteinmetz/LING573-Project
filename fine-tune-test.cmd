@@ -2,7 +2,7 @@ executable 		            = src/fine-tune.sh
 getenv     		            = true
 # type "--debug 1" in arguments to run the model on fewer training and testing samples
 # type "--model_folder {path}" to load the model at the path specified
-arguments		            = 
+arguments		            = "--model_folder src/models/roberta-fine-tuned"
 transfer_output_files       = outputs/test/fine-tune_results.csv, src/data/roberta-misclassified-examples.csv, src/models/roberta-fine-tuned
 output			            = outputs/test/ft.out
 error      		            = outputs/test/ft.error

@@ -74,6 +74,9 @@ def evaluate(model: RobertaModel, batch_size: int,
     # convert dataset to a pytorch format and batch the data
     eval_dataloader = DataLoader(test_data, batch_size=batch_size)
 
+    # store the argmax of each batch
+    predictions = []
+
     # iterate through batches to get outputs
     for batch in eval_dataloader:
         batch['labels'] = batch.pop('label')
@@ -86,7 +89,11 @@ def evaluate(model: RobertaModel, batch_size: int,
         
         # get batched results
         logits = outputs.logits
+
+        # add batch to output
         pred_argmax = torch.argmax(logits, dim = -1)
+        as_list = pred_argmax.clone().detach().to('cpu').tolist()
+        predictions.append(as_list)
 
         # add batched results to metrics
         for m in metrics:
@@ -98,6 +105,7 @@ def evaluate(model: RobertaModel, batch_size: int,
         val = m.compute()
         values += f"{m.name}:\n\t {val}\n"
     print(values)
+    return np.concatenate(predictions)
 
 
 def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
@@ -146,6 +154,23 @@ def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_d
     fine_tuned_model.train()
     
     return fine_tuned_model.model
+
+def roberta_io(model: RobertaModel, sentences: List[str],
+    batch_size: int, device: str) -> np.ndarray:
+    '''Function to export to other scripts that takes a model and list of sentences
+    and outputs an ndarray of predicted classes. It also takes a batch_size (for evaluation)
+    and a device (cpu or cuda)'''
+    # initialize roberta tokenizer and pretrained model
+    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+
+    # read in the training and development data
+    train_sentences, train_labels = utils.read_data_from_file(sentences)
+    train_data = FineTuneDataSet(train_sentences, train_labels)
+
+    # evaluate model
+    y_pred_train = evaluate(model, batch_size, train_data, ['f1', 'accuracy'], device)
+
+    return y_pred_train
 
 def main(args: argparse.Namespace) -> None:
     # get starting time
@@ -219,7 +244,7 @@ def main(args: argparse.Namespace) -> None:
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    train_out.to_csv(args.output_file, index=False, encoding='utf-8')
+    dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
