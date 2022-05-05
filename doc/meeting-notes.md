@@ -1,4 +1,17 @@
 # Meeting notes
+## 5-4
+- able to run on GPU
+- looked at POS
+- fine-tuned model is ready (can turn in for D3)
+- work on incorporating lexical features with random forest
+    -  Pangbo will take a look at Hurtlex and how to preprocess
+    -  Hilly can take count related lexical features
+    -  Eli will look at NER
+- Avani write ensembling script
+- write short summary for each section of D3 report sumbission
+- Hilly to fix extra quotations when reading csv input
+- HIlly to do start exctended error analysis
+
 
 ## 5-1
 
