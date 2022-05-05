@@ -12,7 +12,7 @@ This notebook uses Markdown. Use '#' to create headings. When you make a change 
     2. letter counts
     3. question mark counts
     4. wh-word counts(?) ([who, whose, what, when, which, why, where, how])
-    5. hurtlex counts(?) (needs to be filtered out on what catogories should be included in our dataset)
+    5. hurtlex counts(?) (needs to be filtered on what catogories to be kept)
     6. personal pronoun counts(?) (count # of PRP from the result of POS tagging)
     7. Named Entity Marking (https://www.nltk.org/api/nltk.chunk.html; taking POS tagging as input; tutorial: https://machinelearningknowledge.ai/beginners-guide-to-named-entity-recognition-ner-in-nltk-library-python/#:~:text=NLTK%20provides%20a%20function%20nltk,ever%20it%20founded%20named%20entity.)
   
