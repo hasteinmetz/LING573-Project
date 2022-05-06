@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/projects/assigned/2122_ling573_elibales/repo/src/lexical_features.py", line 84, in <module>
+    svm.fit(vectors, labels)
+NameError: name 'vectors' is not defined
