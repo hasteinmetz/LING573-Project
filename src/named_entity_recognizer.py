@@ -39,6 +39,11 @@ def main():
                     temp.append(" ".join(group))
                 temp.append(int(row[correct_label_column]))  # correct_label, CHANGE DEPENDING ON INPUT FILE!
                 ne_groupings.append(temp)
+            else:
+                temp = []
+                temp.append("")
+                temp.append(int(row[correct_label_column]))
+                ne_groupings.append(temp)
 
     csv_file.close()
     write_to_file(output_file, ne_groupings)
