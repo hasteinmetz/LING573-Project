@@ -65,3 +65,4 @@ dependencies:
   - datasets
   - pandas
   - cudatoolkit=10.2
+  - spacy
