@@ -192,12 +192,8 @@ def main(args: argparse.Namespace) -> None:
     tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base")
 
     # read in the training and development data
-    train_sentences_raw, train_labels = utils.read_data_from_file(args.train_sentences)
-    dev_sentences_raw, dev_labels = utils.read_data_from_file(args.dev_sentences)
-
-    # preprocess to remove quotation marks
-    train_sentences = utils.preprocess_quotes(train_sentences_raw)
-    dev_sentences = utils.preprocess_quotes(dev_sentences_raw)
+    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
+    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
 
     # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
     if args.debug == 1:

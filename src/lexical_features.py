@@ -10,6 +10,7 @@ from sklearn.utils import shuffle
 from typing import *
 from string import punctuation
 from functools import reduce
+from empath import Empath
 
 def create_lexical_matrix(sentences: List[str], chars: list[str]) -> np.ndarray:
     '''Take a dataset and return an [num_sentences, num_chars] matrix of counts
@@ -35,7 +36,16 @@ def lemmatize(sentences: List[str]) -> List[str]:
     return new_sents
 
 
-def 
+def get_empath_ratings(sentences: List[str]) -> np.ndarray:
+    '''Get EMPATH (https://github.com/Ejhfast/empath-client) ratings for sentences'''
+    lexicon = Empath()
+    dictionary = {k: [] for k in lexicon.cats.keys()}
+    for s in sentences:
+        analyzed_s = lexicon.analyze(s, normalize=True)
+        for k, v in analyzed_s.items():
+            dictionary[k].append(v)
+    as_lists = [dictionary[k] for k in dictionary]
+    return np.column_stack(as_lists)
 
 
 def get_vocabulary(training_sents: List[str], stop_words: str = None, 
@@ -50,7 +60,7 @@ def get_vocabulary(training_sents: List[str], stop_words: str = None,
                 - Otherwise provide a list of labels with corresponding indices to the sentences
     ''' 
     vectorizer = TfidfVectorizer(decode_error='ignore', stop_words=stop_words) # ALL WORDS ARE LOWERCASED!
-    if concat_labels:
+    if isinstance(concat_labels, list):
         sents = {k: '' for k in set(concat_labels)}
         for s, label in zip(training_sents, concat_labels):
             sents[label] += s
@@ -98,6 +108,13 @@ if __name__ == '__main__':
     # create lexical vector
     lv = create_lexical_matrix(train_sentences, [c for c in punctuation])
     lv_test = create_lexical_matrix(dev_sentences, [c for c in punctuation])
+
+    print("get empathy ratings...")
+
+    # get empathy vectors
+    em = get_empath_ratings(train_sentences)
+    print(em.shape)
+    em_test = get_empath_ratings(dev_sentences)
  
     print("getting tf-idf...")
 
@@ -111,8 +128,8 @@ if __name__ == '__main__':
     print("normalizing vectors...")
 
     # normalize the vectors
-    nv = normalize_vector(lv, tf)
-    nv_test = normalize_vector(lv_test, tf_test)
+    nv = normalize_vector(lv, tf, em)
+    nv_test = normalize_vector(lv_test, tf_test, em_test)
     print(nv)
 
     # see what svm says

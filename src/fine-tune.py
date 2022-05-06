@@ -192,12 +192,8 @@ def main(args: argparse.Namespace) -> None:
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in the training and development data
-    train_sentences_raw, train_labels = utils.read_data_from_file(args.train_sentences)
-    dev_sentences_raw, dev_labels = utils.read_data_from_file(args.dev_sentences)
-
-    # preprocess to remove quotation marks
-    train_sentences = utils.preprocess_quotes(train_sentences_raw)
-    dev_sentences = utils.preprocess_quotes(dev_sentences_raw)
+    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
+    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
 
     # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
     if args.debug == 1:
@@ -248,14 +244,14 @@ def main(args: argparse.Namespace) -> None:
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(args.output_file, index=False, encoding='utf-8', doublequote=False, escapechar="\\")
+    dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
 
     # filter the data so that only negative examples are there
     data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8', escapechar="\\", doublequote=False)
+    data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
 
     # save the model
     if args.save_file != 'None':

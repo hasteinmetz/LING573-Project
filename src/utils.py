@@ -35,10 +35,11 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 	'''
 	sentences, labels = [], []
 	with open(filepath, 'r', encoding=encoding) as datafile:
-		data = csv.reader(datafile)
+		data = csv.reader(datafile, delimiter=',', quotechar='"')
 		for row in data:
 			sentences.append(row[0])
 			labels.append(int(row[1]))
+			print(row[0])
 	return sentences, np.asarray(labels, dtype=int)
 
 def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, encoding: str = 'utf-8') -> None:
@@ -47,17 +48,3 @@ def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, enc
 		for i in range(len(data)):
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
-
-def preprocess_quotes(data: List[str]) -> List[str]:
-	'''Gets rid of quotation marks at the beginning and end of some sentences.
-	Also gets rid of double quotation marks that appear in the middle of a sentence.
-		Arg: list of sentences
-	'''
-	import re
-
-	start_end = re.compile(r'((?<!^)\"|\"(?!$))')
-	mid = re.compile(r'(?<!^)\"+(?!$)')
-	data1 = [re.sub(start_end, '', s) for s in data]
-	data2 = [re.sub(mid, '\"', s) for s in data1]
-
-	return data2
