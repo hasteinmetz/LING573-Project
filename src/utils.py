@@ -39,7 +39,6 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 		for row in data:
 			sentences.append(row[0])
 			labels.append(int(row[1]))
-			print(row[0])
 	return sentences, np.asarray(labels, dtype=int)
 
 def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, encoding: str = 'utf-8') -> None:
