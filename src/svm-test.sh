@@ -1,0 +1,6 @@
+#!/bin/sh
+
+source ~/anaconda3/etc/profile.d/conda.sh
+conda activate 573-project
+
+python src/lexical_features.py src/data/hahackathon_prepo1_train.csv
