@@ -1,4 +1,0 @@
-/projects/assigned/2122_ling573_elibales/repo/src/fine-tune.py:40: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
-/projects/assigned/2122_ling573_elibales/repo/src/fine-tune.py:40: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
