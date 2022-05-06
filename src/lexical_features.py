@@ -33,10 +33,7 @@ def lemmatize(sentences: List[str]) -> List[str]:
     lemmatize = lambda x: reduce(to_str, [tkn.lemma_ for tkn in processer(x)])
     new_sents = [lemmatize(x) for x in sentences]
     return new_sents
-
-
-def 
-
+    
 
 def get_vocabulary(training_sents: List[str], stop_words: str = None, 
     concat_labels: List[str] = None) -> TfidfVectorizer:
