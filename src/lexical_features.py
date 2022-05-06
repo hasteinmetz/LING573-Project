@@ -34,9 +34,6 @@ def lemmatize(sentences: List[str]) -> List[str]:
     lemmatize = lambda x: reduce(to_str, [tkn.lemma_ for tkn in processer(x)])
     new_sents = [lemmatize(x) for x in sentences]
     return new_sents
-<<<<<<< HEAD
-    
-=======
 
 
 def get_empath_ratings(sentences: List[str]) -> np.ndarray:
@@ -50,7 +47,6 @@ def get_empath_ratings(sentences: List[str]) -> np.ndarray:
     as_lists = [dictionary[k] for k in dictionary]
     return np.column_stack(as_lists)
 
->>>>>>> hilly-dev
 
 def get_vocabulary(training_sents: List[str], stop_words: str = None, 
     concat_labels: List[str] = None) -> TfidfVectorizer:
