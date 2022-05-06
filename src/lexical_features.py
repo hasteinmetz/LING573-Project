@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import re
 import pandas as pd
@@ -22,20 +22,17 @@ def create_lexical_matrix(sentences: List[str], chars: list[str]) -> np.ndarray:
     return df.to_numpy()
 
 
-def get_tfidf(sentences: List[str], labels: List[int]) -> Dict[int, np.ndarray]:
-    '''Get a TF-IDF matrix for each label
-    Returns a dictionary where each TF-IDF matrix can be access'''
-    d = {'sents': sentences, 'labels': labels}
-    df = pd.DataFrame(d)
-    matrices = [] # to store the matrices of each class's TF-IDF values
+def get_vocabulary(training_sents: List[str]) -> TfidfVectorizer:
+    '''Helper function that gets counts of the training data set''' 
     vectorizer = TfidfVectorizer(decode_error='ignore') # ALL WORDS ARE LOWERCASED!
-    # fit the vectorizer vocabulary to all sentences, but DON'T transform it with counts yet
-    fitted_vectorizer = vectorizer.fit(sentences)
-    for l in set(labels):
-        sentences_with_label = df[df['labels'] == l]
-        matrix = fitted_vectorizer.transform(sentences_with_label['sents'])
-        matrices.append(matrix.toarray())
-    return np.concatenate(matrices, axis=0)
+    fitted_vectorizer = vectorizer.fit(training_sents) # DO NOT fit the vectorizer to the test data!
+    return fitted_vectorizer
+
+
+def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.ndarray:
+    '''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
+    matrix = fitted_vectorizer.transform(sentences)
+    return matrix.toarray()
 
 
 def normalize_vector(*arrays: np.ndarray) -> np.ndarray:
@@ -53,29 +50,36 @@ if __name__ == '__main__':
 
     # read in the training and development data
     train_sentences_raw, train_labels = utils.read_data_from_file(sys.argv[1])
+    dev_sentences_raw, dev_labels = utils.read_data_from_file(sys.argv[2])
 
     # preprocess to remove quotation marks
     train_sentences = utils.preprocess_quotes(train_sentences_raw)
+    dev_sentences = utils.preprocess_quotes(dev_sentences_raw)
 
     print("create lexical vector...")
 
     # create lexical vector
     lv = create_lexical_matrix(train_sentences, [c for c in punctuation])
-    print(lv)
-
+    lv_test = create_lexical_matrix(dev_sentences, [c for c in punctuation])
+ 
     print("getting tf-idf...")
 
+    # get vocabulary counts (fit the vectorizer)
+    vectorizer = get_vocabulary(train_sentences)
+
     # get tfidf
-    tf = get_tfidf(train_sentences, train_labels)
+    tf = get_tfidf(train_sentences, vectorizer)
+    tf_test = get_tfidf(dev_sentences, vectorizer)
 
     print("normalizing vectors...")
 
     # normalize the vectors
     nv = normalize_vector(lv, tf)
+    nv_test = normalize_vector(lv_test, tf_test)
     print(nv)
 
     # see what svm says
-    vectors, labels = shuffle(nv, train_labels)
+    # vectors, labels = shuffle(nv, train_labels)
     svm = SVC()
-    svm.fit(vectors[400:,:], labels[400:])
-    print(f'accuracy: {svm.score(vectors[0:400,:], labels[0:400])}')
+    svm.fit(vectors, labels)
+    print(f'accuracy: {svm.score(nv_test, dev_labels)}')
