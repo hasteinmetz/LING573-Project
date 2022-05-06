@@ -200,7 +200,7 @@ def main(args: argparse.Namespace) -> None:
         np.random.shuffle(train_sentences)
         np.random.shuffle(train_labels)
         train_sentences, train_labels = train_sentences[0:50], train_labels[0:50]
-    if args.debug == 1:
+    #if args.debug == 1:
         np.random.shuffle(dev_sentences)
         np.random.shuffle(dev_labels)
         dev_sentences, dev_labels = dev_sentences[0:50], dev_labels[0:50]
