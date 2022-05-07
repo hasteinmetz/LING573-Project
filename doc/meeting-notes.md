@@ -1,4 +1,32 @@
 # Meeting notes
+## 5-6
+- Eli was able to extract NER from data & outputted to .csv file
+    - how to store/format data
+    - output vector representing counts for each type of named entity
+- Hilly prepared tf-idf, punc counts, empathy ratings (could be useful for controversy)
+    - 78% accuracy on dev data w/ SVM & features
+- Pangbo extracted Hurtlex & tried merging w/ POS tagging
+    - issues with Stanford POS tagger, so defaulted to NLTK POS tagger
+    - encoding of Hurtlex in 17 dimensions
+- Avani 
+    - train classifier that takes inputs of ROBERTA & lexical features model
+    - one model for all lexical features (concatenate representations into one vector space)
+    - use logits as input to classifier (training how to weight outputs of roberta & other model)
+    - normalize concatenated features
+    - look to see if batch manager can also take care of features
+- Report
+    - spin up a brainstorming document on what we worked on
+    - split who creates presentation & who writes on report
+    - [Hilly] Discussion & Error Analysis
+    - [Eli] Approach (your lexical feature)
+    - [Pangbo] Approach (your lexical feature), Results
+    - [Avani] System Architecture
+- Presentation
+    - [Pangbo] Approach w/ focus on lexical features
+    - [Hilly] System Architecture, Issues & Success w/ focus on Error Analysis
+    - [Eli] Approach w/ focus on approach for D2 section, Issues & Successes, Task Description
+    - [Avani] slides maneuverer & support during QA
+
 ## 5-4
 - able to run on GPU
 - looked at POS
