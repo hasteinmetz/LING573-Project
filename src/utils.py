@@ -36,7 +36,7 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 	'''
 	sentences, labels = [], []
 	with open(filepath, 'r', encoding=encoding) as datafile:
-		data = csv.reader(datafile)
+		data = csv.reader(datafile, delimiter=',', quotechar='"')
 		for row in data:
 			sentences.append(row[0])
 			labels.append(int(row[1]))
