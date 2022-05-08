@@ -1,6 +1,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ddb102e (fixed typos in bash scripts and condor file)
 Could not find conda environment: 573-project
 You can list all discoverable environments with `conda info --envs`.
 
@@ -8,6 +11,7 @@ You can list all discoverable environments with `conda info --envs`.
     def __init__(self, roberta_config_path: str, forest_config_path: str, logreg_config_path: str) -> None:
                                           ^
 SyntaxError: invalid syntax
+<<<<<<< HEAD
 Traceback (most recent call last):
   File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 191, in <module>
     main(args)
@@ -82,3 +86,5 @@ Traceback (most recent call last):
     handle = open(
 FileNotFoundError: [Errno 2] No such file or directory: '/projects/assigned/2122_ling573_elibales/repo/src/data/hurtlex_en.tsv'
 >>>>>>> 30455ed (tested refactorization)
+=======
+>>>>>>> ddb102e (fixed typos in bash scripts and condor file)
