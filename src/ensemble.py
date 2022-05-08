@@ -1,9 +1,3 @@
-#option 1 
-	# create a class with two models, feed final output into a classifier layer
-	#https://towardsdatascience.com/ensembling-huggingfacetransformer-models-f21c260dbb09
-#option 2
-	# early fusion with roberta as one of the layers
-
 import json
 import utils
 import torch
@@ -12,7 +6,6 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize
-from classifier import NNClassifier
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
