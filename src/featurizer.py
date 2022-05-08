@@ -124,6 +124,7 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	# create lexical vector
 	print("create lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
+	print("lv shape: {}".format(np.shape(lv)))
 
 	# get empathy vectors
 	print("get empathy ratings...")
@@ -133,13 +134,16 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
+	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
-	print("getting tf-idf...")
-	tf = get_tfidf(preprocessed_sentences, vectorizer)
+	#print("getting tf-idf...")
+	#tf = get_tfidf(preprocessed_sentences, vectorizer)
+	#print("tf shape: {}".format(np.shape(tf)))
 
 	# normalize the vectors
 	print("normalizing vectors...")
-	nv = utils.normalize_vector(nerv, lv, tf, em)
+	#nv = utils.normalize_vector(nerv, lv, tf, em)
+	nv = utils.normalize_vector(nerv, lv, em)
 	print(nv)
 	
 	return nv
