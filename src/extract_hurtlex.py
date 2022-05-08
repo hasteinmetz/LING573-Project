@@ -67,7 +67,7 @@ def count_feature(sentence, lex_dict, feature_list, tagger):
 #main function
 def extract_hurtlex(data_file):
     """
-    input data, output a 17 * (# of datapoints) ndarray
+    input data, output a (# of datapoints, 17) ndarray
     """
     #PARAMETER
     input_lex = "/home2/pbban/LING573-Project/src/data/hurtlex_en.tsv"
