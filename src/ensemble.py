@@ -113,8 +113,8 @@ def main(args: argparse.Namespace) -> None:
 		print(f"Using {device} device")
 
 	#load data
-	train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
-	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
+	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path)
+	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path)
 	
 	#initialize ensemble model
 	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistical_regression_config)
