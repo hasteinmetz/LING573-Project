@@ -69,3 +69,4 @@ dependencies:
   - spacy
   - empath
   - nltk
+  - spacy-model-en_core_web_sm

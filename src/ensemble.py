@@ -167,8 +167,8 @@ def main(args: argparse.Namespace) -> None:
 
 	#get tokenized input
 	print("tokenizing inputs for roberta model...")
-	train_encodings = ensemble_model.roberta_tokenizer.tokenize(train_sentences, return_tensors='pt', padding=True)
-	dev_encodings = ensemble_model.roberta_tokenizer.tokenize(dev_sentences, return_tensors='pt', padding=True)
+	train_encodings = ensemble_model.roberta_tokenizer(train_sentences, return_tensors='pt', padding=True)
+	dev_encodings = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors='pt', padding=True)
 
 	#send to train
 	print("training ensemble model...")
