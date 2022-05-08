@@ -1,7 +1,7 @@
 from tkinter import W
 import nltk
 import utils
-import common_utils
+import utils
 import numpy as np
 import pandas as pd
 from typing import *
