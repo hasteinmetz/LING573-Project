@@ -1,6 +1,9 @@
 from tkinter import W
 import nltk
+import utils
+import common_utils
 import numpy as np
+import pandas as pd
 from typing import *
 from empath import Empath
 from string import punctuation
@@ -11,7 +14,7 @@ pca_component_num = 0
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
 	arguments:
-		- input_sentences: list of input data to extract NER features for
+		- data: list of input data to extract NER features for
 	returns:
 		a numpy array of [num_documents, 6] where 6 is the number of NER categories
 	'''
@@ -25,7 +28,7 @@ def get_ner_matrix(data: List[str]) -> np.ndarray:
 		"GSP": 5
 	}
 	total_list = []
-	for row in input_sentences:
+	for row in data:
 		tokenized = nltk.word_tokenize(row)  # tokenize
 		tagged = nltk.pos_tag(tokenized)  # get pos-tags, necessary for nltk.ne_chunk
 		ne_tree = nltk.ne_chunk(tagged)  # develop tree, which defines what is a named entity

@@ -6,6 +6,8 @@ script for common functions
 
 import csv
 import json
+import spacy
+import utils
 import numpy as np
 import pandas as pd
 from typing import *
