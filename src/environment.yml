@@ -68,3 +68,4 @@ dependencies:
   - cudatoolkit=10.2
   - spacy
   - empath
+  - nltk
