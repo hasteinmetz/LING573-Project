@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
 	"param_grid": 
 	{
@@ -18,3 +19,6 @@
 =======
 {"n_estimators": 300, "min_samples_split": 6, "min_samples_leaf": 1, "max_features": "auto", "max_depth": 80, "bootstrap": false}
 >>>>>>> da4b6c7 (optimal rf classifier parameters identified)
+=======
+{"n_estimators": 300, "min_samples_split": 3, "min_samples_leaf": 1, "max_features": "sqrt", "max_depth": 70, "bootstrap": false}
+>>>>>>> 22a5462 (fixing typos with rf training bash script)
