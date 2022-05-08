@@ -66,6 +66,7 @@ class Ensemble():
 
 def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> None:
 	#train random forest
+	print("\ttraining random forest classifier...")
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
 
@@ -80,6 +81,7 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
+	print("\ttraining logistic regression classifier")
 	ensemble.classifier.fit(combined_class_prob, train_labels)
 
 	#output training performance
@@ -98,6 +100,8 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	predicted_labels = ensemble.classifier.predict(combined_class_prob)
+	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
+	print("\tdev accuracy: {}".format(predicted_accuracy))
 	return predicted_labels
 
 def main(args: argparse.Namespace) -> None:
@@ -113,27 +117,34 @@ def main(args: argparse.Namespace) -> None:
 		print(f"Using {device} device")
 
 	#load data
+	print("loading training and development data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path)
 	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path)
 	
 	#initialize ensemble model
+	print("initializing ensemble architecture")
 	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistical_regression_config)
 
 	#get features
+	print("featurizing training and dev data...")
 	train_feature_vector = featurize(train_sentences, train_labels)
 	dev_feature_vector = featurize(dev_sentences, dev_labels)
 
 	#get tokenized input
+	print("tokenizing inputs for roberta model...")
 	train_encodings = ensemble_model.roberta_tokenizer.tokenize(train_sentences, return_tensors='pt', padding=True)
 	dev_encodings = ensemble_model.roberta_tokenizer.tokenize(dev_sentences, return_tensors='pt', padding=True)
 
 	#send to train
+	print("training ensemble model...")
 	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_encodings, device)
 
 	#run whole ensemble on dev data 
+	print("predicting dev labels...")
 	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_encodings, device)
 
 	#output results
+	print("outputting dev classification output...")
 	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_predicted_labels, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
