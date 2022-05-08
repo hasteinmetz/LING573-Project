@@ -2,7 +2,7 @@ import re
 import csv
 import nltk
 import utils
-import common_utils
+import utils
 import numpy as np
 import pandas as pd
 from typing import *
@@ -103,11 +103,6 @@ def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.nd
 	matrix = fitted_vectorizer.transform(sentences)
 	return matrix.toarray()
 
-def preprocess_for_featurization(data: List[str]) -> List[str]:
-	preprocessed_quotes_sentences = utils.preprocess_quotes(data)
-	lemmatized_sentences = common_utils.lemmatize(preprocessed_quotes_sentences)
-	return lemmatized_sentences
-
 def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	'''
 	arguments:
@@ -119,12 +114,12 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
 	'''
 	# get NER vector 
-	# TODO: check with eli whether ner will still work after quotes are removed and lemmatization is applied
+	# TODO: check with eli whether ner will still work after lemmatization is applied
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
 	print("preprocessing data...")
-	preprocessed_sentences = preprocess_for_featurization(sentences)
+	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
 	print("create lexical vector...")
@@ -144,7 +139,7 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 
 	# normalize the vectors
 	print("normalizing vectors...")
-	nv = common_utils.normalize_vector(nerv, lv, tf, em)
+	nv = utils.normalize_vector(nerv, lv, tf, em)
 	print(nv)
 	
 	return nv

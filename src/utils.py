@@ -6,7 +6,6 @@ script for common functions
 import csv
 import json
 import spacy
-import utils
 import numpy as np
 from typing import *
 from functools import reduce
