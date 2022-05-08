@@ -7,14 +7,16 @@
 import json
 import utils
 import torch
-nn = torch.nn
 import argparse
+import featurizer
 from typing import *
 from classifier import NNClassifier
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import RandomizedSearchCV
+
+nn = torch.nn
 
 class Ensemble():
 	def __init__(self, roberta_config_path: str, forest_config_path: str, logreg_config_path: str) -> None:
@@ -65,11 +67,24 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat, train_labels, train_data:
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 
 	#get roberta embeddings
-	
 
+	#convert feature vec to tensor? or vice versa
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 
 	#output training performance
+
+def get_lexical_features(sentences: List[str]) -> None:
+	'''
+	arguments:
+		- sentences: list of input data to be featurized
+	returns:
+		a () feature vector
+	
+	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
+	'''
+	
+	# (6399, 6), numpy array
+	ner_featurized_data = featurizer.get_ner_matrix(sentences)
 
 def main(args: argparse.Namespace) -> None:
 	#load data
