@@ -6,8 +6,6 @@ script for common functions
 
 import csv
 import json
-import time
-import spacy
 import numpy as np
 import pandas as pd
 from typing import *
@@ -56,7 +54,6 @@ def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, enc
 		for i in range(len(data)):
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
-
 
 def load_json_config(filepath: str) -> dict:
 	'''

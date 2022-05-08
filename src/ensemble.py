@@ -28,31 +28,67 @@ nn = torch.nn
 import argparse
 from typing import *
 from classifier import NNClassifier
-from transformers import RobertaForSequenceClassification, RobertaTokenizer
+from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import RandomizedSearchCV
 
 class Ensemble():
-	def __init__(self, config, args: argparse.Namespace) -> None:
-
+	def __init__(self, roberta_config_path: str, forest_config_path: str, logreg_config_path: str) -> None:
+		'''
+		arguments:
+			- roberta_config_path: filepath to .json config specifying parameters for roberta model
+			- forest_config_path: filepath to .json config specifying parameters for random forest classifier
+			- logreg_config_path: filepath to .json config specifying parameters for logistic regression classifier
+			- train_lex_feat: training lexical feature instances
+			- train_labels: corresponding labels for training lexical feature instances
+			
+		sets up ensemble model.  expects roberta model to be pretrained. expects random forest and logistic 
+		regression models to require training
+		'''
 		super().__init__()
-		self.roberta_model = RobertaForSequenceClassification(config)
-		self.features_model = nn.LSTM()
-		#update to use args and kwargs
-		self.classifier = NNClassifier()
-		# update classifier to use config?
+		self.roberta_config = RobertaConfig.from_json_file(roberta_config_path)
+		self.roberta_model = RobertaForSequenceClassification(self.roberta_config)
+		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+		self.rf_config = utils.load_json_config(forest_config_path)
+		self.random_forest = None
 
-		#initialize weights
+		logreg_config = utils.load_json_config(logreg_config_path)
+		self.classifier = LogisticRegression(penalty=logreg_config["penalty"], random_state=logreg_config["random_state"],\
+			 solver=logreg_config["solver"], verbose=logreg_config["verbose"])
+	
+	def train_random_forest(self, lexical_features, labels) -> None:
+		'''
+		arguments:
+			- config: grid of parameter options to configure rf model with 
+			- lexical_features: array of lexical features, one row per sample in data
+			- labels: corresponding classification label for each sample
+		returns:
+			sklearn.ensemble.RandomForestClassifier
+		initializes a hyperparameter tuning scheme based off of parameter options provided by config file
+		and finds the optimal set of parameters for the best-performing random forest classifier.
 
-def train():
-	#iterate through epochs
-		# iterate through data
-			# feed regular input to roberta
-			# feed features to LSTM
-			# concatenate outputs
-			# feed through classifier
-			# update classifier loss
-	return
+		uses cross-fold validation while training.
+		'''
+		rf = RandomForestClassifier()
+		hyperparam_tuner = RandomizedSearchCV(estimator=rf, param_distributions=self.rf_config["param_grid"], n_iter=self.rf_config["n_iter"], \
+			cv=self.rf_config["cv"], verbose=self.rf_config["verbose"], random_state=self.rf_config["random_state"], n_jobs=self.rf_config["n_jobs"])
+		hyperparam_tuner.fit(lexical_features, labels)
+		self.random_forest = hyperparam_tuner.best_estimator_
 
-def main():
+
+def train_ensemble(ensemble: Ensemble, train_lex_feat, train_labels, train_data: BatchEncoding) -> None:
+	#train random forest
+	ensemble.train_random_forest(train_lex_feat, train_labels)
+
+	#get roberta embeddings
+	
+
+	#combine rf output and roberta embeddings and feed to logisitical regression model
+
+	#output training performance
+
+def main(args: argparse.Namespace) -> None:
 	#load data
 	print("loading training and development data...")
 	train_sentences, train_labels = utils.read_adaptation_data(args.train_data_path)
@@ -85,8 +121,16 @@ def main():
 	train_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 	dev_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 
+	#get tokenized input
+	train_encodings = ensemble_model.roberta_tokenizer.tokenize(train_sentences, return_tensors='pt', padding=True)
+	dev_encodings = ensemble_model.roberta_tokenizer.tokenize(dev_sentences, return_tensors='pt', padding=True)
+
 	#send to train
-	return
+	train_ensemble(ensemble_model, lexical_features, labels, train_encodings)
+
+	#run whole ensemble on dev data 
+
+	#output results
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
