@@ -4,6 +4,7 @@
 script for common functions
 """
 import csv
+import json
 import numpy as np
 from typing import *
 
@@ -47,3 +48,16 @@ def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, enc
 		for i in range(len(data)):
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
+
+def load_json_config(filepath: str) -> dict:
+	'''
+	arguments:
+		- filepath: full filepath pointing to json config file
+
+	opens file and loads configuration into a dictionary
+	'''
+	config = None
+	with open(filepath, 'r') as f:
+		config = json.load(f)
+	
+	return config

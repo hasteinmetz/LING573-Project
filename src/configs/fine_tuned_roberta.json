@@ -1,0 +1,9 @@
+{
+	"name_or_path": "src/models/roberta-fine-tuned",
+	"model_type": "roberta",
+	"num_labels": 2,
+	"tokenizer_class": "RobertaTokenizer",
+	"learning_rate": 0.00005,
+	"batch_size": 32,
+	"epochs": 1
+}
