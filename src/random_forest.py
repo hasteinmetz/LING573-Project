@@ -2,6 +2,7 @@ import json
 import time
 import utils
 import argparse
+import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize
@@ -60,7 +61,7 @@ def main(args: argparse.Namespace) -> None:
 	rf_classifier = rf_trainer.best_estimator_
 	dev_acc = rf_classifier.score(dev_feature_vector, dev_labels)
 	print("best score on dev data:{}".format(dev_acc))
-	dev_pred = rf_classifier.predict(dev_feature_vector)
+	dev_pred = rf_classifier.pred(dev_feature_vector)
 	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_pred, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.results_output_path, index=False, encoding='utf-8')
@@ -71,7 +72,6 @@ if __name__ == '__main__':
 	parser.add_argument("--rf_train_config", help="configuration settings for random forest classifier")
 	parser.add_argument("--train_data_path", help="path to input training data file")
 	parser.add_argument("--dev_data_path", help="path to input dev data file")
-	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
 	parser.add_argument("--results_output_path", help="path to where classification results of best model should be written to")
 	parser.add_argument("--param_output_path", help="path to where optimal parameters should be written to")
 	args = parser.parse_args()

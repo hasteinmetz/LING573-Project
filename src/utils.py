@@ -6,6 +6,7 @@ script for common functions
 
 import csv
 import json
+import time
 import spacy
 import numpy as np
 import pandas as pd

@@ -43,12 +43,6 @@ class FineTuneDataSet(Dataset):
     def __len__(self):
         return len(self.labels)
 
-
-def get_time(start_time: float) -> str:
-    minutes, sec = divmod(time.time() - start_time, 60)
-    return f"{str(round(minutes))}min {str(round(sec))}sec"
-
-
 def metrics(measure, evalpred: EvalPrediction) -> tuple:
     '''Helper function to compute the f1 and accuracy scores using
     the Transformers package's data structures'''

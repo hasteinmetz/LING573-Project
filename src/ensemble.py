@@ -29,7 +29,6 @@ import argparse
 import featurizer
 from typing import *
 from featurizer import featurize
-from classifier import NNClassifier
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
