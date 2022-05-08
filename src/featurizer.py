@@ -224,6 +224,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	# create lexical vector
 	print("\tcreate lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
+	print("lv shape: {}".format(np.shape(lv)))
 
 	# get empathy vectors
 	print("\tget empathy ratings...")
@@ -234,6 +235,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
+	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
 	print("getting tf-idf...")
 	tf = get_tfidf(preprocessed_sentences, vectorizer)

@@ -61,7 +61,7 @@ def main(args: argparse.Namespace) -> None:
 	rf_classifier = rf_trainer.best_estimator_
 	dev_acc = rf_classifier.score(dev_feature_vector, dev_labels)
 	print("best score on dev data:{}".format(dev_acc))
-	dev_pred = rf_classifier.pred(dev_feature_vector)
+	dev_pred = rf_classifier.predict(dev_feature_vector)
 	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_pred, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.results_output_path, index=False, encoding='utf-8')
