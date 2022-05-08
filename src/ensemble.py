@@ -5,11 +5,12 @@
 	# early fusion with roberta as one of the layers
 
 import json
-import utils
+import common_utils
 import torch
 import argparse
-import featurizer
+import numpy as np
 from typing import *
+from featurizer import featurize
 from classifier import NNClassifier
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
@@ -35,10 +36,10 @@ class Ensemble():
 		self.roberta_config = RobertaConfig.from_json_file(roberta_config_path)
 		self.roberta_model = RobertaForSequenceClassification(self.roberta_config)
 		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-		self.rf_config = utils.load_json_config(forest_config_path)
+		self.rf_config = common_utils.load_json_config(forest_config_path)
 		self.random_forest = None
 
-		logreg_config = utils.load_json_config(logreg_config_path)
+		logreg_config = common_utils.load_json_config(logreg_config_path)
 		self.classifier = LogisticRegression(penalty=logreg_config["penalty"], random_state=logreg_config["random_state"],\
 			 solver=logreg_config["solver"], verbose=logreg_config["verbose"])
 	
@@ -62,51 +63,79 @@ class Ensemble():
 		self.random_forest = hyperparam_tuner.best_estimator_
 
 
-def train_ensemble(ensemble: Ensemble, train_lex_feat, train_labels, train_data: BatchEncoding) -> None:
+def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> None:
 	#train random forest
 	ensemble.train_random_forest(train_lex_feat, train_labels)
+	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
 
 	#get roberta embeddings
+	ensemble.roberta_model.eval()
+	ensemble.roberta_model.to(device)
+	roberta_class_prob = None
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+		logits = outputs.logits
+		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
-	#convert feature vec to tensor? or vice versa
 	#combine rf output and roberta embeddings and feed to logisitical regression model
+	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
+	ensemble.classifier.fit(combined_class_prob, train_labels)
 
 	#output training performance
+	training_accuracy = ensemble.classifier.score(combined_class_prob, train_labels)
+	print("training accuracy: {}".format(training_accuracy))
 
-def get_lexical_features(sentences: List[str]) -> None:
-	'''
-	arguments:
-		- sentences: list of input data to be featurized
-	returns:
-		a () feature vector
-	
-	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
-	'''
-	
-	# (6399, 6), numpy array
-	ner_featurized_data = featurizer.get_ner_matrix(sentences)
+def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> np.ndarray:
+	rf_class_prob = ensemble.random_forest.predict_proba(dev_lex_feat)
+
+	ensemble.roberta_model.eval()
+	ensemble.roberta_model.to(device)
+	roberta_class_prob = None
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+		logits = outputs.logits
+		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
+	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
+	predicted_labels = ensemble.classifier.predict(combined_class_prob)
+	return predicted_labels
 
 def main(args: argparse.Namespace) -> None:
+	# check if cuda is avaiable
+	device = "cpu"
+	if torch.cuda.is_available():
+		device = "cuda"
+		torch.device(device)
+		print(f"Using {device} device")
+		print(f"Using the GPU:{torch.cuda.get_device_name(0)}")
+	else:
+		torch.device(device)
+		print(f"Using {device} device")
+
 	#load data
-	#todo: split data with holdout group
-	train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
-	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
+	train_sentences, train_labels = common_utils.read_data_from_file(args.train_sentences)
+	dev_sentences, dev_labels = common_utils.read_data_from_file(args.dev_sentences)
 	
 	#initialize ensemble model
 	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistical_regression_config)
 
 	#get features
+	train_feature_vector = featurize(train_sentences, train_labels)
+	dev_feature_vector = featurize(dev_sentences, dev_labels)
 
 	#get tokenized input
 	train_encodings = ensemble_model.roberta_tokenizer.tokenize(train_sentences, return_tensors='pt', padding=True)
 	dev_encodings = ensemble_model.roberta_tokenizer.tokenize(dev_sentences, return_tensors='pt', padding=True)
 
 	#send to train
-	train_ensemble(ensemble_model, lexical_features, labels, train_encodings)
+	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_encodings, device)
 
 	#run whole ensemble on dev data 
+	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_encodings, device)
 
 	#output results
+	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_predicted_labels, 'correct_label': dev_labels}
+	dev_out = pd.DataFrame(dev_out_d)
+	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()

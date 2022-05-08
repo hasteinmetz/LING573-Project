@@ -7,7 +7,7 @@
 
 import time
 import torch
-import utils
+import common_utils
 import argparse
 import pandas as pd
 import numpy as np
@@ -163,7 +163,7 @@ def roberta_io(model: RobertaModel, sentences: List[str],
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in the training and development data
-    train_sentences, train_labels = utils.read_data_from_file(sentences)
+    train_sentences, train_labels = common_utils.read_data_from_file(sentences)
     train_data = FineTuneDataSet(train_sentences, train_labels)
 
     # evaluate model
@@ -191,8 +191,8 @@ def main(args: argparse.Namespace) -> None:
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in the training and development data
-    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
-    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
+    train_sentences, train_labels = common_utils.read_data_from_file(args.train_sentences)
+    dev_sentences, dev_labels = common_utils.read_data_from_file(args.dev_sentences)
 
     # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
     if args.debug == 1:
