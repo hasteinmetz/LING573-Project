@@ -40,6 +40,10 @@ class Ensemble():
 		self.roberta_model.resize_token_embeddings(len(self.roberta_tokenizer))
 		self.rf_config = utils.load_json_config(forest_config_path)
 		self.random_forest = None
+		if 'src/model' in self.roberta_config._name_or_path:
+			self.pretrained = 'fine-tuned'
+		else:
+			self.pretrained = 'roberta-base'
 
 		logreg_config = utils.load_json_config(logreg_config_path)
 		self.classifier = LogisticRegression(penalty=logreg_config["penalty"], random_state=logreg_config["random_state"],\
@@ -88,7 +92,89 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
 
-	#get roberta embeddings
+
+def train_roberta(ensemble: Ensemble, roberta_inputs: np.ndarray, train_labels: List[str], device: str) -> None:
+	'''Helper function to fine-tune roberta. Used with the train_ensemble function below'''
+	# initialize the roberta classifier
+	# set up the model and variables for fine-tuning
+	assert(ensemble.pretrained == 'roberta-base')
+	learning_rate = ensemble.roberta_config.learning_rate
+	optimizer = AdamW(ensemble.roberta_model.parameters(), lr=learning_rate)
+	batch_size = ensemble.roberta_config.batch_size
+	num_epochs = ensemble.roberta_config.epochs
+	num_training_steps = num_epochs * len(train_dataloader)
+	lr_scheduler = get_scheduler(
+		name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
+	)
+	roberta_class_prob = None
+
+	# set up the data loader
+	data_loader = DataLoader(FineTuneDataSet(roberta_inputs, train_labels), batch_size=batch_size)
+
+		for batch in eval_dataloader:
+			batch['labels'] = batch.pop('label')
+			labels = batch['labels']
+
+			# assign each element of the batch to the device
+			batch = {k: v.to(device) for k, v in batch.items()}
+			outputs = model(**batch)
+			
+			# get batched results
+			loss = outputs.loss
+			loss.backward()
+
+			optimizer.step()
+			lr_scheduler.step()
+			optimizer.zero_grad()
+
+			# add batch to output
+			pred_argmax = torch.argmax(logits, dim = -1)
+			as_list = pred_argmax.clone().detach().to('cpu').tolist()
+
+
+def train_ensemble(ensemble: Ensemble, train_sentences: List[str], train_labels: List[str], device: str) -> None:
+
+	# split the training data into 7-folds
+	print("\tsplitting data in k-folds to cross-validate...")
+	kfolds = StratifiedKFold(n_splits=7)
+	kfolds.get_n_splits(train_sentences, train_labels)
+	
+	# put the model into train mode and send to GPU
+	ensemble.roberta_model.train()
+	ensemble.roberta_model.to(device)
+
+	for train_index, test_index in kfolds.split(train_sentences, train_labels)
+
+		base_models_train, base_models_labels = train_sentences[train_index], train_labels[train_index]
+		meta_model_train, meta_model_labels = train_sentences[test_index], train_labels[test_index]
+
+		# get the inputs for the corresponding training data
+		train_lex_feat, train_roberta_input = get_ensemble_inputs(train_sentences, train_labels, ensemble)
+		meta_lex_feat, meta_roberta_input = get_ensemble_inputs(train_sentences, train_labels, ensemble)
+
+		print(f"\t((train-fold {train_index}, test_fold {test_index}) training random forest classifier...")
+
+		ensemble.train_random_forest(train_lex_feat, base_models_labels)
+		rf_class_prob = ensemble.random_forest.predict_proba(meta_lex_feat)
+
+		# train roberta
+		train_roberta(ensemble, base_models_train, base_models_labels, base_models_labels, device)
+
+		# get roberta predictions
+		roberta_class_prob = predict_roberta(ensemble, meta_model_train, device)
+
+		# combine rf output and roberta embeddings and feed to logisitical regression model
+		combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
+		print("\ttraining logistic regression classifier")
+		ensemble.classifier.fit(combined_class_prob, meta_model_labels)
+
+		#output training performance
+		training_accuracy = ensemble.classifier.score(combined_class_prob, meta_model_labels)
+		print("training accuracy: {}".format(training_accuracy))
+
+
+def predict_roberta(ensemble: Ensemble, roberta_input: np.ndarray, device: str) -> np.ndarray:
+	'''Get predictions from the roberta model in the ensemble'''
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
 	dl = DataLoader(roberta_input, batch_size=32)
@@ -153,6 +239,7 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
 	print("\tdev accuracy: {}".format(predicted_accuracy))
 	return predicted_labels, predicted_accuracy
+
 
 
 def main(args: argparse.Namespace) -> None:
