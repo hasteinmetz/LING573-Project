@@ -5,23 +5,22 @@
 - https://huggingface.co/transformers/v3.2.0/custom_datasets.html#seq-imdb
 '''
 
+import time
 import torch
-from torch.utils.data import DataLoader, Dataset
 import utils
 import argparse
-import numpy as np
-import time
-from typing import *
-from transformers import RobertaTokenizer
-from transformers import RobertaForSequenceClassification as RobertaModel
-from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
-from datasets import load_metric
 import pandas as pd
+import numpy as np
+from typing import *
+from datasets import load_metric
+from torch.utils.data import DataLoader, Dataset
+from transformers import RobertaForSequenceClassification as RobertaModel
+from transformers import RobertaTokenizer, DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
-    and behaves list a list but also stores sentences and labels for
+    and behaves like a list but also stores sentences and labels for
     future use'''
     def __init__(self, sentences: List[str], labels: List[int]):
         self.sentences = sentences
