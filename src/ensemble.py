@@ -5,10 +5,11 @@
 	# early fusion with roberta as one of the layers
 
 import json
-import common_utils
+import utils
 import torch
 import argparse
 import numpy as np
+import pandas as pd
 from typing import *
 from featurizer import featurize
 from classifier import NNClassifier
@@ -36,10 +37,10 @@ class Ensemble():
 		self.roberta_config = RobertaConfig.from_json_file(roberta_config_path)
 		self.roberta_model = RobertaForSequenceClassification(self.roberta_config)
 		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-		self.rf_config = common_utils.load_json_config(forest_config_path)
+		self.rf_config = utils.load_json_config(forest_config_path)
 		self.random_forest = None
 
-		logreg_config = common_utils.load_json_config(logreg_config_path)
+		logreg_config = utils.load_json_config(logreg_config_path)
 		self.classifier = LogisticRegression(penalty=logreg_config["penalty"], random_state=logreg_config["random_state"],\
 			 solver=logreg_config["solver"], verbose=logreg_config["verbose"])
 	
@@ -112,8 +113,8 @@ def main(args: argparse.Namespace) -> None:
 		print(f"Using {device} device")
 
 	#load data
-	train_sentences, train_labels = common_utils.read_data_from_file(args.train_sentences)
-	dev_sentences, dev_labels = common_utils.read_data_from_file(args.dev_sentences)
+	train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
+	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
 	
 	#initialize ensemble model
 	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistical_regression_config)
