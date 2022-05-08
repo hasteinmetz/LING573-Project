@@ -53,11 +53,11 @@ class Ensemble():
 		self.random_forest = RandomForestClassifier(n_estimators=self.rf_config["n_estimators"], bootstrap=self.rf_config["bootstrap"],\
 			 max_depth=self.rf_config["max_depth"], max_features=self.rf_config["max_features"],\
 				  min_samples_leaf=self.rf_config["min_samples_leaf"], min_samples_split=self.rf_config["min_samples_split"],\
-					  n_jobs=self.rf_config["n_jobs"])
+					  n_jobs=-1)
 		cross_validation_trainer = StratifiedKFold(n_splits=9, random_state=42, shuffle=True)
 		accuracy = {"train": [], "test": []}
-		for (train_idx, test_idx) in zip(cross_validation_trainer.split(lexical_features, labels)):
-			self.random_forest.fit(lexical_features.iloc[train_idx], labels[train_idx])
+		for (train_idx, test_idx), i in zip(cross_validation_trainer.split(lexical_features, labels), range(9)):
+			self.random_forest.fit(lexical_features[np.asarray(train_idx)], labels[np.asarray(train_idx)])
 			accuracy["train"].append(self.random_forest.score(lexical_features[train_idx], labels[train_idx]))
 			accuracy["test"].append(self.random_forest.score(lexical_features[test_idx], labels[test_idx]))
 		accuracy_df = pd.DataFrame(accuracy)
@@ -77,10 +77,12 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	roberta_class_prob = None
 	eval_dataloader = DataLoader(roberta_input, batch_size=1)
 	for batch in eval_dataloader:
+		batch["labels"] = batch.pop('label')
 		batch = {k: v.to(device) for k, v in batch.items()}
+		print(batch.shape())
 
 		with torch.no_grad():
-			outputs = ensemble.roberta_model(batch)
+			outputs = ensemble.roberta_model(**batch)
 		logits = outputs.logits
 		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
@@ -105,11 +107,13 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 	# iterate through batches to get outputs
 	for batch in eval_dataloader:
 		# assign each element of the batch to the device
+		batch["labels"] = batch.pop('label')
 		batch = {k: v.to(device) for k, v in batch.items()}
+		print(batch.shape())
 	
 		# get batched results
 		with torch.no_grad():
-			outputs = ensemble.roberta_model(batch)
+			outputs = ensemble.roberta_model(**batch)
 		logits = outputs.logits
 		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
