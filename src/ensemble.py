@@ -75,8 +75,8 @@ class Ensemble():
 		uses cross-fold validation while training.
 		'''
 		rf = RandomForestClassifier()
-		hyperparam_tuner = RandomizedSearchCV(estimator=rf, param_distributions=self.rf_config["param_grid"], n_iter=self.rf_config["n_iter"], \
-			cv=self.rf_config["cv"], verbose=self.rf_config["verbose"], random_state=self.rf_config["random_state"], n_jobs=self.rf_config["n_jobs"])
+		#hyperparam_tuner = RandomizedSearchCV(estimator=rf, param_distributions=self.rf_config["param_grid"], n_iter=self.rf_config["n_iter"], \
+		#	cv=self.rf_config["cv"], verbose=self.rf_config["verbose"], random_state=self.rf_config["random_state"], n_jobs=self.rf_config["n_jobs"])
 		hyperparam_tuner.fit(lexical_features, labels)
 		self.random_forest = hyperparam_tuner.best_estimator_
 
