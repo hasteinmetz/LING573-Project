@@ -7,7 +7,7 @@ import utils
 
 def read_from_tsv(lex_data):
     """
-    read in and codify hurtlex in the format of 'lemma:[category, tag]'
+    read in and output hurtlex dictionary in the format of 'lemma:[category, tag]'
     """
     output_dict = {}
 
@@ -37,7 +37,7 @@ def check_phrase(sentence, lex_dict):
 
 def count_feature(sentence, lex_dict, feature_list, tagger):
     """
-    input a sentence, output the encoding of the hurtlex feature
+    input a sentence, output the encoding of the hurtlex feature as a len=17 list
     """
     #set up
     count = dict.fromkeys(feature_list, 0)
@@ -70,8 +70,8 @@ def extract_hurtlex(data_file):
     input data, output a (# of datapoints, 17) ndarray
     """
     #PARAMETER
-    input_lex = "/home2/pbban/LING573-Project/src/data/hurtlex_en.tsv"
-    #data_file = "/home2/pbban/LING573-Project/src/data/hahackathon_prepo1_dev.csv"
+    input_lex = "/projects/assigned/2122_ling573_elibales/repo/src/data/hurtlex_en.tsv"
+    #data_file = "/projects/assigned/2122_ling573_elibales/repo/src/data/hahackathon_prepo1_dev.csv"
 
     #set up
     j = 0
