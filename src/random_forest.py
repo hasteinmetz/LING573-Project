@@ -2,6 +2,7 @@ import json
 import time
 import utils
 import argparse
+import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize
@@ -34,11 +35,9 @@ def main(args: argparse.Namespace) -> None:
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path)
 	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path)
 
-	print("preparing hurtlex dictionary...")
-	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
-	print("featurizing training and dev data...")
-	train_feature_vector = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list)
-	dev_feature_vector = featurize(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list)
+	print("featurizing data...")
+	train_feature_vector = featurize(train_sentences, train_labels)
+	dev_feature_vector = featurize(dev_sentences, dev_labels)
 
 	print("finding optimal parameter settings...")
 	print(f"({utils.get_time(start_time)}) starting random forest hyperparameter search...\n")
@@ -55,7 +54,7 @@ def main(args: argparse.Namespace) -> None:
 	rf_classifier = rf_trainer.best_estimator_
 	dev_acc = rf_classifier.score(dev_feature_vector, dev_labels)
 	print("best score on dev data:{}".format(dev_acc))
-	dev_pred = rf_classifier.predict(dev_feature_vector)
+	dev_pred = rf_classifier.pred(dev_feature_vector)
 	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_pred, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.results_output_path, index=False, encoding='utf-8')
@@ -66,7 +65,6 @@ if __name__ == '__main__':
 	parser.add_argument("--rf_train_config", help="configuration settings for random forest classifier")
 	parser.add_argument("--train_data_path", help="path to input training data file")
 	parser.add_argument("--dev_data_path", help="path to input dev data file")
-	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
 	parser.add_argument("--results_output_path", help="path to where classification results of best model should be written to")
 	parser.add_argument("--param_output_path", help="path to where optimal parameters should be written to")
 	args = parser.parse_args()

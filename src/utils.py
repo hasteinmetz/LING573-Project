@@ -6,6 +6,7 @@ script for common functions
 
 import csv
 import json
+import time
 import spacy
 import numpy as np
 import pandas as pd
@@ -84,3 +85,7 @@ def lemmatize(sentences: List[str]) -> List[str]:
 	lemmatize = lambda x: reduce(to_str, [tkn.lemma_ for tkn in processer(x)])
 	new_sents = [lemmatize(x) for x in sentences]
 	return new_sents
+
+def get_time(start_time: float) -> str:
+	minutes, sec = divmod(time.time() - start_time, 60)
+	return f"{str(round(minutes))}min {str(round(sec))}sec"
