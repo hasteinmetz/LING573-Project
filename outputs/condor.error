@@ -3,14 +3,24 @@ Traceback (most recent call last):
     main(args)
   File "/home2/apai3/ling573/src/ensemble.py", line 140, in main
     train_ensemble(ensemble_model, train_feature_vector, train_labels, train_encodings, device)
-  File "/home2/apai3/ling573/src/ensemble.py", line 70, in train_ensemble
-    ensemble.train_random_forest(train_lex_feat, train_labels)
-  File "/home2/apai3/ling573/src/ensemble.py", line 63, in train_random_forest
-    hyperparam_tuner.fit(lexical_features, labels)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 891, in fit
-    self._run_search(evaluate_candidates)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 1767, in _run_search
-    ParameterSampler(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 266, in __init__
-    raise TypeError(
-TypeError: Parameter value is not iterable or distribution (key='bootstrap', value=True)
+  File "/home2/apai3/ling573/src/ensemble.py", line 78, in train_ensemble
+    outputs = ensemble.roberta_model(**roberta_input)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 1206, in forward
+    outputs = self.roberta(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 846, in forward
+    embedding_output = self.embeddings(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 131, in forward
+    inputs_embeds = self.word_embeddings(input_ids)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/sparse.py", line 158, in forward
+    return F.embedding(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/functional.py", line 2044, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+IndexError: index out of range in self
