@@ -6,8 +6,6 @@ script for common functions
 
 import csv
 import json
-import time
-import spacy
 import numpy as np
 import pandas as pd
 from typing import *
@@ -57,7 +55,6 @@ def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, enc
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
 
-
 def load_json_config(filepath: str) -> dict:
 	'''
 	arguments:
@@ -70,41 +67,3 @@ def load_json_config(filepath: str) -> dict:
 		config = json.load(f)
 	
 	return config
-
-
-def normalize_vector(*arrays: np.ndarray) -> np.ndarray:
-	'''Take several arrays and concatenate them column-wise before normalizing each row'''
-	concatenated = np.concatenate(arrays, axis=1)
-	norm = Normalizer()
-	return norm.fit(concatenated).transform(concatenated)
-
-
-def lemmatize(sentences: List[str]) -> List[str]:
-	'''Process the sentence into a string of lemmas (to potentially improve the TF-IDF measure)
-	This function requires spacy to use'''
-	processer = spacy.load("en_core_web_sm")
-	lemmatizer = processer.get_pipe("lemmatizer")
-	to_str = lambda x, y: x + " " + y
-	lemmatize = lambda x: reduce(to_str, [tkn.lemma_ for tkn in processer(x)])
-	new_sents = [lemmatize(x) for x in sentences]
-	return new_sents
-
-
-def get_time(start_time: float) -> str:
-	minutes, sec = divmod(time.time() - start_time, 60)
-	return f"{str(round(minutes))}min {str(round(sec))}sec"
-
-
-def read_from_tsv(lex_data: str) -> Tuple[Dict[str,str], set]:
-	"""
-	read in and output hurtlex dictionary in the format of 'lemma:[category, tag]'
-	"""
-	output_dict = {}
-	
-	df = pd.read_csv(lex_data, sep='\t', header=0, usecols=[1,2,4])
-	feature_list = set(df['category'].tolist())
-	
-	df['category'] = df[['category', 'pos']].values.tolist()
-	output_dict = dict(zip(df.lemma, df.category))
-	
-	return output_dict, feature_list
