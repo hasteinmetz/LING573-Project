@@ -1,6 +1,0 @@
-{
-	"penalty": "l1",
-	"random_state": 42,
-	"solver": "liblinear",
-	"verbose": 2
-}

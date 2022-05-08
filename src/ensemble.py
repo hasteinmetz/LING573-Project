@@ -141,11 +141,10 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--roberta_config", help="configuration settings for roberta model")
 	parser.add_argument("--random_forest_config", help="configuration settings for random forest classifier")
-	parser.add_argument("--logistical_regression_config", help="configuration settings for logistical regression classifier")
+	parser.add_argument("--logistic_regression_config", help="configuration settings for logistical regression classifier")
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--output_file', help="path to output data file")
-	parser.add_argument('--save_file', help="path to save the pretrained model", default='None', type=str)
 	args = parser.parse_args()
 
 	main(args)
