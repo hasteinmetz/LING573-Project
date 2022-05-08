@@ -5,8 +5,12 @@ script for common functions
 """
 import csv
 import json
+import spacy
+import utils
 import numpy as np
 from typing import *
+from functools import reduce
+from sklearn.preprocessing import Normalizer
 
 def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> List[List[str]]:
 	'''
@@ -61,3 +65,19 @@ def load_json_config(filepath: str) -> dict:
 		config = json.load(f)
 	
 	return config
+
+def normalize_vector(*arrays: np.ndarray) -> np.ndarray:
+	'''Take several arrays and concatenate them column-wise before normalizing each row'''
+	concatenated = np.concatenate(arrays, axis=1)
+	norm = Normalizer()
+	return norm.fit(concatenated).transform(concatenated)
+
+def lemmatize(sentences: List[str]) -> List[str]:
+	'''Process the sentence into a string of lemmas (to potentially improve the TF-IDF measure)
+	This function requires spacy to use'''
+	processer = spacy.load("en_core_web_sm")
+	lemmatizer = processer.get_pipe("lemmatizer")
+	to_str = lambda x, y: x + " " + y
+	lemmatize = lambda x: reduce(to_str, [tkn.lemma_ for tkn in processer(x)])
+	new_sents = [lemmatize(x) for x in sentences]
+	return new_sents
