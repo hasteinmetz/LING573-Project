@@ -1,9 +1,7 @@
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.decoder.weight', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias']
-- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Traceback (most recent call last):
-  File "/home2/hsteinm/573/repo/src/baseline.py", line 149, in <module>
-    main(args)
-  File "/home2/hsteinm/573/repo/src/baseline.py", line 130, in main
-    print(f"scikit learn score: {score}")
-NameError: name 'score' is not defined
+Could not find conda environment: 573-project
+You can list all discoverable environments with `conda info --envs`.
+
+  File "src/ensemble.py", line 23
+    def __init__(self, roberta_config_path: str, forest_config_path: str, logreg_config_path: str) -> None:
+                                          ^
+SyntaxError: invalid syntax
