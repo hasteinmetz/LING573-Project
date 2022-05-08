@@ -123,7 +123,7 @@ def main(args: argparse.Namespace) -> None:
 	
 	#initialize ensemble model
 	print("initializing ensemble architecture")
-	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistical_regression_config)
+	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistic_regression_config)
 
 	#get features
 	print("featurizing training and dev data...")
@@ -132,8 +132,8 @@ def main(args: argparse.Namespace) -> None:
 
 	#get tokenized input
 	print("tokenizing inputs for roberta model...")
-	train_encodings = ensemble_model.roberta_tokenizer.tokenize(train_sentences, return_tensors='pt', padding=True)
-	dev_encodings = ensemble_model.roberta_tokenizer.tokenize(dev_sentences, return_tensors='pt', padding=True)
+	train_encodings = ensemble_model.roberta_tokenizer(train_sentences, return_tensors='pt', padding=True)
+	dev_encodings = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors='pt', padding=True)
 
 	#send to train
 	print("training ensemble model...")
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--roberta_config", help="configuration settings for roberta model")
 	parser.add_argument("--random_forest_config", help="configuration settings for random forest classifier")
-	parser.add_argument("--logistic_regression_config", help="configuration settings for logistical regression classifier")
+	parser.add_argument("--logistic_regression_config", help="configuration settings for logistic regression classifier")
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--output_file', help="path to output data file")
