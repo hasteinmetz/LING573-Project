@@ -14,7 +14,7 @@ outputs/ contains the system outputs.
 
 1. Issue the following command from the root of this repo: condor_submit src/D3.cmd
 
-The accuracy and F1 score of our finet-uned RoBERTa model will be written to the following file: src/outputs/D3/roberta/ft.out
+The accuracy and F1 score of our fine-tuned RoBERTa model will be written to the following file: src/outputs/D3/roberta/ft.out
 
 This can be compared to using a fine-tuned BERTweet, whose output file is: src/outputs/D3/bertweet/ft.out
 
@@ -34,11 +34,11 @@ BERTweet
 
 f1:
 
-         {'f1': 0.9504550050556119}
+     {'f1': 0.9504550050556119}
    
 accuracy:
 
-         {'accuracy': 0.93875}
+     {'accuracy': 0.93875}
 
 
 Our code requires the appropriate conda environment to run properly. We activate the environment, which is saved in our shared space on patas (/projects/assigned/2122_ling573_elibales), within either src/fine-tune-$(model).sh scripts itself.
