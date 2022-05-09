@@ -1,5 +1,4 @@
 import json
-from tkinter import W
 import utils
 import torch
 import argparse
@@ -7,6 +6,7 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize
+from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
 from finetune_dataset import FineTuneDataSet
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
@@ -66,7 +66,7 @@ class Ensemble():
 		print(accuracy_df)
 
 
-def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels: np.ndarray, roberta_input: FineTuneDataSet, device: str) -> None:
+def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> None:
 	#train random forest
 	print("\ttraining random forest classifier...")
 	ensemble.train_random_forest(train_lex_feat, train_labels)
@@ -75,13 +75,19 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	#get roberta embeddings
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
-	roberta_class_prob = None
+	roberta_class_prob = []
+	dl = DataLoader(roberta_input, batch_size=32)
+	for batch in dl:
+		batch['labels'] = batch.pop('label')
+		inputs = {k: y.to(device) for k,y in batch.items()}
 
-	with torch.no_grad():
-		outputs = ensemble.roberta_model(**roberta_input)
-	logits = outputs.logits
-	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
-
+		with torch.no_grad():
+			outputs = ensemble.roberta_model(**inputs)
+		logits = outputs.logits
+		probs = logits.clone().detach().to('cpu').tolist()
+		roberta_class_prob.append(probs)
+	
+	roberta_class_prob = np.asarray(roberta_class_prob)
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	print("\ttraining logistic regression classifier")
@@ -91,23 +97,29 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	training_accuracy = ensemble.classifier.score(combined_class_prob, train_labels)
 	print("training accuracy: {}".format(training_accuracy))
 
-def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray, roberta_input: FineTuneDataSet, device: str) -> np.ndarray:
+def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> Tuple[np.ndarray, float]:
 	rf_class_prob = ensemble.random_forest.predict_proba(dev_lex_feat)
 
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
-	roberta_class_prob = None
+	roberta_class_prob = []
+	dl = DataLoader(roberta_input, batch_size=32)
+	for batch in dl:
+		batch['labels'] = batch.pop('label')
+		inputs = {k: y.to(device) for k,y in batch.items()}
 
-	with torch.no_grad():
-		outputs = ensemble.roberta_model(**roberta_input)
-	logits = outputs.logits
-	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
-
+		with torch.no_grad():
+			outputs = ensemble.roberta_model(**inputs)
+		logits = outputs.logits
+		probs = logits.clone().detach().to('cpu').tolist()
+		roberta_class_prob.append(probs)
+	
+	roberta_class_prob = np.asarray(roberta_class_prob)
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	predicted_labels = ensemble.classifier.predict(combined_class_prob)
 	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
 	print("\tdev accuracy: {}".format(predicted_accuracy))
-	return predicted_labels
+	return predicted_labels, predicted_accuracy
 
 def main(args: argparse.Namespace) -> None:
 	# check if cuda is avaiable
@@ -137,21 +149,33 @@ def main(args: argparse.Namespace) -> None:
 
 	#get tokenized input
 	print("preparing input for roberta model...")
-	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding='max_length', max_length=512)
-	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding='max_length', max_length=512)
+	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding=True)
+	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding=True)
+
+	train_dataset = FineTuneDataset(train_sentences, train_labels)
+	dev_dataset = FineTuneDataset(dev_sentences, dev_labels)
+	train_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
+	dev_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
+
 	#send to train
 	print("training ensemble model...")
-	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_tokenized_input, device)
+	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_dataset, device)
 
 	#run whole ensemble on dev data 
 	print("predicting dev labels...")
-	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_tokenized_input, device)
+	dev_predicted_labels, dev_accuracy = predict(ensemble_model, dev_feature_vector, dev_labels, dev_dataset, device)
 
 	#output results
 	print("outputting dev classification output...")
 	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_predicted_labels, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
+
+	print("outputting results...")
+	dev_f1 = f1_score(dev_labels, dev_predicted_labels)
+	with open(args.results_file, 'w') as f:
+		f.write("accuracy: {}".format(dev_accuracy))
+		f.write("f1: {}".format(dev_f1))
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
@@ -161,6 +185,7 @@ if __name__ == "__main__":
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--output_file', help="path to output data file")
+	parser.add_argument('--results_file', help="path to which accuracy and f1 score will be written to")
 	args = parser.parse_args()
 
 	main(args)

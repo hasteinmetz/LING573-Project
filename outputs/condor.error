@@ -1,32 +1,5 @@
-Traceback (most recent call last):
-  File "/home2/apai3/ling573/src/ensemble.py", line 166, in <module>
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 191, in <module>
     main(args)
-  File "/home2/apai3/ling573/src/ensemble.py", line 144, in main
-    train_ensemble(ensemble_model, train_feature_vector, train_labels, train_tokenized_input, device)
-  File "/home2/apai3/ling573/src/ensemble.py", line 81, in train_ensemble
-    outputs = ensemble.roberta_model(**roberta_input)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 1206, in forward
-    outputs = self.roberta(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 853, in forward
-    encoder_outputs = self.encoder(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 526, in forward
-    layer_outputs = layer_module(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 412, in forward
-    self_attention_outputs = self.attention(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 339, in forward
-    self_outputs = self.self(
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 241, in forward
-    attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
-RuntimeError: [enforce fail at CPUAllocator.cpp:61] . DefaultCPUAllocator: can't allocate memory: you tried to allocate 80518053888 bytes. Error code 12 (Cannot allocate memory)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 155, in main
+    train_dataset = FineTuneDataset(train_sentences, train_labels)
+NameError: name 'FineTuneDataset' is not defined
