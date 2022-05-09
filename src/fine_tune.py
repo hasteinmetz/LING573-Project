@@ -11,7 +11,6 @@ import utils
 import argparse
 import numpy as np
 import time
-import sys
 from typing import *
 from datasets import load_metric
 from torch.utils.data import DataLoader, Dataset
@@ -21,7 +20,7 @@ from transformers import RobertaTokenizer
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction, get_scheduler
 from datasets import load_metric
 import pandas as pd
-
+import sys
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
@@ -107,12 +106,7 @@ class RobertaModelWrapper:
                 m.add_batch(predictions=pred_argmax, references=labels)
         
         # output metrics to standard output
-        print(f'Loss: {loss.item}', file = sys.stderr)
-        values = f"" # empty string 
-        for m in metrics:
-            val = m.compute()
-            values += f"{m.name}:\n\t {val}\n"
-        print(values, file = sys.stderr)
+        print(f'Loss: {loss.item()}', file = sys.stderr)
         return self.model
 
     def evaluate(self, test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
@@ -160,7 +154,7 @@ class RobertaModelWrapper:
         for m in metrics:
             val = m.compute()
             values += f"{m.name}:\n\t {val}\n"
-        print(values)
+        print(values, file = sys.stderr)
         return np.concatenate(pred_logits)
 
 
@@ -225,12 +219,6 @@ def main(args: argparse.Namespace) -> None:
     dev_data.tokenize_data(tokenizer)
 
     print(f"({get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n")
-<<<<<<< HEAD
-
-    if args.model_folder == 'None':
-        roberta_model.train(train_data, ['f1', 'accuracy'], device)
-=======
->>>>>>> 7a29f72 (saving progress)
 
     if args.model_folder == 'None':
         roberta_model.train(train_data, ['f1', 'accuracy'], device)

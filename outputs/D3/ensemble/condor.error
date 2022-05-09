@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 Using the GPU:Tesla M10
 Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.bias', 'roberta.pooler.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'roberta.pooler.dense.weight']
 - This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
@@ -124,3 +125,5 @@ KeyError: 'Indexing with integers (to access backend Encoding for a given batch 
     print(f'Loss: {loss.item}', file = sys.stderr)
 NameError: name 'sys' is not defined
 >>>>>>> df05928 (small bug fix)
+=======
+>>>>>>> 7014fc8 (more debugging of ensemble model)
