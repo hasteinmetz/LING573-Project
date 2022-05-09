@@ -12,8 +12,8 @@ import argparse
 import numpy as np
 import time
 from typing import *
-from transformers import AutoTokenizer
-from transformers import AutoModelForSequenceClassification as AutoModel
+from transformers import RobertaTokenizer
+from transformers import RobertaForSequenceClassification as RobertaModel
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 from datasets import load_metric
 import pandas as pd
@@ -27,7 +27,7 @@ class FineTuneDataSet(Dataset):
         self.sentences = sentences
         self.labels = labels
 
-    def tokenize_data(self, tokenizer: AutoTokenizer):
+    def tokenize_data(self, tokenizer: RobertaTokenizer):
         if not hasattr(self, 'encodings'):
             # encode the data
             self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
@@ -58,7 +58,7 @@ def metrics(measure, evalpred: EvalPrediction) -> tuple:
     return measure.compute(predictions=predictions, references=labels)
 
 
-def evaluate(model: AutoModel, batch_size: int, 
+def evaluate(model: RobertaModel, batch_size: int, 
     test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
     '''Evaluate model performance on the test texts'''
     # set the model to eval mode
@@ -109,9 +109,9 @@ def evaluate(model: AutoModel, batch_size: int,
 
 
 def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
-                    data_collator: DataCollatorWithPadding, tokenizer: AutoTokenizer, 
-                    comp_measure: Callable, start_time: float) -> AutoModel:
-    '''**Fine-tune the berttweet model using input data**
+                    data_collator: DataCollatorWithPadding, tokenizer: RobertaTokenizer, 
+                    comp_measure: Callable, start_time: float) -> RobertaModel:
+    '''**Fine-tune the RoBERTa model using input data**
         Args:
             - args: arguments passed into the program
                 - learning_rate: learning rate of model
@@ -125,7 +125,7 @@ def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_d
     '''
 
     # initialize model
-    berttweet_model = AutoModel.from_pretrained('vinai/bertweet-base')
+    roberta_model = RobertaModel.from_pretrained('roberta-base')
 
     # set the arguments
     fine_tune_args = TrainingArguments(
@@ -141,7 +141,7 @@ def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_d
     # create a trainer
     print(f"({get_time(start_time)}) Fine-tuning the model...\n")
     fine_tuned_model = Trainer(
-        model=berttweet_model,
+        model=roberta_model,
         args=fine_tune_args,
         train_dataset=train_data,
         eval_dataset=dev_data,
@@ -155,13 +155,13 @@ def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_d
     
     return fine_tuned_model.model
 
-def berttweet_io(model: AutoModel, sentences: List[str],
+def roberta_io(model: RobertaModel, sentences: List[str],
     batch_size: int, device: str) -> np.ndarray:
     '''Function to export to other scripts that takes a model and list of sentences
     and outputs an ndarray of predicted classes. It also takes a batch_size (for evaluation)
     and a device (cpu or cuda)'''
-    # initialize berttweet tokenizer and pretrained model
-    tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base", use_fast=False)
+    # initialize roberta tokenizer and pretrained model
+    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in the training and development data
     train_sentences, train_labels = utils.read_data_from_file(sentences)
@@ -188,8 +188,8 @@ def main(args: argparse.Namespace) -> None:
         print(f"({get_time(start_time)}) Using {device} device")
 
     print(f"({get_time(start_time)}) Reading data in from files...\n")
-    # initialize berttweet tokenizer and pretrained model
-    tokenizer = AutoTokenizer.from_pretrained("vinai/bertweet-base")
+    # initialize roberta tokenizer and pretrained model
+    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in the training and development data
     train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
@@ -209,11 +209,11 @@ def main(args: argparse.Namespace) -> None:
     train_data = FineTuneDataSet(train_sentences, train_labels)
     dev_data = FineTuneDataSet(dev_sentences, dev_labels)
 
-    # get berttweet encodings for each sentence (see FineTuneDataSet class)
+    # get roberta encodings for each sentence (see FineTuneDataSet class)
     train_data.tokenize_data(tokenizer)
     dev_data.tokenize_data(tokenizer)
 
-    print(f"({get_time(start_time)}) Initalizating berttweet and creating data collator...\n")
+    print(f"({get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n")
 
     # create a data collator to obtain the encoding (and padding) for each sentence
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
@@ -225,37 +225,37 @@ def main(args: argparse.Namespace) -> None:
     # if there is no existing model, then train a new model
     if args.model_folder != 'None':
         try:
-            berttweet_model = AutoModel.from_pretrained(args.model_folder)
+            roberta_model = RobertaModel.from_pretrained(args.model_folder)
             print(f"({get_time(start_time)}) Using model saved to folder {args.model_folder}")
         except FileNotFoundError(args.model_folder) as err:
             print(f"({get_time(start_time)}) Could not get model from folder {args.model_folder}...")
     else:
-        berttweet_model = train_new_model(args, train_data, dev_data, data_collator,
+        roberta_model = train_new_model(args, train_data, dev_data, data_collator,
                                         tokenizer, get_accuracy, start_time)
 
     # evaluate the model's performance
     print(f"\n({get_time(start_time)}) Evaluating the Transformer model on training data\n")
-    y_pred_train = evaluate(berttweet_model, args.batch_size, train_data, ['f1', 'accuracy'], device)
+    y_pred_train = evaluate(roberta_model, args.batch_size, train_data, ['f1', 'accuracy'], device)
 
     print(f"\n({get_time(start_time)}) Evaluating the Transformer model on dev data\n")
-    y_pred_dev = evaluate(berttweet_model, args.batch_size, dev_data, ['f1', 'accuracy'], device)
+    y_pred_dev = evaluate(roberta_model, args.batch_size, dev_data, ['f1', 'accuracy'], device)
 
     #write results to output file
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(args.output_file, index=False, encoding='utf-8', doublequote=False, escapechar="\\")
+    dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
 
     # filter the data so that only negative examples are there
     data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/berttweet-misclassified-examples.csv', index=False, encoding='utf-8', escapechar="\\", doublequote=False)
+    data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
 
     # save the model
     if args.save_file != 'None':
-        berttweet_model.save_pretrained(args.save_file)
+        roberta_model.save_pretrained(args.save_file)
 
     print(f"({get_time(start_time)}) Done!")
 
