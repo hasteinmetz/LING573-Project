@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 (0min 1sec) Using cpu device
 (0min 1sec) Reading data in from files...
 
@@ -5,3 +6,5 @@
 
 (0min 14sec) Fine-tuning the model...
 
+=======
+>>>>>>> 5618ab6 (cleaning up messy merge)
