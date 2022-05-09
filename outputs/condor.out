@@ -1,8 +1,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 Using cpu device
 =======
+=======
+>>>>>>> 7a29f72 (saving progress)
 Using cuda device
 Using the GPU:Tesla M10
 >>>>>>> 731cd07 (cleaning up messy merge)
@@ -49,4 +52,9 @@ training ensemble model...
 =======
 preparing hurtlex dictionary...
 >>>>>>> cc76aaa (tested refactorization)
+<<<<<<< HEAD
 >>>>>>> 30455ed (tested refactorization)
+=======
+=======
+>>>>>>> 111d3dc (saving progress)
+>>>>>>> 7a29f72 (saving progress)

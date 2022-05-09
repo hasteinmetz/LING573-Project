@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ddb102e (fixed typos in bash scripts and condor file)
 Could not find conda environment: 573-project
@@ -88,3 +89,5 @@ FileNotFoundError: [Errno 2] No such file or directory: '/projects/assigned/2122
 >>>>>>> 30455ed (tested refactorization)
 =======
 >>>>>>> ddb102e (fixed typos in bash scripts and condor file)
+=======
+>>>>>>> 7a29f72 (saving progress)
