@@ -1,4 +1,5 @@
 import json
+from tkinter import W
 import utils
 import torch
 import argparse
@@ -32,6 +33,7 @@ class Ensemble():
 		self.roberta_config = RobertaConfig.from_json_file(roberta_config_path)
 		self.roberta_model = RobertaForSequenceClassification(self.roberta_config)
 		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+		self.roberta_model.resize_token_embeddings(len(self.roberta_tokenizer))
 		self.rf_config = utils.load_json_config(forest_config_path)
 		self.random_forest = None
 
@@ -53,11 +55,11 @@ class Ensemble():
 		self.random_forest = RandomForestClassifier(n_estimators=self.rf_config["n_estimators"], bootstrap=self.rf_config["bootstrap"],\
 			 max_depth=self.rf_config["max_depth"], max_features=self.rf_config["max_features"],\
 				  min_samples_leaf=self.rf_config["min_samples_leaf"], min_samples_split=self.rf_config["min_samples_split"],\
-					  n_jobs=self.rf_config["n_jobs"])
+					  n_jobs=-1)
 		cross_validation_trainer = StratifiedKFold(n_splits=9, random_state=42, shuffle=True)
 		accuracy = {"train": [], "test": []}
-		for (train_idx, test_idx) in zip(cross_validation_trainer.split(lexical_features, labels)):
-			self.random_forest.fit(lexical_features.iloc[train_idx], labels[train_idx])
+		for (train_idx, test_idx), i in zip(cross_validation_trainer.split(lexical_features, labels), range(9)):
+			self.random_forest.fit(lexical_features[np.asarray(train_idx)], labels[np.asarray(train_idx)])
 			accuracy["train"].append(self.random_forest.score(lexical_features[train_idx], labels[train_idx]))
 			accuracy["test"].append(self.random_forest.score(lexical_features[test_idx], labels[test_idx]))
 		accuracy_df = pd.DataFrame(accuracy)
@@ -70,19 +72,15 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
 
-
 	#get roberta embeddings
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
 	roberta_class_prob = None
-	eval_dataloader = DataLoader(roberta_input, batch_size=1)
-	for batch in eval_dataloader:
-		batch = {k: v.to(device) for k, v in batch.items()}
 
-		with torch.no_grad():
-			outputs = ensemble.roberta_model(batch)
-		logits = outputs.logits
-		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+	logits = outputs.logits
+	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
@@ -99,19 +97,11 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
 	roberta_class_prob = None
-	# convert dataset to a pytorch format and batch the data
-	eval_dataloader = DataLoader(roberta_input, batch_size=1)
 
-	# iterate through batches to get outputs
-	for batch in eval_dataloader:
-		# assign each element of the batch to the device
-		batch = {k: v.to(device) for k, v in batch.items()}
-	
-		# get batched results
-		with torch.no_grad():
-			outputs = ensemble.roberta_model(batch)
-		logits = outputs.logits
-		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+	logits = outputs.logits
+	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	predicted_labels = ensemble.classifier.predict(combined_class_prob)
@@ -147,19 +137,15 @@ def main(args: argparse.Namespace) -> None:
 
 	#get tokenized input
 	print("preparing input for roberta model...")
-	train_data = FineTuneDataSet(train_sentences, train_labels)
-	train_data.tokenize_data(ensemble_model.roberta_tokenizer)
-
-	dev_data = FineTuneDataSet(dev_sentences, dev_labels)
-	dev_data.tokenize_data(ensemble_model.roberta_tokenizer)
-
+	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding='max_length', max_length=512)
+	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding='max_length', max_length=512)
 	#send to train
 	print("training ensemble model...")
-	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_data, device)
+	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_tokenized_input, device)
 
 	#run whole ensemble on dev data 
 	print("predicting dev labels...")
-	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_data, device)
+	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_tokenized_input, device)
 
 	#output results
 	print("outputting dev classification output...")

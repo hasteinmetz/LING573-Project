@@ -1,7 +1,6 @@
 executable           = src/run_ensemble.sh 
 getenv               = true
 arguments            = 
-transfer_output_file = outputs/ensemble/d3_out.txt, log
 output               = outputs/condor.out
 error                = outputs/condor.error
 log                  = outputs/condor.log
