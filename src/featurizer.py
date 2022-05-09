@@ -130,7 +130,6 @@ def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 
 	# create lexical vector
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
-	print("lv shape: {}".format(np.shape(lv)))
 
 	# get empathy vectors
 	em = get_empath_ratings(preprocessed_sentences)
