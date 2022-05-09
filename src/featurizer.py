@@ -12,6 +12,19 @@ from string import punctuation
 from sklearn.utils import shuffle
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+class TFIDFGenerator:
+	def __init__(self, sentences: List[str], stop_words: str, concat_labels: List[str]):
+		self.sentences = sentences
+		self.vectorizer = get_vocabulary(sentences, stop_words, concat_labels)
+
+	def get_tfidf(self, sentences: List[str]) -> np.ndarray:
+		'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
+		matrix = self.vectorizer.transform(sentences)
+		return matrix.toarray()
+
+	def reinitialize_matrix(self, stop_words, concat_labels):
+		self.vectorizer = get_vocabulary(sentences, stop_words, concat_labels)
+
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
 	arguments:
@@ -98,12 +111,7 @@ def get_vocabulary(training_sents: List[str], stop_words: str = None,
 
 	return fitted_vectorizer
 
-def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.ndarray:
-	'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
-	matrix = fitted_vectorizer.transform(sentences)
-	return matrix.toarray()
-
-def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
+def featurize(sentences: List[str], labels: np.ndarray, tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
@@ -118,28 +126,18 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
-	print("preprocessing data...")
 	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
-	print("create lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	print("get empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
-	print(em.shape)
- 
-	# get vocabulary counts (fit the vectorizer)
-	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
 	# get tfidf
-	print("getting tf-idf...")
-	tf = get_tfidf(preprocessed_sentences, vectorizer)
+	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
 
 	# normalize the vectors
-	print("normalizing vectors...")
 	nv = utils.normalize_vector(nerv, lv, tf, em)
-	print(nv)
 	
 	return nv
