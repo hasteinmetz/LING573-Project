@@ -33,6 +33,7 @@ class Ensemble():
 		self.roberta_config = RobertaConfig.from_json_file(roberta_config_path)
 		self.roberta_model = RobertaForSequenceClassification(self.roberta_config)
 		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
+		self.roberta_model.resize_token_embeddings(len(self.roberta_tokenizer))
 		self.rf_config = utils.load_json_config(forest_config_path)
 		self.random_forest = None
 

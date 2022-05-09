@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Could not find conda environment: 573-project
 You can list all discoverable environments with `conda info --envs`.
 
@@ -6,15 +5,40 @@ You can list all discoverable environments with `conda info --envs`.
     def __init__(self, roberta_config_path: str, forest_config_path: str, logreg_config_path: str) -> None:
                                           ^
 SyntaxError: invalid syntax
-=======
-/home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
 Traceback (most recent call last):
-  File "/home2/apai3/ling573/src/ensemble.py", line 184, in <module>
+  File "/home2/apai3/ling573/src/ensemble.py", line 166, in <module>
     main(args)
   File "/home2/apai3/ling573/src/ensemble.py", line 162, in main
     train_ensemble(ensemble_model, train_feature_vector, train_labels, train_data, device)
   File "/home2/apai3/ling573/src/ensemble.py", line 82, in train_ensemble
     print(batch.shape())
 AttributeError: 'dict' object has no attribute 'shape'
->>>>>>> c2ef224 (debugging pytorch embedding size error)
+  File "/home2/apai3/ling573/src/ensemble.py", line 144, in main
+    train_ensemble(ensemble_model, train_feature_vector, train_labels, train_tokenized_input, device)
+  File "/home2/apai3/ling573/src/ensemble.py", line 81, in train_ensemble
+    outputs = ensemble.roberta_model(**roberta_input)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 1206, in forward
+    outputs = self.roberta(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 853, in forward
+    encoder_outputs = self.encoder(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 526, in forward
+    layer_outputs = layer_module(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 412, in forward
+    self_attention_outputs = self.attention(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 339, in forward
+    self_outputs = self.self(
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home2/apai3/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 241, in forward
+    attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
+RuntimeError: [enforce fail at CPUAllocator.cpp:61] . DefaultCPUAllocator: can't allocate memory: you tried to allocate 80518053888 bytes. Error code 12 (Cannot allocate memory)
