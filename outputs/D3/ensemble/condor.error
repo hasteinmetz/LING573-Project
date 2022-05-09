@@ -1,13 +1,17 @@
-0it [00:00, ?it/s]0it [00:00, ?it/s]
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.bias', 'roberta.pooler.dense.weight', 'lm_head.decoder.weight', 'roberta.pooler.dense.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.layer_norm.bias']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.dense.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home2/hsteinm/573/repo/src/fine_tune.py:43: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
 Traceback (most recent call last):
-  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 229, in <module>
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 163, in <module>
     main(args)
-  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 207, in main
-    train_ensemble(ensemble_model, train_sentences, train_labels, device)
-  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 137, in train_ensemble
-    base_model_encodings = [data_set_train.encodings[n] for n in train_index]
-  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 137, in <listcomp>
-    base_model_encodings = [data_set_train.encodings[n] for n in train_index]
-  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/tokenization_utils_base.py", line 241, in __getitem__
-    raise KeyError(
-KeyError: 'Indexing with integers (to access backend Encoding for a given batch index) is not available when using Python based tokenizers'
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 143, in main
+    train_ensemble(ensemble_model, train_sentences, train_labels, device, tfidf)
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 75, in train_ensemble
+    ensemble.roberta_model.train(train_roberta_input, ['f1', 'accuracy'], device)
+  File "/home2/hsteinm/573/repo/src/fine_tune.py", line 109, in train
+    print(f'Loss: {loss.item}', file = sys.stderr)
+NameError: name 'sys' is not defined

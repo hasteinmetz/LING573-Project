@@ -4,16 +4,6 @@ loading training and development data...
 initializing ensemble architecture
 training ensemble model...
 	splitting data in k-folds to cross-validate...
-{'input_ids': tensor([[    0,   565, 22722,  ...,     1,     1,     1],
-        [    0,   250,   313,  ...,     1,     1,     1],
-        [    0,  6179,   171,  ...,     1,     1,     1],
-        ...,
-        [    0, 13368, 24665,  ...,     1,     1,     1],
-        [    0,   243,    18,  ...,     1,     1,     1],
-        [    0,   574,  2990,  ...,     1,     1,     1]]), 'attention_mask': tensor([[1, 1, 1,  ..., 0, 0, 0],
-        [1, 1, 1,  ..., 0, 0, 0],
-        [1, 1, 1,  ..., 0, 0, 0],
-        ...,
-        [1, 1, 1,  ..., 0, 0, 0],
-        [1, 1, 1,  ..., 0, 0, 0],
-        [1, 1, 1,  ..., 0, 0, 0]])}
+(train-fold 0) training mlp classifier...
+MLP accuracy: 0.3710618436406068
+(train-fold 0) training roberta...
