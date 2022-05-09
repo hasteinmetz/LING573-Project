@@ -1,4 +1,5 @@
 import json
+from tkinter import W
 import utils
 import torch
 import argparse
@@ -70,21 +71,15 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
 
-
 	#get roberta embeddings
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
 	roberta_class_prob = None
-	eval_dataloader = DataLoader(roberta_input, batch_size=1)
-	for batch in eval_dataloader:
-		batch["labels"] = batch.pop('label')
-		batch = {k: v.to(device) for k, v in batch.items()}
-		print(batch.shape())
 
-		with torch.no_grad():
-			outputs = ensemble.roberta_model(**batch)
-		logits = outputs.logits
-		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+	logits = outputs.logits
+	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
@@ -101,21 +96,11 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
 	roberta_class_prob = None
-	# convert dataset to a pytorch format and batch the data
-	eval_dataloader = DataLoader(roberta_input, batch_size=1)
 
-	# iterate through batches to get outputs
-	for batch in eval_dataloader:
-		# assign each element of the batch to the device
-		batch["labels"] = batch.pop('label')
-		batch = {k: v.to(device) for k, v in batch.items()}
-		print(batch.shape())
-	
-		# get batched results
-		with torch.no_grad():
-			outputs = ensemble.roberta_model(**batch)
-		logits = outputs.logits
-		roberta_class_prob = logits.clone().detach().to('cpu').numpy()
+	with torch.no_grad():
+		outputs = ensemble.roberta_model(**roberta_input)
+	logits = outputs.logits
+	roberta_class_prob = logits.clone().detach().to('cpu').numpy()
 
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	predicted_labels = ensemble.classifier.predict(combined_class_prob)
@@ -151,19 +136,15 @@ def main(args: argparse.Namespace) -> None:
 
 	#get tokenized input
 	print("preparing input for roberta model...")
-	train_data = FineTuneDataSet(train_sentences, train_labels)
-	train_data.tokenize_data(ensemble_model.roberta_tokenizer)
-
-	dev_data = FineTuneDataSet(dev_sentences, dev_labels)
-	dev_data.tokenize_data(ensemble_model.roberta_tokenizer)
-
+	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding='max_length', max_length=512)
+	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding='max_length', max_length=512)
 	#send to train
 	print("training ensemble model...")
-	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_data, device)
+	train_ensemble(ensemble_model, train_feature_vector, train_labels, train_tokenized_input, device)
 
 	#run whole ensemble on dev data 
 	print("predicting dev labels...")
-	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_data, device)
+	dev_predicted_labels = predict(ensemble_model, dev_feature_vector, dev_labels, dev_tokenized_input, device)
 
 	#output results
 	print("outputting dev classification output...")
