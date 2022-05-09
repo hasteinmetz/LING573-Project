@@ -12,7 +12,12 @@ outputs/ contains the system outputs.
 
 # D3 Instructions
 
-1. Issue the following command from the root of this repo: condor_submit src/D3.cmd
+1. Make sure you have Conda installed.
+	- To install Conda, enter the following commands:
+	- `wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86 64.sh`
+	- `sh Anaconda3-2021.11-Linux-x86 64.sh`
+2. Issue the following command from the root of this repo to fine-tune the models and print the results: condor_submit src/D3.cmd
+	- The script will activate a Conda environment in the shared folder `/projects/assigned/2122_ling573_elibales/env/573-project` 
 
 The accuracy and F1 score of our fine-tuned RoBERTa model will be written to the following file: src/outputs/D3/roberta/ft.out
 
