@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW
 from transformers import RobertaForSequenceClassification as RobertaModel
 from transformers import RobertaTokenizer
-from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
+from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction, get_scheduler
 from datasets import load_metric
 import pandas as pd
 
@@ -49,7 +49,7 @@ class FineTuneDataSet(Dataset):
 
 
 class RobertaModelWrapper:
-    def __init__(self, batch_s: int, lr: float, tokenizer: RobertaTokenizer, RobertaModel = None):
+    def __init__(self, batch_s: int, lr: float, tokenizer: RobertaTokenizer, training_steps, model: RobertaModel = None):
         self.batch_size = batch_s
         if model:
             self.model = model
@@ -57,6 +57,9 @@ class RobertaModelWrapper:
             self.model = RobertaModel.from_pretrained('roberta-base')
         self.optimizer = AdamW(self.model.parameters(), lr=lr)
         self.tokenizer = tokenizer
+        self.scheduler = get_scheduler(
+            name="linear", optimizer=self.optimizer, num_warmup_steps=0, num_training_steps=training_steps
+        )
 
     def train(self, train_data: FineTuneDataSet, measures: List[str], device: str):
         # set the model to eval mode
@@ -79,6 +82,7 @@ class RobertaModelWrapper:
         for batch in dataloader:
             batch['labels'] = batch.pop('label')
             labels = batch['labels']
+            self.optimizer.zero_grad()
 
             # assign each element of the batch to the device
             batch = {k: v.to(device) for k, v in batch.items()}
@@ -86,11 +90,11 @@ class RobertaModelWrapper:
             
             # get batched results
             logits = outputs.logits
-            loss = outputs.loss
+            loss = outputs[0]
             loss.backward()
 
             self.optimizer.step()
-            self.optimizer.zero_grad()
+            self.scheduler.step()
 
             # add batch to output
             pred_argmax = torch.argmax(logits, dim = -1)
@@ -102,11 +106,12 @@ class RobertaModelWrapper:
                 m.add_batch(predictions=pred_argmax, references=labels)
         
         # output metrics to standard output
+        print(f'Loss: {loss.item}', file = sys.stderr)
         values = f"" # empty string 
         for m in metrics:
             val = m.compute()
             values += f"{m.name}:\n\t {val}\n"
-        print(values)
+        print(values, file = sys.stderr)
         return self.model
 
     def evaluate(self, test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
@@ -125,7 +130,7 @@ class RobertaModelWrapper:
         eval_dataloader = DataLoader(test_data, batch_size=self.batch_size)
 
         # store the argmax of each batch
-        predictions = []
+        pred_logits = []
 
         # iterate through batches to get outputs
         for batch in eval_dataloader:
@@ -142,8 +147,8 @@ class RobertaModelWrapper:
 
             # add batch to output
             pred_argmax = torch.argmax(logits, dim = -1)
-            as_list = pred_argmax.clone().detach().to('cpu').tolist()
-            predictions.append(as_list)
+            as_list = logits.clone().detach().to('cpu').numpy()
+            pred_logits.append(as_list)
 
             # add batched results to metrics
             for m in metrics:
@@ -155,7 +160,7 @@ class RobertaModelWrapper:
             val = m.compute()
             values += f"{m.name}:\n\t {val}\n"
         print(values)
-        return np.concatenate(predictions)
+        return np.concatenate(pred_logits)
 
 
 def metrics(measure, evalpred: EvalPrediction) -> tuple:
