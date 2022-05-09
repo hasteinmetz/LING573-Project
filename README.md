@@ -34,11 +34,11 @@ BERTweet
 
 f1:
 
-   {'f1': 0.9504550050556119}
+         {'f1': 0.9504550050556119}
    
 accuracy:
 
-   {'accuracy': 0.93875}
+         {'accuracy': 0.93875}
 
 
 Our code requires the appropriate conda environment to run properly. We activate the environment, which is saved in our shared space on patas (/projects/assigned/2122_ling573_elibales), within either src/fine-tune-$(model).sh scripts itself.
