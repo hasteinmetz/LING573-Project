@@ -2,26 +2,26 @@
 Using the GPU:Tesla M10
 (0min 2sec) Reading data in from files...
 
-(0min 19sec) Initalizating bertweet and creating data collator...
+(0min 8sec) Initalizating bertweet and creating data collator...
 
-(0min 30sec) Fine-tuning the model...
+(0min 13sec) Fine-tuning the model...
 
-{'eval_loss': 0.16869087517261505, 'eval_accuracy': 0.93875, 'eval_runtime': 12.0223, 'eval_samples_per_second': 66.543, 'eval_steps_per_second': 2.079, 'epoch': 1.0}
-{'train_runtime': 414.8679, 'train_samples_per_second': 15.424, 'train_steps_per_second': 0.482, 'train_loss': 0.23186195373535157, 'epoch': 1.0}
+{'eval_loss': 0.16321411728858948, 'eval_accuracy': 0.9425, 'eval_runtime': 12.1824, 'eval_samples_per_second': 65.669, 'eval_steps_per_second': 2.052, 'epoch': 1.0}
+{'train_runtime': 419.0741, 'train_samples_per_second': 15.269, 'train_steps_per_second': 0.477, 'train_loss': 0.23140180587768555, 'epoch': 1.0}
 
-(7min 27sec) Evaluating the Transformer model on training data
-
-f1:
-	 {'f1': 0.9778230945704818}
-accuracy:
-	 {'accuracy': 0.972808251289264}
-
-
-(9min 33sec) Evaluating the Transformer model on dev data
+(7min 15sec) Evaluating the Transformer model on training data
 
 f1:
-	 {'f1': 0.9504550050556119}
+	 {'f1': 0.9778913738019169}
 accuracy:
-	 {'accuracy': 0.93875}
+	 {'accuracy': 0.9729645257071418}
 
-(9min 51sec) Done!
+
+(9min 25sec) Evaluating the Transformer model on dev data
+
+f1:
+	 {'f1': 0.9529652351738241}
+accuracy:
+	 {'accuracy': 0.9425}
+
+(9min 44sec) Done!
