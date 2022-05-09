@@ -1,0 +1,40 @@
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.weight', 'lm_head.bias', 'lm_head.dense.weight', 'roberta.pooler.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.out_proj.weight', 'classifier.out_proj.bias', 'classifier.dense.bias', 'classifier.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+***** Running training *****
+  Num examples = 50
+  Num Epochs = 1
+  Instantaneous batch size per device = 64
+  Total train batch size (w. parallel, distributed & accumulation) = 64
+  Gradient Accumulation steps = 1
+  Total optimization steps = 1
+  0%|          | 0/1 [00:00<?, ?it/s]/home2/hsteinm/573/repo/src/fine-tune.py:39: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+100%|██████████| 1/1 [00:24<00:00, 24.97s/it]***** Running Evaluation *****
+  Num examples = 50
+  Batch size = 64
+
+  0%|          | 0/1 [00:00<?, ?it/s][A                                             
+                                     [A100%|██████████| 1/1 [00:31<00:00, 24.97s/it]
+100%|██████████| 1/1 [00:00<00:00, 52.73it/s][A
+                                             [A
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                             100%|██████████| 1/1 [00:31<00:00, 24.97s/it]100%|██████████| 1/1 [00:31<00:00, 31.52s/it]
+***** Running Prediction *****
+  Num examples = 50
+  Batch size = 64
+/home2/hsteinm/573/repo/src/fine-tune.py:39: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+  0%|          | 0/1 [00:00<?, ?it/s]***** Running Prediction *****
+  Num examples = 50
+  Batch size = 64
+/home2/hsteinm/573/repo/src/fine-tune.py:39: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+2it [00:07,  3.66s/it]               Configuration saved in src/models/roberta-fine-tuned/config.json
+Model weights saved in src/models/roberta-fine-tuned/pytorch_model.bin
+2it [00:14,  7.35s/it]
