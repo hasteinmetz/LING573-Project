@@ -4,6 +4,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5dd49d1 (end-to-end ensemble, but issues with training roberta)
 {
 	"param_grid": 
 	{
@@ -12,14 +15,22 @@
 		"max_features": ["auto", "sqrt"],
 		"min_samples_leaf": [1,2,4],
 		"min_samples_split": [3,6,9],
+<<<<<<< HEAD
 		"n_estimators": [100, 200, 300]
 	},
 	"n_iter": 100,
 	"cv": 3,
+=======
+		"n_estimators": [100, 200, 300, 400]
+	},
+	"n_iter": 200,
+	"cv": 9,
+>>>>>>> 5dd49d1 (end-to-end ensemble, but issues with training roberta)
 	"verbose": 2,
 	"random_state": 42,
 	"n_jobs": -1
 }
+<<<<<<< HEAD
 =======
 {"n_estimators": 300, "min_samples_split": 6, "min_samples_leaf": 1, "max_features": "auto", "max_depth": 80, "bootstrap": false}
 >>>>>>> da4b6c7 (optimal rf classifier parameters identified)
@@ -38,3 +49,5 @@
 =======
 {"n_estimators": 300, "min_samples_split": 3, "min_samples_leaf": 1, "max_features": "sqrt", "max_depth": 40, "bootstrap": false}
 >>>>>>> 91da272 (incorporated hurtlex)
+=======
+>>>>>>> 5dd49d1 (end-to-end ensemble, but issues with training roberta)
