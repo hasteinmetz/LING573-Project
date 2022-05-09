@@ -244,14 +244,13 @@ def main(args: argparse.Namespace) -> None:
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(args.output_file, index=False, encoding='utf-8', doublequote=False, escapechar="\\")
-
+    dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
 
     # filter the data so that only negative examples are there
     data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/bertweet-misclassified-examples.csv', index=False, encoding='utf-8', escapechar="\\", doublequote=False)
+    data_filtered.to_csv('src/data/bertweet-misclassified-examples.csv', index=False, encoding='utf-8')
 
     # save the model
     if args.save_file != 'None':
