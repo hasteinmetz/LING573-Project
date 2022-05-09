@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/projects/assigned/2122_ling573_elibales/repo/src/fine-tune.py", line 281, in <module>
-    main(args)
-  File "/projects/assigned/2122_ling573_elibales/repo/src/fine-tune.py", line 199, in main
-    train_sentences = preprocess_quotes(train_sentences_raw)
-NameError: name 'preprocess_quotes' is not defined
