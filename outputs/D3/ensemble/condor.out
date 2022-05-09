@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Using cuda device
 <<<<<<< HEAD
 loading training and development data...
@@ -33,3 +34,5 @@ training ensemble model...
 MLP accuracy: 0.3710618436406068
 (train-fold 0) training roberta...
 >>>>>>> df05928 (small bug fix)
+=======
+>>>>>>> 7014fc8 (more debugging of ensemble model)
