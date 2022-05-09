@@ -140,15 +140,12 @@ def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-<<<<<<< HEAD
-=======
 	print("normalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, hv)
 	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
 
 	# normalize the vectors
->>>>>>> 5dd49d1 (end-to-end ensemble, but issues with training roberta)
 	nv = utils.normalize_vector(nerv, lv, tf, em)
 	
 	return nv
