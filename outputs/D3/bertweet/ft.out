@@ -1,0 +1,27 @@
+(0min 2sec) Using cuda device
+Using the GPU:Tesla M10
+(0min 2sec) Reading data in from files...
+
+(0min 19sec) Initalizating bertweet and creating data collator...
+
+(0min 30sec) Fine-tuning the model...
+
+{'eval_loss': 0.16869087517261505, 'eval_accuracy': 0.93875, 'eval_runtime': 12.0223, 'eval_samples_per_second': 66.543, 'eval_steps_per_second': 2.079, 'epoch': 1.0}
+{'train_runtime': 414.8679, 'train_samples_per_second': 15.424, 'train_steps_per_second': 0.482, 'train_loss': 0.23186195373535157, 'epoch': 1.0}
+
+(7min 27sec) Evaluating the Transformer model on training data
+
+f1:
+	 {'f1': 0.9778230945704818}
+accuracy:
+	 {'accuracy': 0.972808251289264}
+
+
+(9min 33sec) Evaluating the Transformer model on dev data
+
+f1:
+	 {'f1': 0.9504550050556119}
+accuracy:
+	 {'accuracy': 0.93875}
+
+(9min 51sec) Done!
