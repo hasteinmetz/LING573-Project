@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize
-from fine-tune import FineTuneDataSet
 from torch.utils.data import DataLoader
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
 from sklearn.ensemble import RandomForestClassifier
@@ -82,7 +81,7 @@ def train_ensemble(ensemble: Ensemble, train_sentences: List[str], train_labels:
 	ensemble.roberta_model.train()
 	ensemble.roberta_model.to(device)
 
-	for train_index, test_index in kfolds.split(train_sentences, train_labels)
+	for train_index, test_index in kfolds.split(train_sentences, train_labels):
 
 		base_models_train, base_models_labels = train_sentences[train_index], train_labels[train_index]
 		meta_model_train, meta_model_labels = train_sentences[test_index], train_labels[test_index]
