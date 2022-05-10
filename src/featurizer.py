@@ -1,7 +1,7 @@
 import re
 import csv
 import nltk
-import utils
+import spacy
 import utils
 import numpy as np
 import pandas as pd
@@ -65,6 +65,7 @@ def get_ner_matrix(data: List[str]) -> np.ndarray:
 
 	return ner_array
 
+
 def create_lexical_matrix(sentences: List[str], chars: List[str]) -> np.ndarray:
 	'''Take a dataset and return an [num_sentences, num_chars] matrix of counts
 	of the number of times each character appears in a list'''
@@ -87,6 +88,7 @@ def get_empath_ratings(sentences: List[str]) -> np.ndarray:
 			dictionary[k].append(v)
 	as_lists = [dictionary[k] for k in dictionary]
 	return np.column_stack(as_lists)
+
 
 def get_vocabulary(training_sents: List[str], stop_words: str = None, 
 	concat_labels: List[str] = None) -> TfidfVectorizer:
@@ -117,7 +119,7 @@ def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 		- sentences: list of input data to be featurized
 		- labels: corresponding labels for sentenceds
 	returns:
-		a () feature vector
+		a (n_samples, vector_space_size) feature vector 
 	
 	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
 	'''
@@ -137,6 +139,9 @@ def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
 	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
+
+	#get hurtlex feature vector
+	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
 	nv = utils.normalize_vector(nerv, lv, tf, em)

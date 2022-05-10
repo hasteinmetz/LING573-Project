@@ -150,9 +150,11 @@ def main(args: argparse.Namespace) -> None:
 	ensemble_model = Ensemble(args.roberta_config, args.random_forest_config, args.logistic_regression_config)
 
 	#get features
+	print("preparing hurtlex dictionary...")
+	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	train_feature_vector = featurize(train_sentences, train_labels)
-	dev_feature_vector = featurize(dev_sentences, dev_labels)
+	train_feature_vector = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list)
+	dev_feature_vector = featurize(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list)
 
 	#get tokenized input
 	print("preparing input for roberta model...")
@@ -189,10 +191,11 @@ if __name__ == "__main__":
 	parser.add_argument("--roberta_config", help="configuration settings for roberta model")
 	parser.add_argument("--random_forest_config", help="configuration settings for random forest classifier")
 	parser.add_argument("--logistic_regression_config", help="configuration settings for logistic regression classifier")
-	parser.add_argument('--train_data_path', help="path to input training data file")
-	parser.add_argument('--dev_data_path', help="path to input dev data file")
-	parser.add_argument('--output_file', help="path to output data file")
-	parser.add_argument('--results_file', help="path to which accuracy and f1 score will be written to")
+	parser.add_argument("--train_data_path", help="path to input training data file")
+	parser.add_argument("--dev_data_path", help="path to input dev data file")
+	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
+	parser.add_argument("--output_file", help="path to output data file")
+	parser.add_argument("--results_file", help="path to which accuracy and f1 score will be written to")
 	args = parser.parse_args()
 
 	main(args)
