@@ -1,5 +1,3 @@
-import re
-import csv
 import nltk
 import spacy
 import utils
@@ -7,10 +5,9 @@ import numpy as np
 import pandas as pd
 from typing import *
 from empath import Empath
-from sklearn.svm import SVC
 from string import punctuation
-from sklearn.utils import shuffle
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
@@ -107,8 +104,12 @@ def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.nd
 	return matrix.toarray()
 
 
-def check_phrase(sentence, lex_dict):
+def check_phrase(sentence: str, lex_dict: Dict[str, str]) -> Tuple[bool, List[str]]:
 	'''
+	arguments:
+		- sentence: lemmatized input data sentence
+		- lex_dixt: hurtlex dictionary
+
 	check phrases in hurtlex
 	'''
 	contain_phrase = False
@@ -122,7 +123,7 @@ def check_phrase(sentence, lex_dict):
 	return contain_phrase, tokens
 
 
-def count_feature(sentence, lex_dict, feature_list, tagger):
+def count_feature(sentence: str, lex_dict: Dict[str, str], feature_list: set, tagger: spacy.lang.en.English) -> np.ndarray:
 	'''
 	arguments:
 		- sentence: input sentence
@@ -157,6 +158,7 @@ def count_feature(sentence, lex_dict, feature_list, tagger):
 
 	return feature
 
+
 def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set) -> np.ndarray:
 	'''
 	arguments:
@@ -176,6 +178,7 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 		features.append(s)
 
 	return np.array(features)
+
 
 def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
 	'''

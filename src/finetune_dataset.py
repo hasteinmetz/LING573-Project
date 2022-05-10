@@ -1,7 +1,7 @@
 import torch
 from typing import *
-from transformers import RobertaTokenizer
 from torch.utils.data import Dataset
+from transformers import RobertaTokenizer
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
