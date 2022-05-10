@@ -111,7 +111,7 @@ def get_vocabulary(training_sents: List[str], stop_words: str = None,
 
 	return fitted_vectorizer
 
-def featurize(sentences: List[str], labels: np.ndarray, tfidf_gen: TFIDFGenerator) -> np.ndarray:
+def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
