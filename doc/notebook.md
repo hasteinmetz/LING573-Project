@@ -3,6 +3,11 @@
 Use this file to document any important changes you've made or any records of running the system.
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
+### 5-9 Avani
+- v1 ensemble 
+	- 100 estimator rf
+- v2 ensemble
+	- using configuration from src/configs/random_forest_v2.json
 
 ### 5-4 Pangbo
 - Checked HurtBERT and Lexical Feature on QA (https://downloads.hindawi.com/journals/complexity/2021/2893257.pdf) paper. The accuracy on Ubuntu dataset is Random Forest > SVC > Logistic Regression > LinearSVC > MultinomialNB
