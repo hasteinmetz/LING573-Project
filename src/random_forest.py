@@ -72,6 +72,7 @@ if __name__ == '__main__':
 	parser.add_argument("--rf_train_config", help="configuration settings for random forest classifier")
 	parser.add_argument("--train_data_path", help="path to input training data file")
 	parser.add_argument("--dev_data_path", help="path to input dev data file")
+	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
 	parser.add_argument("--results_output_path", help="path to where classification results of best model should be written to")
 	parser.add_argument("--param_output_path", help="path to where optimal parameters should be written to")
 	args = parser.parse_args()
