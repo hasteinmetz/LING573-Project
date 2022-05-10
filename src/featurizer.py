@@ -1,5 +1,3 @@
-import re
-import csv
 import nltk
 import spacy
 import utils
@@ -7,9 +5,7 @@ import numpy as np
 import pandas as pd
 from typing import *
 from empath import Empath
-from sklearn.svm import SVC
 from string import punctuation
-from sklearn.utils import shuffle
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 class TFIDFGenerator:
