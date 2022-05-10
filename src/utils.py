@@ -8,6 +8,7 @@ import json
 import time
 import spacy
 import numpy as np
+import pandas as pd
 from typing import *
 from functools import reduce
 from sklearn.preprocessing import Normalizer
@@ -29,6 +30,7 @@ def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> 
 	
 	return data
 
+
 def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[str], np.ndarray]:
 	'''
 	arguments:
@@ -46,12 +48,14 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 			labels.append(int(row[1]))
 	return sentences, np.asarray(labels, dtype=int)
 
+
 def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, encoding: str = 'utf-8') -> None:
 	with open(filepath, "w", newline='', encoding="utf-8") as my_csv:  # create training data file
 		my_writer = csv.writer(my_csv)
 		for i in range(len(data)):
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
+
 
 def load_json_config(filepath: str) -> dict:
 	'''
@@ -66,11 +70,13 @@ def load_json_config(filepath: str) -> dict:
 	
 	return config
 
+
 def normalize_vector(*arrays: np.ndarray) -> np.ndarray:
 	'''Take several arrays and concatenate them column-wise before normalizing each row'''
 	concatenated = np.concatenate(arrays, axis=1)
 	norm = Normalizer()
 	return norm.fit(concatenated).transform(concatenated)
+
 
 def lemmatize(sentences: List[str]) -> List[str]:
 	'''Process the sentence into a string of lemmas (to potentially improve the TF-IDF measure)
@@ -82,6 +88,22 @@ def lemmatize(sentences: List[str]) -> List[str]:
 	new_sents = [lemmatize(x) for x in sentences]
 	return new_sents
 
+
 def get_time(start_time: float) -> str:
 	minutes, sec = divmod(time.time() - start_time, 60)
 	return f"{str(round(minutes))}min {str(round(sec))}sec"
+
+
+def read_from_tsv(lex_data):
+	"""
+	read in and output hurtlex dictionary in the format of 'lemma:[category, tag]'
+	"""
+	output_dict = {}
+	
+	df = pd.read_csv(lex_data, sep='\t', header=0, usecols=[1,2,4])
+	feature_list = set(df['category'].tolist())
+	
+	df['category'] = df[['category', 'pos']].values.tolist()
+	output_dict = dict(zip(df.lemma, df.category))
+	
+	return output_dict, feature_list
