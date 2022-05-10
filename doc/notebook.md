@@ -19,6 +19,33 @@ This notebook uses Markdown. Use '#' to create headings. When you make a change 
   II. Lexical feature candidates for direct input:
     1. POS tagging (https://www.nltk.org/api/nltk.tag.html; using Penn Treebank)
 
+### 5-1 Hilly
+
+- Got the following working:
+  - Randomization
+  - Model is now learning and generating output
+- Current results:
+  - SVM: ~89%
+  - Neural network (scikit): ~90%
+  - Neural network (PyTorch): ~90%
+- Thinking of ideas for the new enhanced system:
+  - Ensemble classifier that learns weights of fine-tuned BERT & feature vector
+    - Need to brainstorm what to include in the feature vector:
+      - Punctuation
+      - Repeated letters
+      - (Something with wordnet? Semantic/syntactice parse?)
+
+### 4-21 Hilly
+
+#### Stuff that needs to be done on classifier:
+- Tune hyperparamers
+- Test on dev set
+- Decide whether to add additional layers
+- Print outputs to pretty graphs
+
+#### Training RNN 
+- Training with 768 hidden layers, BCELoss(), LR=0.005, epochs=5, results in the loss functions going down, but accuracy staying about the same. Getting accuracy scores hovering around 60%.
+
 ### 4-11 Hilly
 - Read the ACL paper on shared task--they used BERT as a baseline.
 - Found out that [TensorFlow](https://www.tensorflow.org/text/tutorials/classify_text_with_bert) and [PyTorch](https://pytorch.org/hub/huggingface_pytorch-transformers/) have pre-built BERT models.

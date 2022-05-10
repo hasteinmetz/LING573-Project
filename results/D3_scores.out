@@ -1,0 +1,9 @@
+RoBERTa results:
+
+f1: 0.937178166838311
+accuracy: 0.92375
+ 
+BERTweet results:
+
+f1: 0.9504550050556119
+accuracy: 0.93875
