@@ -79,7 +79,6 @@ class Ensemble(nn.Module):
 			nn.Linear(hidden_size, output_size+1)
 		)
 		self.output = nn.Linear(2+2, output_size)
-		self.out_fn = nn.Sigmoid()
 
 	def forward(self, data: dict, sentences: List[str], featurizer: Callable, device: str):
 		# tokenize the data
@@ -89,7 +88,7 @@ class Ensemble(nn.Module):
 		outputs_mlp = self.mlp(features_tensor)
 		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
 		logits = self.output(classifier_in)
-		return self.out_fn(logits)
+		return logits
 
 def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int, batch_size: int, lr: int,
 	featurizer: Callable, tokenizer: RobertaTokenizer, optimizer: torch.optim, loss_fn: Callable, device: str):
@@ -124,7 +123,7 @@ def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int,
 			optim.step()
 
 			# add batched results to metrics
-			pred_argmax = torch.round(output)
+			pred_argmax = torch.round(torch.sigmoid(output))
 			for m in metrics:
 				m.add_batch(predictions=pred_argmax, references=y)
         
@@ -141,7 +140,8 @@ def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int,
 		print(values, file = sys.stderr)
 
 
-def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int, lr: int, featurizer: Callable, device: str):
+def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int, lr: int, 
+	tokenizer: RobertaTokenizer, featurizer: Callable, device: str):
 	'''Train the Ensemble neural network'''
 	model.to(device)
 	model.eval()
@@ -167,7 +167,7 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 		output = model(batch, X, featurizer, device)
 
 		# add batch to output
-		pred_argmax = torch.round(output)
+		pred_argmax = torch.round(torch.sigmoid(output))
 		as_list = pred_argmax.clone().detach().to('cpu').tolist()
 		predictions.append(as_list)
 
@@ -260,7 +260,7 @@ def main(args: argparse.Namespace) -> None:
 	OPTIMIZER = AdamW
 	LR = 5e-5
 	BATCH_SIZE = 32
-	LOSS = nn.BCELoss()
+	LOSS = nn.BCEWithLogitsLoss()
 	EPOCHS = 1
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 	model = Ensemble(input_size, 100, 1)
