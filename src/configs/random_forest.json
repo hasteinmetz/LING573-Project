@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
 	"param_grid": 
 	{
@@ -30,3 +31,6 @@
 =======
 {"n_estimators": 100, "min_samples_split": 6, "min_samples_leaf": 1, "max_features": "auto", "max_depth": 80, "bootstrap": false}
 >>>>>>> 731cd07 (cleaning up messy merge)
+=======
+{"n_estimators": 300, "min_samples_split": 3, "min_samples_leaf": 1, "max_features": "sqrt", "max_depth": 30, "bootstrap": false}
+>>>>>>> 680c8ee (versioning outputs between v1 and v1 of ensemble model)
