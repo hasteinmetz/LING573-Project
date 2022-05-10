@@ -7,100 +7,162 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize, TFIDFGenerator
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
+from torch.optim import AdamW
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
+from datasets import load_metric
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-from fine_tune import *
+from sklearn.utils import shuffle
 from math import ceil
 
 nn = torch.nn
 
-class Ensemble():
-	def __init__(self, tokenizer, steps) -> None:
-		'''
-		arguments:
-			- logreg_config: filepath to .json config specifying parameters for logistic regression classifier
-			- train_lex_feat: training lexical feature instances
-			- train_labels: corresponding labels for training lexical feature instances
-			
-		sets up ensemble model.  expects roberta model to be pretrained. expects random forest and logistic 
-		regression models to require training
-		'''
-		super().__init__()
-		self.roberta_model = RobertaModelWrapper(32, 0.00005, tokenizer, steps)
-		self.roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-		self.mlp = MLPClassifier(max_iter=1)
-		self.classifier = SGDClassifier(loss="log")
+
+class FineTuneDataSet(Dataset):
+    '''Class creates a list of dicts of sentences and labels
+    and behaves list a list but also stores sentences and labels for
+    future use'''
+    def __init__(self, sentences: List[str], labels: List[int]):
+        self.sentences = sentences
+        self.labels = labels
+
+    def tokenize_data(self, tokenizer: RobertaTokenizer):
+        if not hasattr(self, 'encodings'):
+            # encode the data
+            self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
+            self.input_ids = self.encodings['input_ids']
+
+    def __getitem__(self, index: int):
+        if not hasattr(self, 'encodings'):
+            raise AttributeError("Did not initialize encodings or input_ids")
+        else:
+            item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
+            item['labels'] = torch.tensor(self.labels[index])
+            return item, self.sentences[index]
+
+    def __len__(self):
+        return len(self.labels)
 
 
-def get_ensemble_inputs(data: FineTuneDataSet, model: Ensemble, tfidf_gen: TFIDFGenerator) -> tuple[np.ndarray, np.ndarray]:
-	'''Helper function that takes input sentences and return ndarrays of the sentence's feature vector and roberta encodings'''
-	feature_vector = featurize(data.sentences, data.labels, tfidf_gen)
-	data.tokenize_data(model.roberta_model.tokenizer)
-	return feature_vector, data
+class Ensemble(nn.Module):
+	def __init__(self, input_size: int, hidden_size: int, output_size: int):
+		super(Ensemble, self).__init__()
+		self.roberta = RobertaForSequenceClassification.from_pretrained('roberta-base')
+		self.mlp = nn.Sequential(
+			nn.Linear(input_size, hidden_size),
+			nn.ReLU(),
+			nn.Linear(hidden_size, output_size+1)
+		)
+		self.output = nn.Linear(2+2, output_size)
+		self.out_fn = nn.Sigmoid()
+
+	def forward(self, data: dict, sentences: List[str], featurizer: Callable, device: str):
+		# tokenize the data
+		inputs = {k:v.to(device) for k,v in data.items()}
+		outputs_roberta = self.roberta(**inputs).logits
+		features_tensor = torch.tensor(featurizer(sentences), dtype=torch.float).to(device)
+		outputs_mlp = self.mlp(features_tensor)
+		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
+		logits = self.output(classifier_in)
+		return self.out_fn(logits)
+
+def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int, batch_size: int, lr: int,
+	featurizer: Callable, tokenizer: RobertaTokenizer, optimizer: torch.optim, loss_fn: Callable, device: str):
+	'''Train the Ensemble neural network'''
+	model.to(device)
+	model.train()
+	optim = optimizer(model.parameters(), lr=lr, weight_decay=1e-5)
+
+	metrics = []
+	for metric in ['f1', 'accuracy']:
+		m = load_metric(metric)
+		metrics.append(m)
+
+	# shuffle the data
+	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
+
+	dataset = FineTuneDataSet(shuffled_sentences, shuffled_labels)
+	dataset.tokenize_data(tokenizer)
+	dataloader = DataLoader(dataset, batch_size=batch_size)
+
+	for epoch in range(epochs):
+		for i, (batch, X) in enumerate(dataloader):
+
+			y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+
+			optim.zero_grad()
+
+			output = model(batch, X, featurizer, device)
+
+			loss = loss_fn(output, y)
+			loss.backward()
+			optim.step()
+
+			# add batched results to metrics
+			pred_argmax = torch.round(output)
+			for m in metrics:
+				m.add_batch(predictions=pred_argmax, references=y)
+        
+			if (i + 1) % 6 == 0:
+		
+				# output metrics to standard output
+				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
+
+		# output metrics to standard output
+		values = f"" # empty string 
+		for m in metrics:
+			val = m.compute()
+			values += f"{m.name}:\n\t {val}\n"
+		print(values, file = sys.stderr)
 
 
-def train_ensemble(ensemble: Ensemble, train_sentences: List[str], train_labels: List[str], device: str, tfidf: TFIDFGenerator) -> None:
+def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int, lr: int, featurizer: Callable, device: str):
+	'''Train the Ensemble neural network'''
+	model.to(device)
+	model.eval()
 
-	# split the training data into 5-folds
-	print("\tsplitting data in k-folds to cross-validate...")
-	kfolds = StratifiedKFold(n_splits=5)
-	kfolds.get_n_splits(train_sentences, train_labels)
+	metrics = []
+	for metric in ['f1', 'accuracy']:
+		m = load_metric(metric)
+		metrics.append(m)
 
-	for i, (train_index, test_index) in enumerate(kfolds.split(train_sentences, train_labels)):
+	# shuffle the data
+	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
 
-		base_models_train, base_models_labels = [train_sentences[n] for n in train_index], [train_labels[n] for n in train_index]
-		meta_model_train, meta_model_labels = [train_sentences[n] for n in test_index], [train_labels[n] for n in test_index]
+	dataset = FineTuneDataSet(shuffled_sentences, shuffled_labels)
+	dataset.tokenize_data(tokenizer)
+	dataloader = DataLoader(dataset, batch_size=batch_size)
 
-		base_models_data = FineTuneDataSet(base_models_train, base_models_labels)
-		meta_model_data = FineTuneDataSet(meta_model_train, meta_model_labels)
+	predictions = []
 
-		# get the inputs for the corresponding training data
-		train_lex_feat, train_roberta_input = get_ensemble_inputs(base_models_data, ensemble, tfidf)
-		meta_lex_feat, meta_roberta_input = get_ensemble_inputs(meta_model_data, ensemble, tfidf)
+	for batch, X in dataloader:
 
-		print(f"(train-fold {i}) training mlp classifier...", file=sys.stderr)
+		y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
 
-		ensemble.mlp.partial_fit(train_lex_feat, base_models_labels, np.unique(base_models_labels))
-		mlp_class_prob = ensemble.mlp.predict_proba(meta_lex_feat)
-		mlp_class_predictions = ensemble.mlp.predict(train_lex_feat)
-		print(f'MLP accuracy: {accuracy_score(mlp_class_predictions, base_models_labels)}')
+		output = model(batch, X, featurizer, device)
 
-		print(f"(train-fold {i}) training roberta...", file=sys.stderr)
+		# add batch to output
+		pred_argmax = torch.round(output)
+		as_list = pred_argmax.clone().detach().to('cpu').tolist()
+		predictions.append(as_list)
 
-		# train roberta
-		ensemble.roberta_model = ensemble.roberta_model.train(train_roberta_input, ['f1', 'accuracy'], device)
+		# add batched results to metrics
+		for m in metrics:
+			m.add_batch(predictions=pred_argmax, references=y)
+	
+	# output metrics to standard output
+	print(f'Loss: {loss.item()}', file = sys.stderr)
 
-		# get roberta predictions
-		roberta_class_prob = ensemble.roberta_model.evaluate(meta_roberta_input, ['f1', 'accuracy'], device)
-
-		# combine mlp output and roberta embeddings and feed to logisitical regression model
-		print(roberta_class_prob.shape, mlp_class_prob.shape)
-		combined_class_prob = np.concatenate((roberta_class_prob, mlp_class_prob), axis=1)
-		print(f"(train-fold {i}) training logistic regression classifier", file=sys.stderr)
-		ensemble.classifier.partial_fit(combined_class_prob, meta_model_labels, np.unique(meta_model_labels))
-
-		#output training performance
-		training_accuracy = ensemble.classifier.score(combined_class_prob, meta_model_labels)
-		print("(train-fold {i}) ensemble training accuracy: {}".format(training_accuracy))
-
-
-def predict(ensemble: Ensemble, dev_sentences: List[str], dev_labels: List[str], device: str, tfidf: TFIDFGenerator) -> np.ndarray:
-	# get the feature vectors and embeddings
-	dev_data = FineTuneDataSet(dev_sentences, dev_labels)
-	dev_lex_feat, dev_roberta_input = get_ensemble_inputs(dev_data, ensemble, tfidf)
-
-	mlp_class_prob = ensemble.mlp.predict_proba(dev_lex_feat)
-	roberta_class_prob = ensemble.roberta_model.evaluate(dev_roberta_input, ['f1', 'accuracy'], device)
-	combined_class_prob = np.concatenate((roberta_class_prob, mlp_class_prob), axis=1)
-
-	predicted_labels = ensemble.classifier.predict(combined_class_prob)
-	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
-	print("\tdev accuracy: {}".format(predicted_accuracy))
-	return predicted_labels
+	# output metrics to standard output
+	values = f"" # empty string 
+	for m in metrics:
+		val = m.compute()
+		values += f"{m.name}:\n\t {val}\n"
+	print(values, file = sys.stderr)
+	return predictions
 
 
 def main(args: argparse.Namespace) -> None:
@@ -119,45 +181,33 @@ def main(args: argparse.Namespace) -> None:
 	print("loading training and development data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path)
 	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path)
-	
-	# change the dimensions of the input sentences only when debugging (adding argument --debug 1)
-	if args.debug == 1:
-		np.random.shuffle(train_sentences)
-		np.random.shuffle(train_labels)
-		train_sentences, train_labels = train_sentences[0:1000], train_labels[0:1000]
-	if args.debug == 1:
-		np.random.shuffle(dev_sentences)
-		np.random.shuffle(dev_labels)
-		dev_sentences, dev_labels = dev_sentences[0:100], dev_labels[0:100]
-
-	#initialize ensemble model
-	print("initializing ensemble architecture")
-	tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-	ensemble_model = Ensemble(tokenizer, ceil(len(train_sentences)/32))
 
 	# initialize tf-idf vectorizer
 	tfidf = TFIDFGenerator(train_sentences, 'english', train_labels)
+	featurizer = lambda x: featurize(x, tfidf)
 
-	#send to train
-	print("training ensemble model...")
-	train_ensemble(ensemble_model, train_sentences, train_labels, device, tfidf)
+	# get input size
+	input_size = featurizer(train_sentences[0:2]).shape[1]
 
-	#run whole ensemble on dev data 
-	print("predicting dev labels...")
-	dev_predicted_labels = predict(ensemble_model, dev_sentences, dev_labels, device, tfidf)
+	# initialize ensemble model
+	print("initializing ensemble architecture")
+	OPTIMIZER = AdamW
+	LR = 5e-5
+	BATCH_SIZE = 32
+	LOSS = nn.BCELoss()
+	EPOCHS = 1
+	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
+	model = Ensemble(input_size, 100, 1)
 
-	#output results
-	print("outputting dev classification output...")
-	dev_out_d = {'sentence': dev_sentences, 'predicted': dev_predicted_labels, 'correct_label': dev_labels}
-	dev_out = pd.DataFrame(dev_out_d)
-	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
-
+	# train the model
+	train(model, train_sentences, train_labels, EPOCHS, BATCH_SIZE, LR, featurizer, TOKENIZER, OPTIMIZER, LOSS, device)
+	preds = evaluate(model, dev_sentences, dev_labels, BATCH_SIZE, TOKENIZER, featurizer, device)
+	
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--output_file', help="path to output data file")
-	parser.add_argument('--debug', type=int, help="path to output data file")
 	args = parser.parse_args()
 
 	main(args)

@@ -1,0 +1,18 @@
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.bias', 'lm_head.bias', 'roberta.pooler.dense.weight', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'roberta.pooler.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.dense.bias', 'classifier.out_proj.weight', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+f1:
+	 {'f1': 0.019801980198019802}
+accuracy:
+	 {'accuracy': 0.01}
+
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 213, in <module>
+    main(args)
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 204, in main
+    preds = evaluate(model, dev_sentences, dev_labels, BATCH_SIZE, TOKENIZER, featurizer, device)
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 136, in evaluate
+    dataset.tokenize_data(tokenizer)
+NameError: name 'tokenizer' is not defined
