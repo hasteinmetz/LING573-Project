@@ -109,7 +109,95 @@ def get_vocabulary(training_sents: List[str], stop_words: str = None,
 
 	return fitted_vectorizer
 
+<<<<<<< HEAD
 def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
+=======
+
+def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.ndarray:
+	'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
+	matrix = fitted_vectorizer.transform(sentences)
+	return matrix.toarray()
+
+
+def check_phrase(sentence: str, lex_dict: Dict[str, str]) -> Tuple[bool, List[str]]:
+	'''
+	arguments:
+		- sentence: lemmatized input data sentence
+		- lex_dixt: hurtlex dictionary
+
+	check phrases in hurtlex
+	'''
+	contain_phrase = False
+	tokens = []
+
+	for k, v in lex_dict.items():
+		if k in sentence and len(k.split()) > 1:
+			contain_phrase = True
+			tokens.append(v[0])
+
+	return contain_phrase, tokens
+
+
+def count_feature(sentence: str, lex_dict: Dict[str, str], feature_list: set, tagger) -> np.ndarray:
+	'''
+	arguments:
+		- sentence: input sentence
+		- lex_dict: hurtlex lexicon dictionary
+		- feature_list: hurtlex category list
+		- tagger: pos tagger
+	returns:
+		a (17) vector representing hurtlex semantic space of input sentence
+	'''
+	#set up
+	count = dict.fromkeys(feature_list, 0)
+	spacy_s = tagger(sentence)
+
+	#check hurtlex phrases in the lemmatized sentence
+	test = ' '.join([token.lemma_ for token in spacy_s])
+	cond, cats = check_phrase(test, lex_dict)
+
+	if cond:
+		for tag in cats:
+			count[tag] += 1
+	else:
+		for token in spacy_s:
+			if token.lemma_ in lex_dict:
+				# check if pos_tag matches
+				# if so, add a count
+				if token.tag_.lower()[0] == lex_dict[token.lemma_][1] or (token.tag_[0] == 'j' and lex_dict[token.lemma_][1] == 'a'):
+					count[lex_dict[token.lemma_][0]] += 1
+
+	feature = []
+	for k, v in sorted(count.items()):
+		feature.append(v)
+
+	return feature
+
+
+def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set) -> np.ndarray:
+	'''
+	arguments:
+		- sentences: list of input data to be featurized
+		- lex_dict: hurtlex lexicon dictionary 
+		- feature: hurtlex category list
+	returns:
+		a (n_samples, 17) vector representing the hurtlex semantic space of each sentence
+	'''
+	#set up
+	j = 0
+	tagger = spacy.load("en_core_web_sm")
+
+	features = []
+	for data in sentences:
+		s = count_feature(data, lex_dict, feature, tagger)
+		features.append(s)
+
+	return np.array(features)
+
+
+def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
+# def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
+>>>>>>> 1988355 (saving...)
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
