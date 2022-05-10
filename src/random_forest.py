@@ -2,7 +2,6 @@ import json
 import time
 import utils
 import argparse
-import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize

@@ -1,4 +1,8 @@
-import json
+#!/usr/bin/env python
+
+''' References:
+	- https://www.kaggle.com/code/ynouri/random-forest-k-fold-cross-validation/notebook
+'''
 import utils
 import torch
 import argparse
@@ -112,7 +116,18 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	training_accuracy = ensemble.classifier.score(combined_class_prob, train_labels)
 	print("logreg classifier training accuracy: {}".format(training_accuracy))
 
+
 def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> Tuple[np.ndarray, float]:
+	'''
+	arguments:
+		- ensemble: ensemble model
+		- dev_lex_feat: vectorized features
+		- dev_labels: golden labels for input data
+		- roberta_input: tokenized input for roberta
+		- device: which device roberta models and data should be run and stored on
+	
+	does a forward pass of the ensemble on the provided input data and returns the accuracy and f1 score metrics
+	'''
 	rf_class_prob = ensemble.random_forest.predict_proba(dev_lex_feat)
 
 	ensemble.roberta_model.eval()
@@ -138,6 +153,7 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
 	print("\tdev accuracy: {}".format(predicted_accuracy))
 	return predicted_labels, predicted_accuracy
+
 
 def main(args: argparse.Namespace) -> None:
 	# check if cuda is avaiable
@@ -196,6 +212,7 @@ def main(args: argparse.Namespace) -> None:
 	with open(args.results_file, 'w') as f:
 		f.write("accuracy: {}\n".format(dev_accuracy))
 		f.write("f1: {}\n".format(dev_f1))
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
