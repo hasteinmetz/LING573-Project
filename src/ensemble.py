@@ -105,7 +105,7 @@ def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int,
 			for m in metrics:
 				m.add_batch(predictions=pred_argmax, references=y)
         
-			if (i + 1) % 6 == 0:
+			if (i + 1) % 10 == 0:
 		
 				# output metrics to standard output
 				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
@@ -118,7 +118,7 @@ def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int,
 		print(values, file = sys.stderr)
 
 
-def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int, lr: int, 
+def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int,
 	tokenizer: RobertaTokenizer, featurizer: Callable, device: str):
 	'''Train the Ensemble neural network'''
 	model.to(device)
@@ -195,7 +195,7 @@ def main(args: argparse.Namespace) -> None:
 	LR = 5e-5
 	BATCH_SIZE = 32
 	LOSS = nn.BCEWithLogitsLoss()
-	EPOCHS = 1
+	EPOCHS = 2
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 	model = Ensemble(input_size, 100, 1)
 
