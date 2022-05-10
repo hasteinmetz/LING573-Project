@@ -1,6 +1,6 @@
 from tkinter import W
 import nltk
-import utils
+import spacy
 import utils
 import numpy as np
 import pandas as pd
@@ -240,6 +240,9 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	tf = get_tfidf(preprocessed_sentences, vectorizer)
 	print("tf shape: {}".format(np.shape(tf)))
 	'''
+
+	#get hurtlex feature vector
+	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)

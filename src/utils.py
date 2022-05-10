@@ -57,6 +57,7 @@ def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, enc
 			my_writer.writerow([data[i], labels[i]])
 	my_csv.close()
 
+
 def load_json_config(filepath: str) -> dict:
 	'''
 	arguments:
