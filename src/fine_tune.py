@@ -22,6 +22,7 @@ from datasets import load_metric
 import pandas as pd
 import sys
 
+
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
     and behaves list a list but also stores sentences and labels for
@@ -49,22 +50,17 @@ class FineTuneDataSet(Dataset):
 
 
 class RobertaModelWrapper:
-    def __init__(self, batch_s: int, lr: float, tokenizer: RobertaTokenizer, training_steps, model: RobertaModel = None):
+    def __init__(self, batch_s: int, lr: float, tokenizer: RobertaTokenizer, model: RobertaModel = None):
         self.batch_size = batch_s
         if model:
             self.model = model
         else:
             self.model = RobertaModel.from_pretrained('roberta-base')
-        self.optimizer = AdamW(self.model.parameters(), lr=lr)
         self.tokenizer = tokenizer
-        self.scheduler = get_scheduler(
-            name="linear", optimizer=self.optimizer, num_warmup_steps=0, num_training_steps=training_steps
-        )
 
-    def train(self, train_data: FineTuneDataSet, measures: List[str], device: str):
+    def train_model(self, train_data: FineTuneDataSet, measures: List[str], optim: torch.optim, device: str):
         # set the model to eval mode
         self.model.train()
-        self.model.to(device)
 
         # create a list of metrics to store data
         metrics = []
@@ -82,7 +78,8 @@ class RobertaModelWrapper:
         for batch in dataloader:
             batch['labels'] = batch.pop('label')
             labels = batch['labels']
-            self.optimizer.zero_grad()
+            
+            optim.zero_grad()
 
             # assign each element of the batch to the device
             batch = {k: v.to(device) for k, v in batch.items()}
@@ -90,11 +87,10 @@ class RobertaModelWrapper:
             
             # get batched results
             logits = outputs.logits
-            loss = outputs[0]
+            loss = outputs.loss
             loss.backward()
 
-            self.optimizer.step()
-            self.scheduler.step()
+            optim.step()
 
             # add batch to output
             pred_argmax = torch.argmax(logits, dim = -1)
@@ -107,13 +103,12 @@ class RobertaModelWrapper:
         
         # output metrics to standard output
         print(f'Loss: {loss.item()}', file = sys.stderr)
-        return self.model
+
 
     def evaluate(self, test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
         '''Evaluate model performance on the test texts'''
         # set the model to eval mode
         self.model.eval()
-        self.model.to(device)
 
         # create a list of metrics to store data
         metrics = []
