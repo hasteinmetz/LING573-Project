@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-"""
+'''
 script for common functions
-"""
+'''
+
 import csv
 import json
 import time
@@ -94,7 +95,7 @@ def get_time(start_time: float) -> str:
 	return f"{str(round(minutes))}min {str(round(sec))}sec"
 
 
-def read_from_tsv(lex_data):
+def read_from_tsv(lex_data: str) -> Tuple[Dict[str,str], set]:
 	"""
 	read in and output hurtlex dictionary in the format of 'lemma:[category, tag]'
 	"""
