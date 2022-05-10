@@ -63,6 +63,7 @@ class Ensemble():
 			accuracy["train"].append(self.random_forest.score(lexical_features[train_idx], labels[train_idx]))
 			accuracy["test"].append(self.random_forest.score(lexical_features[test_idx], labels[test_idx]))
 		accuracy_df = pd.DataFrame(accuracy)
+		print("random forest classifier accuracy")
 		print(accuracy_df)
 
 
@@ -75,8 +76,9 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	#get roberta embeddings
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
-	roberta_class_prob = []
 	dl = DataLoader(roberta_input, batch_size=32)
+
+	roberta_class_prob = None 
 	for batch in dl:
 		batch['labels'] = batch.pop('label')
 		inputs = {k: y.to(device) for k,y in batch.items()}
@@ -84,10 +86,12 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 		with torch.no_grad():
 			outputs = ensemble.roberta_model(**inputs)
 		logits = outputs.logits
-		probs = logits.clone().detach().to('cpu').tolist()
-		roberta_class_prob.append(probs)
+		probs = logits.clone().detach().to('cpu').numpy()
+		if roberta_class_prob is None:
+			roberta_class_prob = probs
+		else:
+			roberta_class_prob = np.concatenate((roberta_class_prob, probs), axis=0)
 	
-	roberta_class_prob = np.asarray(roberta_class_prob)
 	#combine rf output and roberta embeddings and feed to logisitical regression model
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	print("\ttraining logistic regression classifier")
@@ -95,15 +99,16 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 
 	#output training performance
 	training_accuracy = ensemble.classifier.score(combined_class_prob, train_labels)
-	print("training accuracy: {}".format(training_accuracy))
+	print("logreg classifier training accuracy: {}".format(training_accuracy))
 
 def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> Tuple[np.ndarray, float]:
 	rf_class_prob = ensemble.random_forest.predict_proba(dev_lex_feat)
 
 	ensemble.roberta_model.eval()
 	ensemble.roberta_model.to(device)
-	roberta_class_prob = []
 	dl = DataLoader(roberta_input, batch_size=32)
+
+	roberta_class_prob = None
 	for batch in dl:
 		batch['labels'] = batch.pop('label')
 		inputs = {k: y.to(device) for k,y in batch.items()}
@@ -111,10 +116,12 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 		with torch.no_grad():
 			outputs = ensemble.roberta_model(**inputs)
 		logits = outputs.logits
-		probs = logits.clone().detach().to('cpu').tolist()
-		roberta_class_prob.append(probs)
+		probs = logits.clone().detach().to('cpu').numpy()
+		if roberta_class_prob is None:
+			roberta_class_prob = probs
+		else:
+			roberta_class_prob = np.concatenate((roberta_class_prob, probs), axis=0)
 	
-	roberta_class_prob = np.asarray(roberta_class_prob)
 	combined_class_prob = np.concatenate((roberta_class_prob, rf_class_prob), axis=1)
 	predicted_labels = ensemble.classifier.predict(combined_class_prob)
 	predicted_accuracy = ensemble.classifier.score(combined_class_prob, dev_labels)
@@ -152,8 +159,8 @@ def main(args: argparse.Namespace) -> None:
 	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding=True)
 	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding=True)
 
-	train_dataset = FineTuneDataset(train_sentences, train_labels)
-	dev_dataset = FineTuneDataset(dev_sentences, dev_labels)
+	train_dataset = FineTuneDataSet(train_sentences, train_labels)
+	dev_dataset = FineTuneDataSet(dev_sentences, dev_labels)
 	train_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 	dev_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 
@@ -174,8 +181,8 @@ def main(args: argparse.Namespace) -> None:
 	print("outputting results...")
 	dev_f1 = f1_score(dev_labels, dev_predicted_labels)
 	with open(args.results_file, 'w') as f:
-		f.write("accuracy: {}".format(dev_accuracy))
-		f.write("f1: {}".format(dev_f1))
+		f.write("accuracy: {}\n".format(dev_accuracy))
+		f.write("f1: {}\n".format(dev_f1))
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
