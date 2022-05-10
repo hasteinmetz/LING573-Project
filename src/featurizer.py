@@ -124,12 +124,10 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	# create lexical vector
 	print("create lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
-	print("lv shape: {}".format(np.shape(lv)))
 
 	# get empathy vectors
 	print("get empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
-	print(em.shape)
  
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
@@ -144,6 +142,5 @@ def featurize(sentences: List[str], labels: np.ndarray) -> np.ndarray:
 	print("normalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em)
-	print(nv)
 	
 	return nv

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
 Traceback (most recent call last):
@@ -8,3 +9,10 @@ Traceback (most recent call last):
   File "/home2/apai3/ling573/src/ensemble.py", line 82, in train_ensemble
     print(batch.shape())
 AttributeError: 'dict' object has no attribute 'shape'
+=======
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 191, in <module>
+    main(args)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 155, in main
+    train_dataset = FineTuneDataset(train_sentences, train_labels)
+NameError: name 'FineTuneDataset' is not defined
+>>>>>>> cd9842670bb4e2f644ae6c40949cf327e3a30300
