@@ -7,6 +7,6 @@ error                = outputs/D3/ensemble/condor.error
 log                  = outputs/D3/ensemble/condor.log
 request_GPUs         = 1
 transfer_executable  = false
-request_memory       = 8*1024
+request_memory       = 2*1024
 nice_user            = true
 queue
