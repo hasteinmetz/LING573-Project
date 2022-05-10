@@ -6,9 +6,9 @@
 		"max_features": ["auto", "sqrt"],
 		"min_samples_leaf": [1,2,4],
 		"min_samples_split": [3,6,9],
-		"n_estimators": [100, 200, 300]
+		"n_estimators": [100, 200, 300, 400]
 	},
-	"n_iter": 100,
+	"n_iter": 200,
 	"cv": 9,
 	"verbose": 2,
 	"random_state": 42,
