@@ -68,6 +68,17 @@ class Ensemble():
 
 
 def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels: np.ndarray, roberta_input: BatchEncoding, device: str) -> None:
+	'''
+	arguments:
+		- ensemble: ensemble model
+		- train_lex_feat: vectorized features
+		- train_labels: golden labels for input data
+		- roberta_input: tokenized input for roberta
+		- device: which device roberta models and data should be run and stored on
+	
+	trains the random forest classifier on the feature vector, then trains log reg classifier on combined output from the random forest classifier
+	and roberta model
+	'''
 	#train random forest
 	print("\ttraining random forest classifier...")
 	ensemble.train_random_forest(train_lex_feat, train_labels)
