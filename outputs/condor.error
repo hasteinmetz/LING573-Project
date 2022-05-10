@@ -1,4 +1,7 @@
 /home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+=======
+/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+>>>>>>> 91da272 (incorporated hurtlex)
   item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
-/home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
