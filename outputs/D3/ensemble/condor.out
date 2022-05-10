@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 Using cuda device
 <<<<<<< HEAD
 loading training and development data...
@@ -36,3 +37,9 @@ MLP accuracy: 0.3710618436406068
 >>>>>>> df05928 (small bug fix)
 =======
 >>>>>>> 7014fc8 (more debugging of ensemble model)
+=======
+Using cuda device
+Using the GPU:Tesla M10
+loading training and development data...
+initializing ensemble architecture
+>>>>>>> 1988355 (saving...)
