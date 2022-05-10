@@ -1,27 +1,7 @@
-(0min 2sec) Using cuda device
-Using the GPU:Tesla M10
-(0min 2sec) Reading data in from files...
+(0min 1sec) Using cpu device
+(0min 1sec) Reading data in from files...
 
-(0min 7sec) Initalizating RoBERTa and creating data collator...
+(0min 6sec) Initalizating RoBERTa and creating data collator...
 
 (0min 14sec) Fine-tuning the model...
 
-{'eval_loss': 0.19826076924800873, 'eval_accuracy': 0.92375, 'eval_runtime': 12.4206, 'eval_samples_per_second': 64.409, 'eval_steps_per_second': 2.013, 'epoch': 1.0}
-{'train_runtime': 553.1014, 'train_samples_per_second': 11.569, 'train_steps_per_second': 0.362, 'train_loss': 0.2504597854614258, 'epoch': 1.0}
-
-(9min 30sec) Evaluating the Transformer model on training data
-
-f1:
-	 {'f1': 0.9753228487405703}
-accuracy:
-	 {'accuracy': 0.9698390373495859}
-
-
-(12min 34sec) Evaluating the Transformer model on dev data
-
-f1:
-	 {'f1': 0.937178166838311}
-accuracy:
-	 {'accuracy': 0.92375}
-
-(12min 52sec) Done!
