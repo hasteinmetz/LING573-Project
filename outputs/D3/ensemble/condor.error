@@ -1,0 +1,144 @@
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.dense.bias', 'roberta.pooler.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.out_proj.weight', 'classifier.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+(1, 320) Loss: 0.6421585083007812
+(1, 640) Loss: 0.39699095487594604
+(1, 960) Loss: 0.44851648807525635
+(1, 1280) Loss: 0.4370151162147522
+(1, 1600) Loss: 0.2336743175983429
+(1, 1920) Loss: 0.27868586778640747
+(1, 2240) Loss: 0.30514630675315857
+(1, 2560) Loss: 0.23182623088359833
+(1, 2880) Loss: 0.16849252581596375
+(1, 3200) Loss: 0.16182148456573486
+(1, 3520) Loss: 0.2201537787914276
+(1, 3840) Loss: 0.06942446529865265
+(1, 4160) Loss: 0.25396546721458435
+(1, 4480) Loss: 0.41096460819244385
+(1, 4800) Loss: 0.3970028758049011
+(1, 5120) Loss: 0.14321036636829376
+(1, 5440) Loss: 0.12667392194271088
+(1, 5760) Loss: 0.37766867876052856
+(1, 6080) Loss: 0.3275100588798523
+(1, 6400) Loss: 0.04951195791363716
+f1:
+	 {'f1': 0.9021951219512195}
+accuracy:
+	 {'accuracy': 0.8746679168620097}
+
+(2, 320) Loss: 0.18947948515415192
+(2, 640) Loss: 0.07104513049125671
+(2, 960) Loss: 0.11149272322654724
+(2, 1280) Loss: 0.30161651968955994
+(2, 1600) Loss: 0.053569063544273376
+(2, 1920) Loss: 0.092121921479702
+(2, 2240) Loss: 0.025415141135454178
+(2, 2560) Loss: 0.2957802414894104
+(2, 2880) Loss: 0.23599043488502502
+(2, 3200) Loss: 0.05825376883149147
+(2, 3520) Loss: 0.012730471789836884
+(2, 3840) Loss: 0.13608255982398987
+(2, 4160) Loss: 0.0631607249379158
+(2, 4480) Loss: 0.3183249235153198
+(2, 4800) Loss: 0.28420570492744446
+(2, 5120) Loss: 0.14662562310695648
+(2, 5440) Loss: 0.0949847474694252
+(2, 5760) Loss: 0.13785606622695923
+(2, 6080) Loss: 0.040476568043231964
+(2, 6400) Loss: 0.03966560214757919
+f1:
+	 {'f1': 0.9562917243985388}
+accuracy:
+	 {'accuracy': 0.9457727769964057}
+
+(3, 320) Loss: 0.06175835430622101
+(3, 640) Loss: 0.015003342181444168
+(3, 960) Loss: 0.06387300044298172
+(3, 1280) Loss: 0.14852693676948547
+(3, 1600) Loss: 0.016276342794299126
+(3, 1920) Loss: 0.06093532219529152
+(3, 2240) Loss: 0.15714678168296814
+(3, 2560) Loss: 0.1603013575077057
+(3, 2880) Loss: 0.009600532241165638
+(3, 3200) Loss: 0.02722189389169216
+(3, 3520) Loss: 0.04677269980311394
+(3, 3840) Loss: 0.007269765250384808
+(3, 4160) Loss: 0.016323380172252655
+(3, 4480) Loss: 0.1321249157190323
+(3, 4800) Loss: 0.29604214429855347
+(3, 5120) Loss: 0.07007516920566559
+(3, 5440) Loss: 0.04150233790278435
+(3, 5760) Loss: 0.12588664889335632
+(3, 6080) Loss: 0.040473710745573044
+(3, 6400) Loss: 0.30442219972610474
+f1:
+	 {'f1': 0.9727479182437547}
+accuracy:
+	 {'accuracy': 0.9662447257383966}
+
+(4, 320) Loss: 0.031159445643424988
+(4, 640) Loss: 0.012859855778515339
+(4, 960) Loss: 0.015084104612469673
+(4, 1280) Loss: 0.07927531749010086
+(4, 1600) Loss: 0.014632519334554672
+(4, 1920) Loss: 0.006580733694136143
+(4, 2240) Loss: 0.009856889955699444
+(4, 2560) Loss: 0.16570280492305756
+(4, 2880) Loss: 0.012891359627246857
+(4, 3200) Loss: 0.007313362788408995
+(4, 3520) Loss: 0.04540132358670235
+(4, 3840) Loss: 0.00613611051812768
+(4, 4160) Loss: 0.03972380980849266
+(4, 4480) Loss: 0.011628378182649612
+(4, 4800) Loss: 0.19378171861171722
+(4, 5120) Loss: 0.0527958907186985
+(4, 5440) Loss: 0.032480910420417786
+(4, 5760) Loss: 0.011789647862315178
+(4, 6080) Loss: 0.03915998339653015
+(4, 6400) Loss: 0.038029368966817856
+f1:
+	 {'f1': 0.9853052951608816}
+accuracy:
+	 {'accuracy': 0.981872167526176}
+
+(5, 320) Loss: 0.0035110083408653736
+(5, 640) Loss: 0.15657241642475128
+(5, 960) Loss: 0.05059782415628433
+(5, 1280) Loss: 0.03318715840578079
+(5, 1600) Loss: 0.00433225417509675
+(5, 1920) Loss: 0.0032384684309363365
+(5, 2240) Loss: 0.12694063782691956
+(5, 2560) Loss: 0.1795719563961029
+(5, 2880) Loss: 0.07894381880760193
+(5, 3200) Loss: 0.021982155740261078
+(5, 3520) Loss: 0.021996818482875824
+(5, 3840) Loss: 0.0036004348658025265
+(5, 4160) Loss: 0.01600300520658493
+(5, 4480) Loss: 0.07467244565486908
+(5, 4800) Loss: 0.167153999209404
+(5, 5120) Loss: 0.01058764848858118
+(5, 5440) Loss: 0.03945465758442879
+(5, 5760) Loss: 0.019938115030527115
+(5, 6080) Loss: 0.013484624214470387
+(5, 6400) Loss: 0.0031304964795708656
+f1:
+	 {'f1': 0.9882203926535783}
+accuracy:
+	 {'accuracy': 0.9854664791373652}
+
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 224, in <module>
+    main(args)
+  File "/home2/hsteinm/573/repo/src/ensemble.py", line 209, in main
+    dev_out = pd.DataFrame(dev_out_d)
+  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/pandas/core/frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/pandas/core/internals/construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/pandas/core/internals/construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/pandas/core/internals/construction.py", line 674, in _extract_index
+    raise ValueError("All arrays must be of the same length")
+ValueError: All arrays must be of the same length
