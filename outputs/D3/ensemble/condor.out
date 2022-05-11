@@ -1,9 +1,0 @@
-Using cuda device
-Using the GPU:Tesla M10
-loading training and development data...
-initializing ensemble architecture
-f1:
-	 {'f1': 0.9386934673366834}
-accuracy:
-	 {'accuracy': 0.92375}
-

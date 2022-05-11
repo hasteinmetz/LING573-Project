@@ -33,20 +33,12 @@ from featurizer import featurize
 from torch.utils.data import DataLoader
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
 from datasets import load_metric
-from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import StratifiedKFold
-from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
 from math import ceil
 
 nn = torch.nn
-
-# TODO: Figure out a way to do k-fold cross validation so that each model component is trained separately
-# instead of together --> this way we get a properly fine-tuned RoBERTa and a properly fine-tuned MLP
-# maybe something like class FineTuneTR, class MLP, and class Regressor all combined under class ensemble
-	# To put them together, define a forward method in the ensemble
-	# define an external optimizers that only modify their respective model parameters
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
@@ -74,115 +66,254 @@ class FineTuneDataSet(Dataset):
         return len(self.labels)
 
 
-class Ensemble(nn.Module):
-	def __init__(self, input_size: int, hidden_size: int, output_size: int):
-		super(Ensemble, self).__init__()
+class RoBERTa(nn.Module):
+	'''A wrapper around the RoBERTa model with a defined forward function'''
+	def __init__(self):
+		super(RoBERTa, self).__init__()
 		self.roberta = RobertaForSequenceClassification.from_pretrained('roberta-base')
+
+	def forward(self, data: dict, device: str):
+		# tokenize the data
+		inputs = {k:v.to(device) for k,v in data.items()}
+		roberta_out = self.roberta(**inputs)
+		return roberta_out
+
+
+class FeatureClassifier(nn.Module):
+	'''Simple feed forward neural network to classify a word's lexical features'''
+	def __init__(self, input_size: int, hidden_size: int, num_classes: int):
+		super(FeatureClassifier, self).__init__()
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.75),
-			nn.Linear(hidden_size, output_size+1)
+			nn.Dropout(0.5), # high-ish dropout to avoid overfitting to certain features
+			nn.Linear(hidden_size, hidden_size),
+			nn.ReLU(),
+			nn.Dropout(0.5),
+			nn.Linear(hidden_size, num_classes)
 		)
-		self.output = nn.Linear(2+2, output_size)
 
-	def forward(self, data: dict, sentences: List[str], featurizer: Callable, device: str):
-		# tokenize the data
-		inputs = {k:v.to(device) for k,v in data.items()}
-		outputs_roberta = self.roberta(**inputs).logits
-		features_tensor = torch.tensor(featurizer(sentences), dtype=torch.float).to(device)
-		outputs_mlp = self.mlp(features_tensor)
-		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
-		logits = self.output(classifier_in)
+	def forward(self, features: torch.tensor):		
+		logits = self.mlp(features)
 		return logits
 
-	# def roberta_forward(self, data: dict, device: str):
-	# 	inputs = {k:v.to(device) for k,v in data.items()}
-	# 	outputs_roberta = self.roberta(**inputs).logits
-	# 	return outputs_roberta
+class LogisticRegression(nn.Module):
+	'''Using PyTorch's loss functions and layers to model Logistic Regression'''
+	def __init__(self, input_dim: int):
+		super(LogisticRegression, self).__init__()
+		self.linear = nn.Linear(input_dim, 1)
 
-def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int, batch_size: int, lr: int,
-	featurizer: Callable, tokenizer: RobertaTokenizer, optimizer: torch.optim, loss_fn: Callable, device: str):
-	'''Train the Ensemble neural network'''
-	model.to(device)
-	model.train()
-	optim = optimizer(model.parameters(), lr=lr, weight_decay=1e-5)
+	def forward(self, input_logits: torch.tensor):
+		linear = self.linear(input_logits)
+		return torch.sigmoid(linear)
 
-	metrics = []
-	for metric in ['f1', 'accuracy']:
-		m = load_metric(metric)
-		metrics.append(m)
+
+def make_torch_labels_binary(labels: torch.tensor) -> torch.tensor:
+	'''Helper function that turns [n x 1] labels into [n x 2] labels'''
+	zeros = torch.zeros((labels.shape[0], 2), dtype=float)
+	for i in range(len(labels)):
+		zeros[i, labels[i]] = 1.0
+	return zeros
+
+
+def train_ensemble(
+		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
+		sentences: List[str], labels: np.ndarray, featurizer: Callable, 
+		epochs: int, batch_size: int, 
+		lr_transformer: float, lr_classifier: float, lr_regressor: float,
+		kfolds: int,
+		optimizer_transformer: torch.optim, optimizer_classifier: torch.optim, optimizer_regression: torch.optim,
+		loss_fn: Callable, device: str
+	):
+	'''Train the ensemble on the training data'''
+
+	# send the models to the device
+	Transformer.to(device)
+	FClassifier.to(device)
+	LogRegressor.to(device)
+
+	# initialize the optimizers for the Transformer and FClassifier
+	optim_tr = optimizer_transformer(Transformer.parameters(), lr=lr_transformer, weight_decay=1e-5)
+	optim_cl = optimizer_classifier(FClassifier.parameters(), lr=lr_classifier, weight_decay=1e-5)
+	optim_log = optimizer_regression(LogRegressor.parameters(), lr=lr_regressor, weight_decay=1e-5)
 
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
+	
+	# for debugging, uncomment the line below:
+	# shuffled_sentences, shuffled_labels = shuffled_sentences[0:50], shuffled_labels[0:50]
 
-	dataset = FineTuneDataSet(shuffled_sentences, shuffled_labels)
-	dataset.tokenize_data(tokenizer)
-	dataloader = DataLoader(dataset, batch_size=batch_size)
+	# get classes
+	classes = np.unique(labels)
+
+	# set up regression loss function
+	loss_logistic = nn.BCELoss()
+
+	# prepare the kfolds cross validator
+	# k-folds cross-validation trains the Transformer and FClassifier on parts of the
+	# test data and then LogRegressor on the remaining dataset (outputs provided by the other two models)
+	kfolder = StratifiedKFold(n_splits=kfolds)
+	kfolder.get_n_splits(shuffled_sentences, shuffled_labels)
 
 	for epoch in range(epochs):
-		for i, (batch, X) in enumerate(dataloader):
 
-			y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+		for fold, (train_i, test_i) in enumerate(kfolder.split(shuffled_sentences, shuffled_labels)):
 
-			optim.zero_grad()
+			X = np.array(shuffled_sentences)
+			y = np.array(shuffled_labels)
 
-			output = model(batch, X, featurizer, device)
+			X_models, y_models = X[train_i].tolist(), y[train_i].tolist()
+			X_meta, y_meta = X[test_i].tolist(), y[test_i].tolist()
 
-			loss = loss_fn(output, y)
-			loss.backward()
-			optim.step()
+			# make the data a Dataset and put it in a DataLoader to batch it
+			dataset = FineTuneDataSet(X_models, y_models)
+			dataset.tokenize_data(tokenizer)
+			dataloader = DataLoader(dataset, batch_size=batch_size)
 
-			# add batched results to metrics
-			pred_argmax = torch.round(torch.sigmoid(output))
-			for m in metrics:
-				m.add_batch(predictions=pred_argmax, references=y)
-        
-			if (i + 1) % 10 == 0:
-		
-				# output metrics to standard output
-				print(f'({epoch + 1}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
+			# TRAIN THE TRANSFORMER AND THE FCLASSIFIER
+			Transformer.train()
+			FClassifier.train()
+			LogRegressor.train()
 
-		# output metrics to standard output
-		values = f"" # empty string 
-		for m in metrics:
-			val = m.compute()
-			values += f"{m.name}:\n\t {val}\n"
-		print(values, file = sys.stderr)
+			for i, (batch, X) in enumerate(dataloader):
+
+				# TRANSFORMER TRAINING
+
+				# set transformer optimizer to 0-grad
+				optim_tr.zero_grad()
+
+				transformer_outputs = Transformer(batch, device)
+				
+				loss_tr = transformer_outputs.loss
+				loss_tr.backward()
+				optim_tr.step()
+
+				# FCLASSIFIER TRAINING
+
+				# set classifier optimizer to 0-grad
+				optim_cl.zero_grad()
+
+				# initialize the feature tensor
+				features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
+
+				# change the shape of labels to [n, 2]
+				y = make_torch_labels_binary(batch['labels']).to(device)
+
+				classifier_outputs = FClassifier(features_tensor)
+
+				cl_outputs_softmax = softmax(classifier_outputs, dim=1)
+				loss_cl = loss_fn(cl_outputs_softmax, y)
+				loss_cl.backward()
+				optim_cl.step()
+
+				if (i + 1) % 10 == 0:
+			
+					# output metrics to standard output
+					print(
+						f'\t(epoch {epoch+1}, fold {fold+1}, samples {(i+1)*batch_size}) ' +
+						f'FClassifier Loss: {loss_cl.item()} Transformer Loss: {loss_tr.item()}', 
+						file = sys.stderr
+					)
+
+			# make the data a Dataset and put it in a DataLoader to batch it
+			dataset = FineTuneDataSet(X_meta, y_meta)
+			dataset.tokenize_data(tokenizer)
+			dataloader = DataLoader(dataset, batch_size=batch_size)
+
+			# TRAIN THE LOGISTIC REGRESSOR
+			Transformer.eval()
+			FClassifier.eval()
+
+			for i, (batch, X) in enumerate(dataloader):
+
+				optim_log.zero_grad()
+
+				# GET LOGITS
+
+				with torch.no_grad():
+					# transformer logits
+					transformer_logits = Transformer(batch, device).logits
+					
+					# classifier logits
+					features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
+					feature_logits = FClassifier(features_tensor)
+
+				# TRAIN REGRESSOR
+				all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
+				output = LogRegressor(all_logits)
+				
+				y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+				loss_lg = loss_logistic(output, y)
+				loss_lg.backward()
+				optim_log.step()
+
+				if (i + 1) % 10 == 0:
+			
+					# output metrics to standard output
+					correct = (torch.round(output) == y).type(torch.float).sum().item() 
+					total = output.shape[0]
+					accuracy = correct/total
+					print(
+						f'(epoch {epoch+1}, fold {fold+1}, samples {(i+1)*batch_size}) ' +
+						f'Regression Accuracy: {accuracy}, Loss: {loss_lg.item()}',
+						file = sys.stderr
+					)
 
 
-def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int,
-	tokenizer: RobertaTokenizer, featurizer: Callable, device: str):
-	'''Train the Ensemble neural network'''
-	model.to(device)
-	model.eval()
+def evaluate_ensemble(
+		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
+		sentences: List[str], labels: np.ndarray, featurizer: Callable, batch_size: int, device: str
+	):
+	'''Evaluate the Ensemble'''
+	
+	# send the models to the device
+	Transformer.to(device)
+	FClassifier.to(device)
+
+	# turn the models into eval mode
+	Transformer.eval()
+	FClassifier.eval()
+	LogRegressor.eval()
 
 	metrics = []
 	for metric in ['f1', 'accuracy']:
 		m = load_metric(metric)
 		metrics.append(m)
 
+	# make the data a Dataset and put it in a DataLoader to batch it
 	dataset = FineTuneDataSet(sentences, labels)
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
+	# intialize a list to store predictions
 	predictions = []
 
 	for batch, X in dataloader:
 
+		# send labels to device
 		y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
 
+		# GET LOGITS
+
 		with torch.no_grad():
-			output = model(batch, X, featurizer, device)
+			# transformer logits
+			transformer_logits = Transformer(batch, device).logits
+			
+			# classifier logits
+			features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
+			feature_logits = FClassifier(features_tensor)
+
+		# EVALUATE REGRESSOR
+		all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
+		y_hats = LogRegressor(all_logits)
 
 		# add batch to output
-		pred_argmax = torch.round(torch.sigmoid(output))
-		as_list = pred_argmax.clone().detach().to('cpu').tolist()
+		as_list = torch.round(y_hats).to('cpu').tolist()
 		predictions.extend(as_list)
 
 		# add batched results to metrics
 		for m in metrics:
-			m.add_batch(predictions=pred_argmax, references=y)
+			m.add_batch(predictions=torch.round(y_hats), references=y)
 
 	# output metrics to standard output
 	values = f"" # empty string 
@@ -195,15 +326,16 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 
 def main(args: argparse.Namespace) -> None:
 	# check if cuda is avaiable
-	device = "cpu"
+	DEVICE = "cpu"
 	if torch.cuda.is_available():
-		device = "cuda"
-		torch.device(device)
-		print(f"Using {device} device")
-		print(f"Using the GPU:{torch.cuda.get_device_name(0)}")
+		DEVICE = "cuda"
+		torch.device(DEVICE)
+		print(f"Using {DEVICE} device")
+		print(f"Using the GPU:{torch.cuda.get_device_name(0)}", file = sys.stderr)
 	else:
-		torch.device(device)
-		print(f"Using {device} device")
+		torch.device(DEVICE)
+		print(f"Using {DEVICE} device")
+		print(f"Using {DEVICE} device", sys.stderr)
 
 	#load data
 	print("loading training and development data...")
@@ -263,17 +395,37 @@ def main(args: argparse.Namespace) -> None:
 
 	# initialize ensemble model
 	print("initializing ensemble architecture")
-	OPTIMIZER = AdamW
-	LR = 5e-5
+	OPTIMIZER_TRANSFORMER = AdamW
+	OPTIMIZER_CLASSIFIER = Adagrad
+	OPTIMIZER_REGRESSOR = SGD
+	LR_TRANSFORMER = 5e-5
+	LR_CLASSIFIER = 1e-2
+	LR_REGRESSOR = 1e-2
 	BATCH_SIZE = 32
-	LOSS = nn.BCEWithLogitsLoss()
-	EPOCHS = 5
+	LOSS = nn.CrossEntropyLoss()
+	EPOCHS = 1
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
-	model = Ensemble(input_size, 200, 1)
+	ROBERTA = RoBERTa()
+	FEATURECLASSIFIER = FeatureClassifier(input_size, 100, 2)
+	LOGREGRESSION = LogisticRegression(4)
+	KFOLDS = 4
 
 	# train the model
-	train(model, train_sentences, train_labels, EPOCHS, BATCH_SIZE, LR, featurizer, TOKENIZER, OPTIMIZER, LOSS, device)
-	preds = evaluate(model, dev_sentences, dev_labels, BATCH_SIZE, TOKENIZER, featurizer, device)
+	train_ensemble(
+		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
+		train_sentences, train_labels, featurizer, 
+		EPOCHS, BATCH_SIZE, 
+		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
+		KFOLDS,
+		OPTIMIZER_TRANSFORMER, OPTIMIZER_CLASSIFIER, OPTIMIZER_REGRESSOR,
+		LOSS, DEVICE
+	)
+
+	# evaluate the model
+	preds = evaluate_ensemble(
+		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
+		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
+	)
 
     # write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
@@ -281,7 +433,7 @@ def main(args: argparse.Namespace) -> None:
 	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
-	data_filtered = dev_out.loc[~(df['predicted'] == dev_out['correct_label'])]
+	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
 	data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
 
 	
