@@ -4,6 +4,13 @@ Use this file to document any important changes you've made or any records of ru
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
 
+### 5-11 Hilly
+
+- Built a ensemble model using PyTorch and k-fold cross-validation learning. It does not have HurtLex incorporated in it yet. 
+- Initial run found that the score was lower ~91% on the dev set.
+    - Lowered the classifier learning rate to 1e-3
+    - Changed dropout to 0.65 for first layer and 0.5 for second layer
+
 ### 5-4 Pangbo
 - Checked HurtBERT and Lexical Feature on QA (https://downloads.hindawi.com/journals/complexity/2021/2893257.pdf) paper. The accuracy on Ubuntu dataset is Random Forest > SVC > Logistic Regression > LinearSVC > MultinomialNB
 - Learned that features output to RF(https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) need to be: a) of impact; b) as unrelated as possible
