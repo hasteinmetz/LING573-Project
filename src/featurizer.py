@@ -123,7 +123,7 @@ def check_phrase(sentence: str, lex_dict: Dict[str, str]) -> Tuple[bool, List[st
 	return contain_phrase, tokens
 
 
-def count_feature(sentence: str, lex_dict: Dict[str, str], feature_list: set, tagger: spacy.lang.en.English) -> np.ndarray:
+def count_feature(sentence: str, lex_dict: Dict[str, str], feature_list: set, tagger) -> np.ndarray:
 	'''
 	arguments:
 		- sentence: input sentence
