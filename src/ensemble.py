@@ -9,7 +9,6 @@ from typing import *
 from featurizer import featurize, TFIDFGenerator
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW, SGD, Adagrad
-from torch.nn.functional import softmax
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
 from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
@@ -180,8 +179,7 @@ def train_ensemble(
 
 				classifier_outputs = FClassifier(features_tensor)
 
-				cl_outputs_softmax = softmax(classifier_outputs, dim=1)
-				loss_cl = loss_fn(cl_outputs_softmax, y)
+				loss_cl = loss_fn(classifier_outputs, y)
 				loss_cl.backward()
 				optim_cl.step()
 
@@ -326,7 +324,7 @@ def main(args: argparse.Namespace) -> None:
 	featurizer = lambda x: featurize(x, tfidf)
 
 	# get input size
-	input_size = featurizer(train_sentences[0:2]).shape[1]
+	input_size = featurizer(train_sentences[0:1]).shape[1]
 
 	# initialize ensemble model
 	print("initializing ensemble architecture")
@@ -334,7 +332,7 @@ def main(args: argparse.Namespace) -> None:
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
 	LR_TRANSFORMER = 5e-5
-	LR_CLASSIFIER = 1e-2
+	LR_CLASSIFIER = 5e-2
 	LR_REGRESSOR = 1e-2
 	BATCH_SIZE = 32
 	LOSS = nn.CrossEntropyLoss()
