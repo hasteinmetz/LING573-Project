@@ -20,6 +20,11 @@ from math import ceil
 
 nn = torch.nn
 
+# TODO: Figure out a way to do k-fold cross validation so that each model component is trained separately
+# instead of together --> this way we get a properly fine-tuned RoBERTa and a properly fine-tuned MLP
+# maybe something like class FineTuneTR, class MLP, and class Regressor all combined under class ensemble
+	# To put them together, define a forward method in the ensemble
+	# define an external optimizers that only modify their respective model parameters
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
@@ -54,6 +59,7 @@ class Ensemble(nn.Module):
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
+			nn.Dropout(0.75),
 			nn.Linear(hidden_size, output_size+1)
 		)
 		self.output = nn.Linear(2+2, output_size)
@@ -67,6 +73,11 @@ class Ensemble(nn.Module):
 		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
 		logits = self.output(classifier_in)
 		return logits
+
+	# def roberta_forward(self, data: dict, device: str):
+	# 	inputs = {k:v.to(device) for k,v in data.items()}
+	# 	outputs_roberta = self.roberta(**inputs).logits
+	# 	return outputs_roberta
 
 def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int, batch_size: int, lr: int,
 	featurizer: Callable, tokenizer: RobertaTokenizer, optimizer: torch.optim, loss_fn: Callable, device: str):
@@ -108,7 +119,7 @@ def train(model: Ensemble, sentences: List[str], labels: List[str], epochs: int,
 			if (i + 1) % 10 == 0:
 		
 				# output metrics to standard output
-				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
+				print(f'({epoch + 1}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
 
 		# output metrics to standard output
 		values = f"" # empty string 
@@ -129,10 +140,7 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 		m = load_metric(metric)
 		metrics.append(m)
 
-	# shuffle the data
-	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
-
-	dataset = FineTuneDataSet(shuffled_sentences, shuffled_labels)
+	dataset = FineTuneDataSet(sentences, labels)
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -142,26 +150,24 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 
 		y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
 
-		output = model(batch, X, featurizer, device)
+		with torch.no_grad():
+			output = model(batch, X, featurizer, device)
 
 		# add batch to output
 		pred_argmax = torch.round(torch.sigmoid(output))
 		as_list = pred_argmax.clone().detach().to('cpu').tolist()
-		predictions.append(as_list)
+		predictions.extend(as_list)
 
 		# add batched results to metrics
 		for m in metrics:
 			m.add_batch(predictions=pred_argmax, references=y)
-	
-	# output metrics to standard output
-	print(f'Loss: {loss.item()}', file = sys.stderr)
 
 	# output metrics to standard output
 	values = f"" # empty string 
 	for m in metrics:
 		val = m.compute()
 		values += f"{m.name}:\n\t {val}\n"
-	print(values, file = sys.stderr)
+	print(values)
 	return predictions
 
 
@@ -195,13 +201,23 @@ def main(args: argparse.Namespace) -> None:
 	LR = 5e-5
 	BATCH_SIZE = 32
 	LOSS = nn.BCEWithLogitsLoss()
-	EPOCHS = 2
+	EPOCHS = 5
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
-	model = Ensemble(input_size, 100, 1)
+	model = Ensemble(input_size, 200, 1)
 
 	# train the model
 	train(model, train_sentences, train_labels, EPOCHS, BATCH_SIZE, LR, featurizer, TOKENIZER, OPTIMIZER, LOSS, device)
 	preds = evaluate(model, dev_sentences, dev_labels, BATCH_SIZE, TOKENIZER, featurizer, device)
+
+    # write results to output file
+	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
+	dev_out = pd.DataFrame(dev_out_d)
+	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
+
+	# filter the data so that only negative examples are there
+	data_filtered = dev_out.loc[~(df['predicted'] == dev_out['correct_label'])]
+	data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
+
 	
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
