@@ -201,8 +201,7 @@ def train_ensemble(
 
 				classifier_outputs = FClassifier(features_tensor)
 
-				cl_outputs_softmax = softmax(classifier_outputs, dim=1)
-				loss_cl = loss_fn(cl_outputs_softmax, y)
+				loss_cl = loss_fn(classifier_outputs, y)
 				loss_cl.backward()
 				optim_cl.step()
 
@@ -399,7 +398,7 @@ def main(args: argparse.Namespace) -> None:
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
 	LR_TRANSFORMER = 5e-5
-	LR_CLASSIFIER = 1e-2
+	LR_CLASSIFIER = 5e-2
 	LR_REGRESSOR = 1e-2
 	BATCH_SIZE = 32
 	LOSS = nn.CrossEntropyLoss()
