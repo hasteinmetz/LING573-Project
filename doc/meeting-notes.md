@@ -1,51 +1,24 @@
 # Meeting notes
-## 5-22
-- [Eli] 
-    - trouble with getting local environment working
-    - still working on regression head
-    - will abandon regression head
-    - Eli will do initial perusal of final report & mark areas that need more detail
-- [Pangbo] 
-    - working on feature selection
-    - trouble with getting rf classifier to run locally and condor
-    - stick with percentile function
-    - need to 1) merge with existing ensembles, 2) tune hyperparameters
-- [Hilly]
-    - straight-forward model with GD running all the way through, after consulting Haotian
-    - update neural architecture picture
-- [Avani]
-    - reran rf ensemble with no jokes,acc is 52%
-    - fixing pca bug w/ mismatched dimensions
-    - pull Pangbo's changes and try to merge with rf
-- Haotian unable to run our D3 code
-    - shell scripts pointing to different conda environments
-    - have a fix option ready, will ask Haotian how he wants it to be patched
-- D4 report
-    - run all working models (baseline, k-fold neural ensemble, straightforward neural ensemble, rf ensemble)
-    - get numbers for test set
-    - discuss all model architectures and motivation for trying these designs
-- get everything working by Tuesday 3/24 7:00pm
-- put all the numbers in on Wednesday 3/25
-- potentially sync online on Monday for pair debugging
-
-## 5-17
-- Seems like non-jokes were included in subtask 1c (can ignore non-jokes)
-- Groups with a lot of pre-processing have lower scores
-- Looking into mutual information and SVD
-    - Doing a lots of preprocessing reduces learning
-- Steps:
-    - [Avani] Start working on the paper & [SVD](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html)
-    - [Eli] Regression head --> add picture of ensemble model and what goes on
-    - [Hilly] Make model configurable.
-    - [Pangbo] Calculate mutual information
-- Next meeting: Sunday, 5:30pm
-
 ## 5-12
-- Eli reupload data w/ nulls, available to help with code
-- Hilly rerun ensemble with Hurtlex integrated
-- Pangbo research more feasible way to combine features
-- Avani run other ensemble networks for controversy task
-- 
+- Eli added data with controversy rating
+    - But how do we deal with non-jokes? Since technically their controversy is null, not 0/1.
+    - Will reupload with N/A for non-jokes in that category
+- Hilly got an ensemble running, slightly better than our fine-tuned, no Hurtlex.
+- Avani cleaned up the repo, made it more manageable
+    - Will be unavailable Labor Day weekend (unless ~disaster~ strikes)
+- Train for regression once, and then back to classification?
+
+- Action Items:
+- Hilly:
+    - Merge ensemble with main, get hurtlex working
+- Pangbo:
+    - Research on comparing lexical features
+- Eli:
+    - Reupload data with new data for controversy
+    - Do research on what other groups did for that
+- Avani:
+    - Run controversy on their ensemble, save outputs
+- Next Meeting: Tuesday [5/17] after class for ~30 min. (In-person)
 
 ## 5-6
 - Eli was able to extract NER from data & outputted to .csv file
