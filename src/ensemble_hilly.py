@@ -1,4 +1,8 @@
-import json
+#!/usr/bin/env python
+
+''' References:
+	- https://www.kaggle.com/code/ynouri/random-forest-k-fold-cross-validation/notebook
+'''
 import utils
 import torch
 import argparse
