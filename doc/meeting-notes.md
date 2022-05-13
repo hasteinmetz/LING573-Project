@@ -1,4 +1,25 @@
 # Meeting notes
+## 5-12
+- Eli added data with controversy rating
+    - But how do we deal with non-jokes? Since technically their controversy is null, not 0/1.
+    - Will reupload with N/A for non-jokes in that category
+- Hilly got an ensemble running, slightly better than our fine-tuned, no Hurtlex.
+- Avani cleaned up the repo, made it more manageable
+    - Will be unavailable Labor Day weekend (unless ~disaster~ strikes)
+- Train for regression once, and then back to classification?
+
+- Action Items:
+- Hilly:
+    - Merge ensemble with main, get hurtlex working
+- Pangbo:
+    - Research on comparing lexical features
+- Eli:
+    - Reupload data with new data for controversy
+    - Do research on what other groups did for that
+- Avani:
+    - Run controversy on their ensemble, save outputs
+- Next Meeting: Tuesday [5/17] after class for ~30 min. (In-person)
+
 ## 5-6
 - Eli was able to extract NER from data & outputted to .csv file
     - how to store/format data
