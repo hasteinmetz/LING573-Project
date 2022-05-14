@@ -356,7 +356,12 @@ def main(args: argparse.Namespace) -> None:
 
 	# initialize tf-idf vectorizer
 	tfidf = TFIDFGenerator(train_sentences, 'english', train_labels)
-	featurizer = lambda x: featurize(x, tfidf)
+
+	# get hurtlex dictionary
+	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
+
+	# reduce the parameters of the featurize function
+	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
 
 	#get features
 	print("preparing hurtlex dictionary...")
