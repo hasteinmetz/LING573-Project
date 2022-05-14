@@ -194,7 +194,7 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 	return np.array(features)
 
 
-def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
+def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
