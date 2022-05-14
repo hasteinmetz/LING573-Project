@@ -195,7 +195,6 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 
 
 def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
-# def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
@@ -219,8 +218,10 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	em = get_empath_ratings(preprocessed_sentences)
 
 	# normalize tf-idf space so that dev and train vector have the same featurize dimensions
+	vectorizer = get_vocabulary(preprocessed_sentences, 'english', labels)
+	
 	# get tfidf
-	tf = get_tfidf(preprocessed_sentences, vectorizer)
+	tf = tfidf_gen.get_tfidf(preprocessed_sentences, vectorizer)
 
 	# get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
