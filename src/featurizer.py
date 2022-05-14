@@ -221,7 +221,7 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', labels)
 	
 	# get tfidf
-	tf = tfidf_gen.get_tfidf(preprocessed_sentences, vectorizer)
+	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
 
 	# get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
