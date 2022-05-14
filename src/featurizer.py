@@ -171,7 +171,6 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 		a (n_samples, 17) vector representing the hurtlex semantic space of each sentence
 	'''
 	#set up
-	j = 0
 	tagger = spacy.load("en_core_web_sm")
 
 	features = []

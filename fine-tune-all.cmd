@@ -11,4 +11,7 @@ request_GPUs                = 1
 transfer_executable 	    = false
 request_memory 		        = 2*1024
 notification                = complete
-queue model from batch_file.txt
+queue model from (
+    roberta
+    bertweet
+)
