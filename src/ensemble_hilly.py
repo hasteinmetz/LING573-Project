@@ -34,9 +34,7 @@ from torch.utils.data import DataLoader
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
 from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
-from math import ceil
 
 nn = torch.nn
 
