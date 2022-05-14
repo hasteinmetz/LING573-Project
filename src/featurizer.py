@@ -234,7 +234,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
-	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
+	# normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
 	print("getting tf-idf...")
 	tf = get_tfidf(preprocessed_sentences, vectorizer)
@@ -244,7 +244,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
-	#get hurtlex feature vector
+	# get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
