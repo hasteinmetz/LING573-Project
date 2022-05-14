@@ -13,12 +13,10 @@ from typing import *
 from featurizer import featurize, TFIDFGenerator
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW, SGD, Adagrad
-from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
+from transformers import RobertaForSequenceClassification, RobertaTokenizer
 from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
-from math import ceil
 
 nn = torch.nn
 
