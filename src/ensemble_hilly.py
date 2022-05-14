@@ -143,9 +143,6 @@ def train_ensemble(
 	# for debugging, uncomment the line below:
 	# shuffled_sentences, shuffled_labels = shuffled_sentences[0:50], shuffled_labels[0:50]
 
-	# get classes
-	classes = np.unique(labels)
-
 	# set up regression loss function
 	loss_logistic = nn.BCELoss()
 
