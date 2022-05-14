@@ -200,7 +200,7 @@ def main(args: argparse.Namespace) -> None:
         except FileNotFoundError(args.model_folder) as err:
             print(f"({utils.get_time(start_time)}) Could not get model from folder {args.model_folder}...")
     else:
-        roberta_model = RobertaModelWrapper(args.batch_size, device, optimizer: AdamW, learning_rate: float)
+        roberta_model = train_new_model(args, train_data, dev_data, data_collator, tokenizer, get_accuracy, start_time)
 
     # evaluate the model's performance
     print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on training data\n")

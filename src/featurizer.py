@@ -9,6 +9,9 @@ from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 class TFIDFGenerator:
+	# TODO: look into DELTA TF-IDF https://ebiquity.umbc.edu/_file_directory_/papers/446.pdf
+	'''Class to store a fitted TD-IDF generator and sentences in order to keep the 
+	fitting consistent'''
 	def __init__(self, sentences: List[str], stop_words: str, concat_labels: List[str]):
 		self.sentences = sentences
 		self.vectorizer = get_vocabulary(sentences, stop_words, concat_labels)
@@ -19,7 +22,7 @@ class TFIDFGenerator:
 		return matrix.toarray()
 
 	def reinitialize_matrix(self, stop_words, concat_labels):
-		self.vectorizer = get_vocabulary(sentences, stop_words, concat_labels)
+		self.vectorizer = get_vocabulary(self.sentences, stop_words, concat_labels)
 
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
@@ -109,9 +112,6 @@ def get_vocabulary(training_sents: List[str], stop_words: str = None,
 
 	return fitted_vectorizer
 
-<<<<<<< HEAD
-def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
-=======
 
 def get_tfidf(sentences: List[str], fitted_vectorizer: TfidfVectorizer) -> np.ndarray:
 	'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
@@ -197,7 +197,6 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 
 def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
 # def featurize(sentences: List[str], tfidf_gen: TFIDFGenerator) -> np.ndarray:
->>>>>>> 1988355 (saving...)
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
@@ -220,20 +219,15 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	# get empathy vectors
 	em = get_empath_ratings(preprocessed_sentences)
 
-	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
+	# normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
-	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
+	tf = get_tfidf(preprocessed_sentences, vectorizer)
 
-	#get hurtlex feature vector
+	# get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
 	print("normalizing vectors...")
-	#nv = utils.normalize_vector(nerv, lv, tf, em)
-	nv = utils.normalize_vector(nerv, lv, em, hv)
-	tf = tfidf_gen.get_tfidf(preprocessed_sentences)
-
-	# normalize the vectors
-	nv = utils.normalize_vector(nerv, lv, tf, em)
+	nv = utils.normalize_vector(nerv, lv, em, hv, tf)
 	
 	return nv
