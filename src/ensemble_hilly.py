@@ -13,7 +13,7 @@ from typing import *
 from featurizer import featurize, TFIDFGenerator
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW, SGD, Adagrad
-from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
+from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score
@@ -322,7 +322,12 @@ def main(args: argparse.Namespace) -> None:
 
 	# initialize tf-idf vectorizer
 	tfidf = TFIDFGenerator(train_sentences, 'english', train_labels)
-	featurizer = lambda x: featurize(x, tfidf)
+
+	# get hurtlex dictionary
+	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
+
+	# reduce the parameters of the featurize function
+	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
 
 	# get input size
 	input_size = featurizer(train_sentences[0:1]).shape[1]
@@ -376,6 +381,7 @@ if __name__ == "__main__":
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--output_file', help="path to output data file")
+	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
 	args = parser.parse_args()
 
 	main(args)
