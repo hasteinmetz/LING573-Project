@@ -32,7 +32,7 @@ def read_file(file_path: str, seperator: str = ',', encoding: str = 'utf-8') -> 
 	return data
 
 
-def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[str], np.ndarray]:
+def read_data_from_file(filepath: str, encoding: str = 'utf-8', index: int = 1) -> Tuple[List[str], np.ndarray]:
 	'''
 	arguments:
 		- file_path: full file path pointing to input file, expects two columns with following schema (Text, Label)
@@ -45,8 +45,9 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8') -> Tuple[List[st
 	with open(filepath, 'r', encoding=encoding) as datafile:
 		data = csv.reader(datafile, delimiter=',', quotechar='"')
 		for row in data:
-			sentences.append(row[0])
-			labels.append(int(row[1]))
+			if row[index].isnumeric(): 
+				sentences.append(row[0])
+				labels.append(int(row[index]))
 	return sentences, np.asarray(labels, dtype=int)
 
 
