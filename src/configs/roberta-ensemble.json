@@ -1,0 +1,8 @@
+{
+	"lr_transformer" : 5e-5,
+	"lr_classifier" : 5e-2,
+	"lr_transformer" : 1e-2,
+	"batch_size" : 32,
+	"epochs" : 1,
+	"kfolds" : 4
+}

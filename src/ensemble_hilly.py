@@ -87,7 +87,7 @@ class FeatureClassifier(nn.Module):
 			nn.Dropout(0.5), # high-ish dropout to avoid overfitting to certain features
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.5),
+			nn.Dropout(0.6),
 			nn.Linear(hidden_size, num_classes)
 		)
 
@@ -353,7 +353,7 @@ def main(args: argparse.Namespace) -> None:
 	ensemble_model = Ensemble(tokenizer, ceil(len(train_sentences)/32))
 
 	# initialize tf-idf vectorizer
-	tfidf = TFIDFGenerator(train_sentences, 'english', train_labels)
+	tfidf = DTFIDF(train_sentences, train_labels)
 
 	# get hurtlex dictionary
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
@@ -398,16 +398,16 @@ def main(args: argparse.Namespace) -> None:
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
 	LR_TRANSFORMER = 5e-5
-	LR_CLASSIFIER = 5e-2
+	LR_CLASSIFIER = 8e-3
 	LR_REGRESSOR = 1e-2
-	BATCH_SIZE = 32
+	BATCH_SIZE = 24
 	LOSS = nn.CrossEntropyLoss()
 	EPOCHS = 1
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 	ROBERTA = RoBERTa()
 	FEATURECLASSIFIER = FeatureClassifier(input_size, 100, 2)
 	LOGREGRESSION = LogisticRegression(4)
-	KFOLDS = 4
+	KFOLDS = 5
 
 	# train the model
 	train_ensemble(
@@ -433,7 +433,7 @@ def main(args: argparse.Namespace) -> None:
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
+	data_filtered.to_csv('src/data/ensemble-misclassified-contro.csv', index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":

@@ -1,0 +1,9 @@
+Using cpu device
+Using cpu device <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>
+loading training and development data...
+initializing ensemble architecture
+f1:
+	 {'f1': 0.9256900212314225}
+accuracy:
+	 {'accuracy': 0.9125}
+

@@ -1,5 +1,8 @@
 from tkinter import W
 import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from functools import reduce
 import spacy
 import utils
 import numpy as np
@@ -63,7 +66,6 @@ def create_lexical_matrix(sentences: List[str], chars: List[str]) -> np.ndarray:
 	df = pd.DataFrame(return_vectors)
 	return df.to_numpy()
 
-
 def get_empath_ratings(sentences: List[str]) -> np.ndarray:
 	'''Get EMPATH (https://github.com/Ejhfast/empath-client) ratings for sentences'''
 	lexicon = Empath()
@@ -74,6 +76,22 @@ def get_empath_ratings(sentences: List[str]) -> np.ndarray:
 			dictionary[k].append(v)
 	as_lists = [dictionary[k] for k in dictionary]
 	return np.column_stack(as_lists)
+
+
+class TFIDFGenerator:
+	'''Class to store a fitted TD-IDF generator and sentences in order to keep the 
+	fitting consistent'''
+	def __init__(self, sentences: List[str], stop_words: str, concat_labels: List[str]):
+		self.sentences = sentences
+		self.vectorizer = get_vocabulary(sentences, stop_words, concat_labels)
+
+	def get_tfidf(self, sentences: List[str]) -> np.ndarray:
+		'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
+		matrix = self.vectorizer.transform(sentences)
+		return matrix.toarray()
+
+	def reinitialize_matrix(self, stop_words, concat_labels):
+		self.vectorizer = get_vocabulary(self.sentences, stop_words, concat_labels)
 
 
 def get_vocabulary(training_sents: List[str], stop_words: str = None, 
