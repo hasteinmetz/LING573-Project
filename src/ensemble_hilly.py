@@ -84,10 +84,10 @@ class FeatureClassifier(nn.Module):
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.5), # high-ish dropout to avoid overfitting to certain features
+			nn.Dropout(0.75), # high-ish dropout to avoid overfitting to certain features
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.6),
+			nn.Dropout(0.75),
 			nn.Linear(hidden_size, num_classes)
 		)
 
@@ -433,7 +433,7 @@ def main(args: argparse.Namespace) -> None:
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv('src/data/ensemble-misclassified-contro.csv', index=False, encoding='utf-8')
+	data_filtered.to_csv('src/data/ensemble-misclassified-contro1.csv', index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":

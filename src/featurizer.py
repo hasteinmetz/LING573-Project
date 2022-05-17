@@ -66,12 +66,16 @@ def create_lexical_matrix(sentences: List[str], chars: List[str]) -> np.ndarray:
 	df = pd.DataFrame(return_vectors)
 	return df.to_numpy()
 
-def get_empath_ratings(sentences: List[str]) -> np.ndarray:
+def get_empath_ratings(sentences: List[str], categories: List[str] = []) -> np.ndarray:
 	'''Get EMPATH (https://github.com/Ejhfast/empath-client) ratings for sentences'''
 	lexicon = Empath()
 	dictionary = {k: [] for k in lexicon.cats.keys()}
 	for s in sentences:
-		analyzed_s = lexicon.analyze(s, normalize=True)
+		if len(categories) > 0:
+			analyzed_s = lexicon.analyze(s, normalize=True)
+		else:
+			analyzed_s = lexicon.analyze(s, categories, normalize=True)
+		lexicon.analyze("he hit the other person", normalize=True)
 		for k, v in analyzed_s.items():
 			dictionary[k].append(v)
 	as_lists = [dictionary[k] for k in dictionary]
@@ -251,9 +255,6 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
-	# normalize tf-idf space so that dev and train vector have the same featurize dimensions
-	vectorizer = get_vocabulary(preprocessed_sentences, 'english', labels)
-	
 	# get tfidf
 	print("getting tf-idf...")
 	tf = get_tfidf(preprocessed_sentences, vectorizer)
