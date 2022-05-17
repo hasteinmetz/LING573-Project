@@ -1,5 +1,63 @@
-Using cuda device
-Using the GPU:Tesla M10
+iter   1  #CD cycles 1
+iter   2  #CD cycles 2
+iter   3  #CD cycles 1
+iter   4  #CD cycles 2
+iter   5  #CD cycles 1
+iter   6  #CD cycles 2
+iter   7  #CD cycles 1
+iter   8  #CD cycles 3
+iter   9  #CD cycles 1
+iter  10  #CD cycles 7
+iter  11  #CD cycles 1
+iter  12  #CD cycles 18
+iter  13  #CD cycles 10
+iter  14  #CD cycles 6
+iter  15  #CD cycles 1
+iter  16  #CD cycles 40
+iter  17  #CD cycles 6
+iter  18  #CD cycles 3
+iter  19  #CD cycles 5
+iter  20  #CD cycles 5
+iter  21  #CD cycles 8
+iter  22  #CD cycles 2
+iter  23  #CD cycles 2
+iter  24  #CD cycles 5
+iter  25  #CD cycles 1
+iter  26  #CD cycles 52
+=========================
+optimization finished, #iter = 26
+Objective value = 415.599493
+#nonzeros/#features = 3/5
+Using cpu device
 loading training and development data...
 initializing ensemble architecture
 preparing hurtlex dictionary...
+featurizing training and dev data...
+preprocessing data...
+create lexical vector...
+get empathy ratings...
+normalizing vectors...
+preprocessing data...
+create lexical vector...
+get empathy ratings...
+normalizing vectors...
+preparing input for roberta model...
+training ensemble model...
+	training random forest classifier...
+random forest classifier accuracy
+      train      test
+0  0.998066  0.815752
+1  0.997714  0.817159
+2  0.997890  0.805907
+3  0.997187  0.835443
+4  0.997187  0.815752
+5  0.997363  0.817159
+6  0.998418  0.815752
+7  0.997714  0.790436
+8  0.997539  0.801688
+	training logistic regression classifier
+[LibLinear]logreg classifier training accuracy: 0.975777465228942
+predicting dev labels...
+	dev accuracy: 0.79
+outputting dev classification output...
+outputting results...
