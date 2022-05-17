@@ -9,6 +9,14 @@ This notebook uses Markdown. Use '#' to create headings. When you make a change 
 - v2 ensemble
 	- using configuration from src/configs/random_forest_v2.json
 
+### 5-11 Hilly
+
+- Built a ensemble model using PyTorch and k-fold cross-validation learning. It does not have HurtLex incorporated in it yet. 
+- Initial run found that the score was lower ~91% on the dev set.
+    - Lowered the classifier learning rate to 5e-2 and changed dropout to 0.5 for first layer and 0.5 for second layer
+    - Accuracy: 0.93875
+    - F1: 0.9501
+
 ### 5-4 Pangbo
 - Checked HurtBERT and Lexical Feature on QA (https://downloads.hindawi.com/journals/complexity/2021/2893257.pdf) paper. The accuracy on Ubuntu dataset is Random Forest > SVC > Logistic Regression > LinearSVC > MultinomialNB
 - Learned that features output to RF(https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) need to be: a) of impact; b) as unrelated as possible

@@ -1,4 +1,11 @@
 # Meeting notes
+## 5-12
+- Eli reupload data w/ nulls, available to help with code
+- Hilly rerun ensemble with Hurtlex integrated
+- Pangbo research more feasible way to combine features
+- Avani run other ensemble networks for controversy task
+- 
+
 ## 5-6
 - Eli was able to extract NER from data & outputted to .csv file
     - how to store/format data
