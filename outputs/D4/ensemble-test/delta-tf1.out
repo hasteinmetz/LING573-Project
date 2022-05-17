@@ -2,7 +2,7 @@ Using cuda device
 loading training and development data...
 initializing ensemble architecture
 f1:
-	 {'f1': 0.5322896281800391}
+	 {'f1': 0.9366053169734151}
 accuracy:
-	 {'accuracy': 0.5152129817444219}
+	 {'accuracy': 0.9225}
 
