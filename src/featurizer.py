@@ -118,12 +118,16 @@ def create_lexical_matrix(sentences: List[str], chars: List[str]) -> np.ndarray:
 	df = pd.DataFrame(return_vectors)
 	return df.to_numpy()
 
-def get_empath_ratings(sentences: List[str]) -> np.ndarray:
+def get_empath_ratings(sentences: List[str], categories: List[str] = []) -> np.ndarray:
 	'''Get EMPATH (https://github.com/Ejhfast/empath-client) ratings for sentences'''
 	lexicon = Empath()
 	dictionary = {k: [] for k in lexicon.cats.keys()}
 	for s in sentences:
-		analyzed_s = lexicon.analyze(s, normalize=True)
+		if len(categories) > 0:
+			analyzed_s = lexicon.analyze(s, normalize=True)
+		else:
+			analyzed_s = lexicon.analyze(s, categories, normalize=True)
+		lexicon.analyze("he hit the other person", normalize=True)
 		for k, v in analyzed_s.items():
 			dictionary[k].append(v)
 	as_lists = [dictionary[k] for k in dictionary]
@@ -275,11 +279,8 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	em = get_empath_ratings(preprocessed_sentences)
+	em = get_empath_ratings(preprocessed_sentences, ['hate', 'swearing_terms', 'sexual', 'positive_emotion', 'negative_emotion', 'exasperation', 'religion', 'death', 'politics'])
 
-	# normalize tf-idf space so that dev and train vector have the same featurize dimensions
-	vectorizer = get_vocabulary(preprocessed_sentences, 'english', labels)
-	
 	# get tfidf
 	tf = tfidf_gen.calculate_delta_tfidf(preprocessed_sentences)
 
@@ -287,6 +288,6 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	nv = utils.normalize_vector(nerv, lv, em, tf, hv)
+	nv = utils.normalize_vector(nerv, lv, tf, hv)
 	
 	return nv

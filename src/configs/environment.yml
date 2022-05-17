@@ -1,6 +1,7 @@
 name: 573-project
 channels:
-  - c-forge
+  - pytorch
+  - conda-forge
   - defaults
 dependencies:
   - scikit-learn
