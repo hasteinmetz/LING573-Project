@@ -37,6 +37,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.utils import shuffle
 
 nn = torch.nn
+softmax = nn.functional.softmax
 
 class FineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
@@ -241,7 +242,7 @@ def train_ensemble(
 				loss_lg.backward()
 				optim_log.step()
 
-				if (i + 1) % 10 == 0:
+				if (i + 1) % 20 == 0:
 			
 					# output metrics to standard output
 					correct = (torch.round(output) == y).type(torch.float).sum().item() 
@@ -252,11 +253,28 @@ def train_ensemble(
 						f'Regression Accuracy: {accuracy}, Loss: {loss_lg.item()}',
 						file = sys.stderr
 					)
+				
+			# Get the accuracy of the fold on the test data
+			print(f"Fold {fold} accuracies:", file = sys.stderr)
+			evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, sentences, labels, featurizer, batch_size, device, sys.stderr)
 
+		# Get the accuracy of each epoch on the test data
+		print(f"Epoch {epoch} accuracies:", file = sys.stderr)
+		evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, sentences, labels, featurizer, batch_size, device, sys.stderr)
+
+	# SAVE MODELS
+	try:
+		torch.save(Transformer, 'src/models/testing-ensemble/roberta')
+		torch.save(FClassifier, 'src/models/testing-ensemble/roberta')
+		torch.save(LogRegressor, 'src/models/testing-ensemble/roberta')
+	except:
+		torch.save(Transformer, 'models/testing-ensemble/roberta')
+		torch.save(FClassifier, 'models/testing-ensemble/roberta')
+		torch.save(LogRegressor, 'models/testing-ensemble/roberta')
 
 def evaluate_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
-		sentences: List[str], labels: np.ndarray, featurizer: Callable, batch_size: int, device: str
+		sentences: List[str], labels: np.ndarray, featurizer: Callable, batch_size: int, device: str, file: object = sys.stdout
 	):
 	'''Evaluate the Ensemble'''
 	
@@ -269,10 +287,11 @@ def evaluate_ensemble(
 	FClassifier.eval()
 	LogRegressor.eval()
 
-	metrics = []
+	metrics, tr_metrics, cl_metrics = [], [], []
 	for metric in ['f1', 'accuracy']:
-		m = load_metric(metric)
-		metrics.append(m)
+		metrics.append(load_metric(metric))
+		tr_metrics.append(load_metric(metric))
+		cl_metrics.append(load_metric(metric))
 
 	# make the data a Dataset and put it in a DataLoader to batch it
 	dataset = FineTuneDataSet(sentences, labels)
@@ -296,6 +315,14 @@ def evaluate_ensemble(
 			# classifier logits
 			features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
 			feature_logits = FClassifier(features_tensor)
+			
+		# OUTPUT EACH CLASSIFIER'S RESULT INDIVIDUALLY
+		tr_argmax = torch.argmax(transformer_logits, dim = -1)
+		for m1 in tr_metrics:
+			m1.add_batch(predictions=tr_argmax, references=y)
+		cl_argmax = torch.argmax(feature_logits, dim = -1)
+		for m2 in cl_metrics:
+			m2.add_batch(predictions=cl_argmax, references=y)
 
 		# EVALUATE REGRESSOR
 		all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
@@ -306,15 +333,17 @@ def evaluate_ensemble(
 		predictions.extend(as_list)
 
 		# add batched results to metrics
-		for m in metrics:
-			m.add_batch(predictions=torch.round(y_hats), references=y)
+		for m3 in metrics:
+			m3.add_batch(predictions=torch.round(y_hats), references=y)
 
 	# output metrics to standard output
-	values = f"" # empty string 
-	for m in metrics:
-		val = m.compute()
-		values += f"{m.name}:\n\t {val}\n"
-	print(values)
+	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
+	for m1, m2, m3 in zip(metrics, tr_metrics, cl_metrics):
+		val1, val2, val3 = m1.compute(), m2.compute(), m3.compute()
+		val_en += f"Ensemble\t{m.name}: {val1}\n"
+		val_tr += f"Transformer\t{m.name}: {val2}\n"
+		val_cl += f"Featurizer\t{m.name}: {val3}\n"
+	print("\n".join([val_en, val_tr, val_cl]), file = file)
 	return predictions
 
 
@@ -329,7 +358,7 @@ def main(args: argparse.Namespace) -> None:
 	else:
 		torch.device(DEVICE)
 		print(f"Using {DEVICE} device")
-		print(f"Using {DEVICE} device", sys.stderr)
+		print(f"Using {DEVICE} device", file = sys.stderr)
 
 	#load data
 	print("loading training and development data...")
@@ -393,6 +422,7 @@ def main(args: argparse.Namespace) -> None:
 	train_ensemble(ensemble_model, train_sentences, train_labels, device, tfidf)
 
 	# initialize ensemble model
+	# TODO: MAKE ADD THIS TO A CONFIG FILE INSTEAD
 	print("initializing ensemble architecture")
 	OPTIMIZER_TRANSFORMER = AdamW
 	OPTIMIZER_CLASSIFIER = Adagrad
@@ -400,9 +430,11 @@ def main(args: argparse.Namespace) -> None:
 	LR_TRANSFORMER = 5e-5
 	LR_CLASSIFIER = 8e-3
 	LR_REGRESSOR = 1e-2
-	BATCH_SIZE = 24
+	BATCH_SIZE = 32
 	LOSS = nn.CrossEntropyLoss()
 	EPOCHS = 1
+	# TODO: CONFIGURE DROPOUT RATES FOR ROBERTA TO AVOID OVERFITTING
+	# TODO: LOAD MODEL IF AVAILABLE
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 	ROBERTA = RoBERTa()
 	FEATURECLASSIFIER = FeatureClassifier(input_size, 100, 2)
@@ -420,7 +452,7 @@ def main(args: argparse.Namespace) -> None:
 		LOSS, DEVICE
 	)
 
-	# evaluate the model
+	# evaluate the model on test data
 	preds = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
@@ -433,7 +465,7 @@ def main(args: argparse.Namespace) -> None:
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv('src/data/ensemble-misclassified-contro1.csv', index=False, encoding='utf-8')
+	data_filtered.to_csv('src/data/ensemble-misclassified-exp2.csv', index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":
