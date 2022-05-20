@@ -3,5 +3,5 @@
     "batch_size": 32,
     "epochs": 1, 
     "save_model": "src/models/pretraining-test/roberta", 
-    "output_path": "outputs/pretraining-test/roberta"
+    "output_path": "outputs/D4/pretraining-test/roberta"
 }
