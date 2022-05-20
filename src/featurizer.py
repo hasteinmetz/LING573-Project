@@ -11,8 +11,8 @@ from empath import Empath
 from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import PCA
 from math import log
-
 
 class DTFIDF:
 	'''Implementation of DELTA TF-IDF as described in https://ebiquity.umbc.edu/_file_directory_/papers/446.pdf'''
@@ -144,6 +144,8 @@ class TFIDFGenerator:
 	def get_tfidf(self, sentences: List[str]) -> np.ndarray:
 		'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
 		matrix = self.vectorizer.transform(sentences)
+		if hasattr(self, 'pca'):
+			matrix = self.pca.transform(matrix)
 		return matrix.toarray()
 
 	def reinitialize_matrix(self, stop_words, concat_labels):
@@ -254,8 +256,8 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 
 	return np.array(features)
 
-
-def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_gen: DTFIDF) -> np.ndarray:
+def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], 
+	hurtlex_cat: set, tfidf_gen: DTFIDF, pca: Union[PCA, str] = 'None') -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
@@ -279,7 +281,7 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	em = get_empath_ratings(preprocessed_sentences, ['hate', 'swearing_terms', 'sexual', 'positive_emotion', 'negative_emotion', 'exasperation', 'religion', 'death', 'politics'])
+	em = get_empath_ratings(preprocessed_sentences)
 
 	# get tfidf
 	tf = tfidf_gen.calculate_delta_tfidf(preprocessed_sentences)
@@ -288,6 +290,12 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	nv = utils.normalize_vector(nerv, lv, tf, hv)
+	nv = utils.normalize_vector(nerv, lv, tf, em, hv)
+
+	# fit to PCA to extract principle components
+	if isinstance(pca, str):
+		features = nv
+	else:
+		features = pca.transform(nv)
 	
-	return nv
+	return features
