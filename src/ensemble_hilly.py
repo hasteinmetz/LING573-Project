@@ -34,6 +34,7 @@ from torch.utils.data import DataLoader
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer, get_scheduler
 from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
+from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 
 nn = torch.nn
@@ -117,12 +118,13 @@ def make_torch_labels_binary(labels: torch.tensor) -> torch.tensor:
 
 def train_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
-		sentences: List[str], labels: np.ndarray, featurizer: Callable, 
+		sentences: List[str], labels: np.ndarray, featurizer: Callable,
+		dev_sentences: List[str], dev_labels: np.ndarray,
 		epochs: int, batch_size: int, 
 		lr_transformer: float, lr_classifier: float, lr_regressor: float,
 		kfolds: int,
 		optimizer_transformer: torch.optim, optimizer_classifier: torch.optim, optimizer_regression: torch.optim,
-		loss_fn: Callable, device: str
+		loss_fn: Callable, device: str, save_path: str = 'src/models/'
 	):
 	'''Train the ensemble on the training data'''
 
@@ -256,21 +258,23 @@ def train_ensemble(
 				
 			# Get the accuracy of the fold on the test data
 			print(f"Fold {fold} accuracies:", file = sys.stderr)
-			evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, sentences, labels, featurizer, batch_size, device, sys.stderr)
+			evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
 
 		# Get the accuracy of each epoch on the test data
 		print(f"Epoch {epoch} accuracies:", file = sys.stderr)
-		evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, sentences, labels, featurizer, batch_size, device, sys.stderr)
+		evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
 
 	# SAVE MODELS
 	try:
-		torch.save(Transformer, 'src/models/testing-ensemble/roberta')
-		torch.save(FClassifier, 'src/models/testing-ensemble/roberta')
-		torch.save(LogRegressor, 'src/models/testing-ensemble/roberta')
+		print("Saving models to /src/models/testing-ensemble/...")
+		torch.save(Transformer, save_path + 'roberta')
+		torch.save(FClassifier, save_path + 'featurizer')
+		torch.save(LogRegressor, save_path + 'regression')
 	except:
-		torch.save(Transformer, 'models/testing-ensemble/roberta')
-		torch.save(FClassifier, 'models/testing-ensemble/roberta')
-		torch.save(LogRegressor, 'models/testing-ensemble/roberta')
+		print("(Saving error) Saving models to src/models/testing-ensemble/...")
+		torch.save(Transformer, 'src/models/tmp_roberta')
+		torch.save(FClassifier, 'src/models/tmp_featurizer')
+		torch.save(LogRegressor, 'src/models/tmp_regression')
 
 def evaluate_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
@@ -299,7 +303,7 @@ def evaluate_ensemble(
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
 	# intialize a list to store predictions
-	predictions = []
+	predictions, roberta_preds, feature_preds = [], [], []
 
 	for batch, X in dataloader:
 
@@ -330,6 +334,8 @@ def evaluate_ensemble(
 
 		# add batch to output
 		as_list = torch.round(y_hats).to('cpu').tolist()
+		roberta_preds.extend(tr_argmax.to('cpu').tolist())
+		feature_preds.extend(cl_argmax.to('cpu').tolist())
 		predictions.extend(as_list)
 
 		# add batched results to metrics
@@ -340,11 +346,11 @@ def evaluate_ensemble(
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
 	for m1, m2, m3 in zip(metrics, tr_metrics, cl_metrics):
 		val1, val2, val3 = m1.compute(), m2.compute(), m3.compute()
-		val_en += f"Ensemble\t{m.name}: {val1}\n"
-		val_tr += f"Transformer\t{m.name}: {val2}\n"
-		val_cl += f"Featurizer\t{m.name}: {val3}\n"
+		val_en += f"Ensemble\t{m1.name}: {val1}\n"
+		val_tr += f"Transformer\t{m2.name}: {val2}\n"
+		val_cl += f"Featurizer\t{m3.name}: {val3}\n"
 	print("\n".join([val_en, val_tr, val_cl]), file = file)
-	return predictions
+	return predictions, roberta_preds, feature_preds
 
 
 def main(args: argparse.Namespace) -> None:
@@ -387,8 +393,15 @@ def main(args: argparse.Namespace) -> None:
 	# get hurtlex dictionary
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 
+	# load PCA and extract principle components from the training data
+	pca = PCA()
+	training_feature_matrix = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
+	pca.fit(training_feature_matrix)
+	print(f"Fitted PCA. Previously there were {training_feature_matrix.shape[1]} " + 
+		f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
+
 	# reduce the parameters of the featurize function
-	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
+	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf, pca)
 
 	#get features
 	print("preparing hurtlex dictionary...")
@@ -423,7 +436,7 @@ def main(args: argparse.Namespace) -> None:
 
 	# initialize ensemble model
 	# TODO: MAKE ADD THIS TO A CONFIG FILE INSTEAD
-	print("initializing ensemble architecture")
+	print("Initializing ensemble architecture...\n")
 	OPTIMIZER_TRANSFORMER = AdamW
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
@@ -445,27 +458,29 @@ def main(args: argparse.Namespace) -> None:
 	train_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 		train_sentences, train_labels, featurizer, 
+		dev_sentences, dev_labels,
 		EPOCHS, BATCH_SIZE, 
 		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
 		KFOLDS,
 		OPTIMIZER_TRANSFORMER, OPTIMIZER_CLASSIFIER, OPTIMIZER_REGRESSOR,
-		LOSS, DEVICE
+		LOSS, DEVICE, save_path = args.model_save_location
 	)
 
 	# evaluate the model on test data
-	preds = evaluate_ensemble(
+	print("Evaluating models...")
+	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
 	)
 
     # write results to output file
-	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
+	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv('src/data/ensemble-misclassified-exp2.csv', index=False, encoding='utf-8')
+	data_filtered.to_csv(args.error_path, index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":

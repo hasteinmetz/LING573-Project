@@ -92,6 +92,8 @@ class TFIDFGenerator:
 	def get_tfidf(self, sentences: List[str]) -> np.ndarray:
 		'''Get the TF-IDF of the sentences using a TfidfVectorizer fitted to the training data'''
 		matrix = self.vectorizer.transform(sentences)
+		if hasattr(self, 'pca'):
+			matrix = self.pca.transform(matrix)
 		return matrix.toarray()
 
 	def reinitialize_matrix(self, stop_words, concat_labels):
