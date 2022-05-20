@@ -3,7 +3,6 @@ Create and set random seeds to be used by the Python Dataloader
 '''
 
 import numpy as np
-import os
 
 def write_random_seed(filename, no_epochs=100):
     '''Get a random array of numbers to use as random seeds'''
