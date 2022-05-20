@@ -1,0 +1,18 @@
+Using cuda device
+Loading training and development data...
+Fitted PCA. Previously there were 9109features. Now there are [ 1.42493891e-01  1.11031066e-01  7.41666744e-02 ...  0.00000000e+00
+  4.80786178e-03 -4.89256017e-05] features. <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>
+Initializing ensemble architecture...
+
+Saving models to /src/models/testing-ensemble/...
+(Saving error) Saving models to src/models/testing-ensemble/...
+Evaluating models...
+Ensemble	f1: {'f1': 0.6693657219973009}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4640371229698376}
+Featurizer	accuracy: {'accuracy': 0.5314401622718052}
+
