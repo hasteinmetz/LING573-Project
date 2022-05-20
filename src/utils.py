@@ -108,3 +108,19 @@ def read_from_tsv(lex_data: str) -> Tuple[Dict[str,str], set]:
 	output_dict = dict(zip(df.lemma, df.category))
 	
 	return output_dict, feature_list
+
+def read_adaptation_data(filepath: str) -> Tuple[List[str], List[int], List[int]]:
+	"""
+	arguments:
+		- filepath: path to data file
+	returns:
+		a list of string representing input sentences, a list of ints representing humor classification labels,
+		and a list of ints representing controversy classification labels
+	"""
+
+	df = pd.read_csv(filepath, encoding='utf-8')
+	new_row = df.columns.tolist()
+	df.columns = ["Sentences","HumorLabel","ControversyLabel"]
+	df.append(new_row)
+	jokes_df = df[df["ControversyLabel"].notnull()]
+	return jokes_df["Sentences"].tolist(), jokes_df["HumorLabel"].tolist(), jokes_df["ControversyLabel"].tolist()

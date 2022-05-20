@@ -1,4 +1,4 @@
-executable           = ../src/executables/run_ensemble.sh 
+executable           = ../src/executables/run_rfensemble.sh 
 getenv               = true
 arguments            = 
 output               = ../outputs/condor.out
