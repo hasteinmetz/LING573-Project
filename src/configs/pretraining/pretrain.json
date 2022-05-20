@@ -2,6 +2,5 @@
     "learning_rate":  0.00005,
     "batch_size": 32,
     "epochs": 1, 
-    "save_model": "src/models/pretraining-test/roberta-pretrain", 
     "output_path": "outputs/pretraining-test/roberta-pretrain"
 }
