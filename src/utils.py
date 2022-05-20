@@ -123,4 +123,7 @@ def read_adaptation_data(filepath: str) -> Tuple[List[str], List[int], List[int]
 	df.columns = ["Sentences","HumorLabel","ControversyLabel"]
 	df.append(new_row)
 	jokes_df = df[df["ControversyLabel"].notnull()]
-	return jokes_df["Sentences"].tolist(), jokes_df["HumorLabel"].tolist(), jokes_df["ControversyLabel"].tolist()
+	jokes_df["HumorLabel"].astype(int)
+	jokes_df["ControversyLabel"].astype(int)
+	print(jokes_df)
+	return jokes_df["Sentences"].tolist(), np.asarray(jokes_df["HumorLabel"]), np.asarray(jokes_df["ControversyLabel"])

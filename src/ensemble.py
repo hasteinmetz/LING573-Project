@@ -171,9 +171,7 @@ def main(args: argparse.Namespace) -> None:
 	print("loading training and development data...")
 	train_sentences, _, train_labels = utils.read_adaptation_data(args.train_data_path)
 	dev_sentences, _, dev_labels = utils.read_adaptation_data(args.dev_data_path)
-	print("training set size: {}".format(len(train_sentences)))
-	print("dev set size: {}".format(len(dev_sentences)))
-	exit()
+	
 	
 	#initialize ensemble model
 	print("initializing ensemble architecture")
