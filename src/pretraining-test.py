@@ -15,12 +15,13 @@ import pandas as pd
 from typing import *
 from datasets import load_metric
 from torch.utils.data import DataLoader
-from transformers import RobertaTokenizer
+from transformers import RobertaTokenizer, PreTrainedModel
 from finetune_dataset import FineTuneDataSet
 from transformers import RobertaModel as RobertaLM
 from transformers import RobertaForSequenceClassification as RobertaSeqCls
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 from sklearn.utils import shuffle
+import sys
 
 def metrics(measure, evalpred: EvalPrediction) -> tuple:
     '''Helper function to compute the f1 and accuracy scores using
@@ -102,16 +103,19 @@ def pretrain_model(args: dict, data: FineTuneDataSet, data_collator: DataCollato
     pretrain_tuned_model = Trainer(
         model=seq_classifier_model,
         args=pretrain_tune_args,
-        train_dataset=train_data,
+        train_dataset=data,
+        eval_dataset=data,
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=comp_measure,
     )
 
+    pretrain_tuned_model.train()
+
     return pretrain_tuned_model.model
 
 
-def fine_tune_model(args: argparse.Namespace, model: PreTrainedModel, 
+def fine_tune_model(model: RobertaSeqCls, args: argparse.Namespace,
                     train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
                     data_collator: DataCollatorWithPadding, tokenizer: RobertaTokenizer, 
                     comp_measure: Callable, start_time: float) -> RobertaSeqCls:
@@ -130,7 +134,7 @@ def fine_tune_model(args: argparse.Namespace, model: PreTrainedModel,
     '''
 
     # initialize sequence classifier
-    seq_classifier_model = RobertaSeqCls.from_pretrained(model.config)
+    seq_classifier_model = model
 
     # set the arguments
     fine_tune_args = TrainingArguments(
@@ -185,14 +189,14 @@ def main(args: argparse.Namespace, pretrain_args: dict, finetune_args: dict) -> 
     if torch.cuda.is_available():
         device = "cuda"
         torch.device(device)
-        print(f"({utils.get_time(start_time)}) Using {device} device")
-        print(f"Using the GPU:{torch.cuda.get_device_name(0)}")
+        print(f"({utils.get_time(start_time)}) Using {device} device", file=sys.stderr)
+        print(f"Using the GPU:{torch.cuda.get_device_name(0)}", file=sys.stderr)
     else:
         device = "cpu"
         torch.device(device)
-        print(f"({utils.get_time(start_time)}) Using {device} device")
+        print(f"({utils.get_time(start_time)}) Using {device} device", file=sys.stderr)
 
-    print(f"({utils.get_time(start_time)}) Reading data in from files...\n")
+    print(f"({utils.get_time(start_time)}) Reading data in from files...\n", file=sys.stderr)
     # initialize roberta tokenizer and pretrained model
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
@@ -222,7 +226,7 @@ def main(args: argparse.Namespace, pretrain_args: dict, finetune_args: dict) -> 
     train_data.tokenize_data(tokenizer)
     dev_data.tokenize_data(tokenizer)
 
-    print(f"({utils.get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n")
+    print(f"({utils.get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n", file=sys.stderr)
 
     # create a data collator to obtain the encoding (and padding) for each sentence
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
@@ -232,36 +236,37 @@ def main(args: argparse.Namespace, pretrain_args: dict, finetune_args: dict) -> 
     get_accuracy = lambda x: metrics(accuracy, x)
 
     # pretrain the model on other data
-    print(f"({utils.get_time(start_time)}) Pre-train the model on other data...\n")
+    print(f"({utils.get_time(start_time)}) Pre-train the model on other data...\n", file=sys.stderr)
     pretrained_model = pretrain_model(pretrain_args, pretrain_data, data_collator, tokenizer, get_accuracy, start_time)
     
     # train the model on the training data
-    print(f"({utils.get_time(start_time)}) Fine-tune the model on the training data...\n")
-    roberta_model = fine_tune_model(finetune_args, train_data, dev_data, data_collator, tokenizer, get_accuracy, start_time)
+    print(f"({utils.get_time(start_time)}) Fine-tune the model on the training data...\n", file=sys.stderr)
+    roberta_model = fine_tune_model(pretrained_model, finetune_args, train_data, dev_data, 
+        data_collator, tokenizer, get_accuracy, start_time)
 
     # evaluate the model's performance
-    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on training data\n")
-    y_pred_train = evaluate(roberta_model, args.batch_size, train_data, ['f1', 'accuracy'], device)
+    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on training data\n", file=sys.stderr)
+    y_pred_train = evaluate(roberta_model, pretrain_args['batch_size'], train_data, ['f1', 'accuracy'], device)
 
-    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on dev data\n")
-    y_pred_dev = evaluate(roberta_model, args.batch_size, dev_data, ['f1', 'accuracy'], device)
+    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on dev data\n", file=sys.stderr)
+    y_pred_dev = evaluate(roberta_model, finetune_args['batch_size'], dev_data, ['f1', 'accuracy'], device)
 
     #write results to output file
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(args['output_path'], index=False, encoding='utf-8')
+    dev_out.to_csv(finetune_args['output_path'] + "-" + args.job, index=False, encoding='utf-8')
 
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
 
     # filter the data so that only negative examples are there
     data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/roberta-misclassified-examples.csv', index=False, encoding='utf-8')
+    data_filtered.to_csv('src/data/roberta-misclassified-examples' + "-" + args.job + '.csv', index=False, encoding='utf-8')
 
     # save the model
-    if args.save_file != 'None':
-        roberta_model.save_pretrained(args['save_model'],)
+    if finetune_args['save_model'] != 'None':
+        roberta_model.save_pretrained(finetune_args['save_model'] + "-" + args.job)
 
     print(f"({utils.get_time(start_time)}) Done!")
 
@@ -273,8 +278,13 @@ if __name__ == '__main__':
     parser.add_argument('--dev_sentences', help="path to input dev data file")
     parser.add_argument('--model_folder', help="path to a saved file to load")
     parser.add_argument('--debug', help="(1 or 0) train on a smaller training set for debugging", default=0, type=int)
+    parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
     args = parser.parse_args()
-    pretrain_args = json.decode('src/configs/pretraining/pretrain.json')
-    finetune_args = json.decode('src/configs/pretraining/pretrain.json')
+    with open('src/configs/pretraining/pretrain.json', 'r') as f1:
+        configs1 = f1.read()
+        pretrain_args = json.loads(configs1)
+    with open('src/configs/pretraining/finetune.json', 'r') as f2:
+        configs2 = f2.read()
+        finetune_args = json.loads(configs2)
 
     main(args, pretrain_args, finetune_args)

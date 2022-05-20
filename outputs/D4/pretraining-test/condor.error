@@ -1,0 +1,79 @@
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'roberta.pooler.dense.weight', 'roberta.pooler.dense.bias']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.weight', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use thePyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+***** Running training *****
+  Num examples = 50
+  Num Epochs = 1
+  Instantaneous batch size per device = 32
+  Total train batch size (w. parallel, distributed & accumulation) = 32
+  Gradient Accumulation steps = 1
+  Total optimization steps = 2
+  0%|          | 0/2 [00:00<?, ?it/s]/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+ 50%|█████     | 1/2 [00:01<00:01,  1.58s/it]100%|██████████| 2/2 [00:02<00:00,  1.08s/it]***** Running Evaluation *****
+  Num examples = 50
+  Batch size = 8
+
+  0%|          | 0/7 [00:00<?, ?it/s][A
+ 43%|████▎     | 3/7 [00:00<00:00, 15.49it/s][A
+ 71%|███████▏  | 5/7 [00:00<00:00, 12.36it/s][A
+100%|██████████| 7/7 [00:00<00:00, 13.52it/s][A                                             
+                                             [A100%|██████████| 2/2 [00:02<00:00,  1.08s/it]
+100%|██████████| 7/7 [00:00<00:00, 13.52it/s][A
+                                             [A
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                             100%|██████████| 2/2 [00:02<00:00,  1.08s/it]100%|██████████| 2/2 [00:02<00:00,  1.49s/it]
+PyTorch: setting up devices
+The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).
+/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use thePyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+***** Running training *****
+  Num examples = 50
+  Num Epochs = 1
+  Instantaneous batch size per device = 32
+  Total train batch size (w. parallel, distributed & accumulation) = 32
+  Gradient Accumulation steps = 1
+  Total optimization steps = 2
+  0%|          | 0/2 [00:00<?, ?it/s]/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+ 50%|█████     | 1/2 [00:01<00:01,  1.14s/it]100%|██████████| 2/2 [00:01<00:00,  1.11it/s]***** Running Evaluation *****
+  Num examples = 50
+  Batch size = 32
+
+  0%|          | 0/2 [00:00<?, ?it/s][A
+100%|██████████| 2/2 [00:00<00:00,  8.99it/s][A                                             
+                                             [A100%|██████████| 2/2 [00:02<00:00,  1.11it/s]
+100%|██████████| 2/2 [00:00<00:00,  8.99it/s][A
+                                             [A
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+                                             100%|██████████| 2/2 [00:02<00:00,  1.11it/s]100%|██████████| 2/2 [00:02<00:00,  1.23s/it]
+/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+Traceback (most recent call last):
+  File "/projects/assigned/2122_ling573_elibales/repo/src/pretraining-test.py", line 289, in <module>
+    main(args, pretrain_args, finetune_args)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/pretraining-test.py", line 258, in main
+    dev_out.to_csv(finetune_args['output_path'], index=False, encoding='utf-8')
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/pandas/core/generic.py", line 3551, in to_csv
+    return DataFrameRenderer(formatter).to_csv(
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1180, in to_csv
+    csv_formatter.save()
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/pandas/io/formats/csvs.py", line 241, in save
+    with get_handle(
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/pandas/io/common.py", line 697, in get_handle
+    check_parent_directory(str(handle))
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/pandas/io/common.py", line 571, in check_parent_directory
+    raise OSError(rf"Cannot save file into a non-existent directory: '{parent}'")
+OSError: Cannot save file into a non-existent directory: 'outputs/pretraining-test'
