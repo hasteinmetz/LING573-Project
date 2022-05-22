@@ -1,7 +1,28 @@
+iter   1  #CD cycles 2
+iter   2  #CD cycles 1
+iter   3  #CD cycles 2
+iter   4  #CD cycles 2
+iter   5  #CD cycles 1
+iter   6  #CD cycles 2
+iter   7  #CD cycles 1
+iter   8  #CD cycles 7
+iter   9  #CD cycles 2
+iter  10  #CD cycles 1
+iter  11  #CD cycles 6
+iter  12  #CD cycles 2
+iter  13  #CD cycles 1
+iter  14  #CD cycles 11
+iter  15  #CD cycles 2
+iter  16  #CD cycles 5
+iter  17  #CD cycles 1
+iter  18  #CD cycles 96
+=========================
+optimization finished, #iter = 18
+Objective value = 602.560454
+#nonzeros/#features = 2/5
 Using cuda device
 Using the GPU:Tesla M10
 loading training and development data...
-<class 'list'>
 initializing ensemble architecture
 preparing hurtlex dictionary...
 featurizing training and dev data...
@@ -18,12 +39,18 @@ training ensemble model...
 	training random forest classifier...
 random forest classifier accuracy
       train      test
-0  0.995720  0.501139
-1  0.996291  0.492027
-2  0.995722  0.479452
-3  0.993440  0.520548
-4  0.987165  0.504566
-5  0.993440  0.509132
-6  0.993725  0.490868
-7  0.994581  0.461187
-8  0.992299  0.547945
+0  0.994010  0.507973
+1  0.996292  0.535308
+2  0.995151  0.478360
+3  0.993727  0.518265
+4  0.993727  0.479452
+5  0.991731  0.497717
+6  0.991731  0.513699
+7  0.993442  0.472603
+8  0.996008  0.484018
+	training logistic regression classifier
+[LibLinear]logreg classifier training accuracy: 0.9422053231939164
+predicting dev labels...
+	dev accuracy: 0.5253549695740365
+outputting dev classification output...
+outputting results...

@@ -1,24 +1,4 @@
-/home2/apai3/ling573/src/utils.py:124: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-  df.append(new_row)
-/home2/apai3/ling573/src/utils.py:124: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-  df.append(new_row)
 /home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
-Traceback (most recent call last):
-  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 231, in <module>
-    main(args)
-  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 200, in main
-    train_ensemble(ensemble_model, train_feature_vector, train_labels, train_dataset, device)
-  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 102, in train_ensemble
-    outputs = ensemble.roberta_model(**inputs)
-  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 1239, in forward
-    loss = loss_fct(logits, labels)
-  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/loss.py", line 713, in forward
-    return F.binary_cross_entropy_with_logits(input, target,
-  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/functional.py", line 3130, in binary_cross_entropy_with_logits
-    raise ValueError("Target size ({}) must be the same as input size ({})".format(target.size(), input.size()))
-ValueError: Target size (torch.Size([32])) must be the same as input size (torch.Size([32, 2]))
+/home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}

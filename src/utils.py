@@ -109,21 +109,19 @@ def read_from_tsv(lex_data: str) -> Tuple[Dict[str,str], set]:
 	
 	return output_dict, feature_list
 
-def read_adaptation_data(filepath: str) -> Tuple[List[str], List[int], List[int]]:
+def read_adaptation_data(filepath: str) -> Tuple[List[str], List[int]]:
 	"""
 	arguments:
 		- filepath: path to data file
 	returns:
-		a list of string representing input sentences, a list of ints representing humor classification labels,
-		and a list of ints representing controversy classification labels
+		a list of string representing input sentences, and a list of ints representing controversy classification labels
 	"""
 
-	df = pd.read_csv(filepath, encoding='utf-8')
-	new_row = df.columns.tolist()
-	df.columns = ["Sentences","HumorLabel","ControversyLabel"]
-	df.append(new_row)
-	jokes_df = df[df["ControversyLabel"].notnull()]
-	jokes_df["HumorLabel"].astype(int)
-	jokes_df["ControversyLabel"].astype(int)
-	print(jokes_df)
-	return jokes_df["Sentences"].tolist(), np.asarray(jokes_df["HumorLabel"]), np.asarray(jokes_df["ControversyLabel"])
+	sentences, labels = [], []
+	with open(filepath, 'r', encoding='utf-8') as datafile:
+		data = csv.reader(datafile, delimiter=',', quotechar='"')
+		for row in data:
+			if row[2] != 'n/a':
+				sentences.append(row[0])
+				labels.append(int(row[2]))
+	return sentences, np.asarray(labels, dtype=int)
