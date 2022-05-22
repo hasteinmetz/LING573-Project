@@ -7,6 +7,8 @@ from typing import *
 from empath import Empath
 from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
+
 
 
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
@@ -191,36 +193,42 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
 	'''
 	# get NER vector 
-	# TODO: check with eli whether ner will still work after lemmatization is applied
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
-	print("preprocessing data...")
+	print("\tpreprocessing data...")
 	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
-	print("create lexical vector...")
+	print("\tcreate lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	print("get empathy ratings...")
+	print("\tget empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
  
+	'''
+	TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
-	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
-	#print("getting tf-idf...")
-	#tf = get_tfidf(preprocessed_sentences, vectorizer)
-	#print("tf shape: {}".format(np.shape(tf)))
+	print("getting tf-idf...")
+	tf = get_tfidf(preprocessed_sentences, vectorizer)
+	print("tf shape: {}".format(np.shape(tf)))
+	'''
 
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	print("normalizing vectors...")
+	print("\tnormalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, hv)
-	
-	return nv
+
+	#perform pca
+	pca = PCA(.95)
+	final_vector = pca.fit(nv)
+	print("\tnumber of principal components: {}".format(pca.n_components_))
+
+	return final_vector
