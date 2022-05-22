@@ -228,7 +228,8 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 
 	#perform pca
 	pca = PCA(.95)
-	final_vector = pca.fit(nv)
+	pca.fit(nv)
+	final_vector = pca.transform(nv)
 	print("\tnumber of principal components: {}".format(pca.n_components_))
 
 	return final_vector

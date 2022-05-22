@@ -1,4 +1,18 @@
 /home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
   item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
-/home2/apai3/ling573/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+Traceback (most recent call last):
+  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 230, in <module>
+    main(args)
+  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 203, in main
+    dev_predicted_labels, dev_accuracy = predict(ensemble_model, dev_feature_vector, dev_labels, dev_dataset, device)
+  File "/home2/apai3/ling573/cmd/../src/ensemble.py", line 131, in predict
+    rf_class_prob = ensemble.random_forest.predict_proba(dev_lex_feat)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/sklearn/ensemble/_forest.py", line 874, in predict_proba
+    X = self._validate_X_predict(X)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/sklearn/ensemble/_forest.py", line 605, in _validate_X_predict
+    X = self._validate_data(X, dtype=DTYPE, accept_sparse="csr", reset=False)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/sklearn/base.py", line 600, in _validate_data
+    self._check_n_features(X, reset=reset)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/sklearn/base.py", line 400, in _check_n_features
+    raise ValueError(
+ValueError: X has 18 features, but RandomForestClassifier is expecting 23 features as input.

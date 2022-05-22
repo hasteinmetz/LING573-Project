@@ -1,24 +1,19 @@
-iter   1  #CD cycles 2
-iter   2  #CD cycles 1
-iter   3  #CD cycles 2
+iter   1  #CD cycles 1
+iter   2  #CD cycles 2
+iter   3  #CD cycles 1
 iter   4  #CD cycles 2
 iter   5  #CD cycles 1
-iter   6  #CD cycles 2
-iter   7  #CD cycles 1
-iter   8  #CD cycles 7
-iter   9  #CD cycles 2
-iter  10  #CD cycles 1
-iter  11  #CD cycles 6
-iter  12  #CD cycles 2
-iter  13  #CD cycles 1
-iter  14  #CD cycles 11
-iter  15  #CD cycles 2
-iter  16  #CD cycles 5
-iter  17  #CD cycles 1
-iter  18  #CD cycles 96
+iter   6  #CD cycles 1
+iter   7  #CD cycles 4
+iter   8  #CD cycles 5
+iter   9  #CD cycles 1
+iter  10  #CD cycles 2
+iter  11  #CD cycles 2
+iter  12  #CD cycles 1
+iter  13  #CD cycles 24
 =========================
-optimization finished, #iter = 18
-Objective value = 602.560454
+optimization finished, #iter = 13
+Objective value = 486.729167
 #nonzeros/#features = 2/5
 Using cuda device
 Using the GPU:Tesla M10
@@ -26,31 +21,30 @@ loading training and development data...
 initializing ensemble architecture
 preparing hurtlex dictionary...
 featurizing training and dev data...
-preprocessing data...
-create lexical vector...
-get empathy ratings...
-normalizing vectors...
-preprocessing data...
-create lexical vector...
-get empathy ratings...
-normalizing vectors...
+	preprocessing data...
+	create lexical vector...
+	get empathy ratings...
+	normalizing vectors...
+	number of principal components: 23
+	preprocessing data...
+	create lexical vector...
+	get empathy ratings...
+	normalizing vectors...
+	number of principal components: 18
 preparing input for roberta model...
 training ensemble model...
 	training random forest classifier...
 random forest classifier accuracy
       train      test
-0  0.994010  0.507973
-1  0.996292  0.535308
-2  0.995151  0.478360
-3  0.993727  0.518265
-4  0.993727  0.479452
-5  0.991731  0.497717
-6  0.991731  0.513699
-7  0.993442  0.472603
-8  0.996008  0.484018
+0  0.999430  0.537585
+1  0.999430  0.530752
+2  0.999430  0.485194
+3  0.999145  0.495434
+4  0.999430  0.461187
+5  0.999145  0.534247
+6  0.999145  0.509132
+7  0.999430  0.477169
+8  0.999430  0.534247
 	training logistic regression classifier
-[LibLinear]logreg classifier training accuracy: 0.9422053231939164
+[LibLinear]logreg classifier training accuracy: 0.9475285171102662
 predicting dev labels...
-	dev accuracy: 0.5253549695740365
-outputting dev classification output...
-outputting results...
