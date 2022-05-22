@@ -1,4 +1,24 @@
 # Meeting notes
+
+## 5-17
+- Seems like non-jokes were included in subtask 1c (can ignore non-jokes)
+- Groups with a lot of pre-processing have lower scores
+- Looking into mutual information and SVD
+    - Doing a lots of preprocessing reduces learning
+- Steps:
+    - [Avani] Start working on the paper & [SVD](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html)
+    - [Eli] Regression head --> add picture of ensemble model and what goes on
+    - [Hilly] Make model configurable.
+    - [Pangbo] Calculate mutual information
+- Next meeting: Sunday, 5:30pm
+
+## 5-12
+- Eli reupload data w/ nulls, available to help with code
+- Hilly rerun ensemble with Hurtlex integrated
+- Pangbo research more feasible way to combine features
+- Avani run other ensemble networks for controversy task
+- 
+
 ## 5-6
 - Eli was able to extract NER from data & outputted to .csv file
     - how to store/format data

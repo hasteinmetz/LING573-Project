@@ -1,0 +1,13 @@
+0it [00:00, ?it/s]0it [00:00, ?it/s]
+Traceback (most recent call last):
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 229, in <module>
+    main(args)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 207, in main
+    train_ensemble(ensemble_model, train_sentences, train_labels, device)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 137, in train_ensemble
+    base_model_encodings = [data_set_train.encodings[n] for n in train_index]
+  File "/projects/assigned/2122_ling573_elibales/repo/src/ensemble.py", line 137, in <listcomp>
+    base_model_encodings = [data_set_train.encodings[n] for n in train_index]
+  File "/home2/hsteinm/anaconda3/envs/573-project/lib/python3.9/site-packages/transformers/tokenization_utils_base.py", line 241, in __getitem__
+    raise KeyError(
+KeyError: 'Indexing with integers (to access backend Encoding for a given batch index) is not available when using Python based tokenizers'
