@@ -1,0 +1,51 @@
+(0min 0sec) Using cpu device
+(0min 0sec) Reading data in from files...
+
+(0min 5sec) Initalizating RoBERTa and creating data collator...
+
+(0min 5sec) Pre-train the model on other data...
+
+/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use thePyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+***** Running training *****
+  Num examples = 3945
+  Num Epochs = 1
+  Instantaneous batch size per device = 32
+  Total train batch size (w. parallel, distributed & accumulation) = 32
+  Gradient Accumulation steps = 1
+  Total optimization steps = 124
+  0%|          | 0/124 [00:00<?, ?it/s]/projects/assigned/2122_ling573_elibales/repo/src/finetune_dataset.py:24: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  item = {key: torch.tensor(val[index]) for key, val in self.encodings.items()}
+Traceback (most recent call last):
+  File "/projects/assigned/2122_ling573_elibales/repo/src/pretraining-test.py", line 296, in <module>
+    main(args, pretrain_args, finetune_args)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/pretraining-test.py", line 246, in main
+    pretrained_model = pretrain_model(pretrain_args, pretrain_data, data_collator, tokenizer, get_accuracy, start_time)
+  File "/projects/assigned/2122_ling573_elibales/repo/src/pretraining-test.py", line 116, in pretrain_model
+    pretrain_tuned_model.train()
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/trainer.py", line 1365, in train
+    tr_loss_step = self.training_step(model, inputs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/trainer.py", line 1940, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/trainer.py", line 1972, in compute_loss
+    outputs = model(**inputs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 1204, in forward
+    outputs = self.roberta(
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 843, in forward
+    embedding_output = self.embeddings(
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/transformers/models/roberta/modeling_roberta.py", line 131, in forward
+    inputs_embeds = self.word_embeddings(input_ids)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/modules/sparse.py", line 158, in forward
+    return F.embedding(
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/nn/functional.py", line 2183, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+IndexError: index out of range in self
+  0%|          | 0/124 [00:00<?, ?it/s]
