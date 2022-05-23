@@ -10,8 +10,7 @@ from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
-pca = PCA(.95)
-
+pca_component_num = 0
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
 	arguments:
@@ -254,9 +253,13 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	# perform PCA
 	pv = None
 	if is_train_data:
+		pca = PCA(.95)
 		pca.fit(nv)
 		pv = pca.transform(nv) 
+		pca_component_num = pca.n_components_
 	else:
+		pca = PCA(n_components=pca_component_num)
 		pv = pca.fit_transform(nv)
+	print("\tnum components: {}".format(pca.n_components))
 
 	return pv
