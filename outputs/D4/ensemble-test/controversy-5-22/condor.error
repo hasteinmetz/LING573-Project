@@ -1,0 +1,95 @@
+Using cpu device
+Fitted PCA. Previously there were 9109 features. Now there are 3945 features.
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.bias', 'roberta.pooler.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'roberta.pooler.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.dense.bias']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.out_proj.weight', 'classifier.dense.bias', 'classifier.dense.weight', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+(0, 192) Loss: 0.7316339574754238
+(0, 384) Loss: 0.6881835553795099
+(0, 576) Loss: 0.6923139747232199
+(0, 768) Loss: 0.6957411989569664
+(0, 960) Loss: 0.6940578725188971
+(0, 1152) Loss: 0.6822745036333799
+(0, 1344) Loss: 0.6897334456443787
+(0, 1536) Loss: 0.710776787251234
+(0, 1728) Loss: 0.703438987955451
+(0, 1920) Loss: 0.6932782381772995
+(0, 2112) Loss: 0.6941723320633173
+(0, 2304) Loss: 0.6934210136532784
+(0, 2496) Loss: 0.7014052402228117
+(0, 2688) Loss: 0.6887158527970314
+(0, 2880) Loss: 0.701468562707305
+(0, 3072) Loss: 0.7005471866577864
+(0, 3264) Loss: 0.7024300340563059
+(0, 3456) Loss: 0.6970319952815771
+(0, 3648) Loss: 0.7012923900038004
+(0, 3840) Loss: 0.6911691408604383
+f1:
+	 {'f1': 0.4258836944127708}
+accuracy:
+	 {'accuracy': 0.4894803548795944}
+
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.4969574036511156}
+
+(1, 192) Loss: 0.6763881854712963
+(1, 384) Loss: 0.680773051455617
+(1, 576) Loss: 0.7067925408482552
+(1, 768) Loss: 0.6977062299847603
+(1, 960) Loss: 0.6999146174639463
+(1, 1152) Loss: 0.6923133432865143
+(1, 1344) Loss: 0.6940335277467966
+(1, 1536) Loss: 0.7053452245891094
+(1, 1728) Loss: 0.6913049723953009
+(1, 1920) Loss: 0.6937920767813921
+(1, 2112) Loss: 0.6909034717828035
+(1, 2304) Loss: 0.6935982760041952
+(1, 2496) Loss: 0.6901482716202736
+(1, 2688) Loss: 0.6933897454291582
+(1, 2880) Loss: 0.6994711849838495
+(1, 3072) Loss: 0.6962175574153662
+(1, 3264) Loss: 0.6929496359080076
+(1, 3456) Loss: 0.6933256089687347
+(1, 3648) Loss: 0.6934304684400558
+(1, 3840) Loss: 0.6923353560268879
+f1:
+	 {'f1': 0.4483333333333333}
+accuracy:
+	 {'accuracy': 0.49657794676806083}
+
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.4969574036511156}
+
+(2, 192) Loss: 0.684312142431736
+(2, 384) Loss: 0.6847688592970371
+(2, 576) Loss: 0.7022767215967178
+(2, 768) Loss: 0.697457829490304
+(2, 960) Loss: 0.7034210059791803
+(2, 1152) Loss: 0.6939416565001011
+(2, 1344) Loss: 0.6930739022791386
+(2, 1536) Loss: 0.698912363499403
+(2, 1728) Loss: 0.6915490478277206
+(2, 1920) Loss: 0.6940761674195528
+(2, 2112) Loss: 0.6923671569675207
+(2, 2304) Loss: 0.693186217918992
+(2, 2496) Loss: 0.6913553420454264
+(2, 2688) Loss: 0.6931394040584564
+(2, 2880) Loss: 0.697907168418169
+(2, 3072) Loss: 0.69587148912251
+(2, 3264) Loss: 0.693195166066289
+(2, 3456) Loss: 0.6931567844003439
+(2, 3648) Loss: 0.6932100635021925
+(2, 3840) Loss: 0.692382175475359
+f1:
+	 {'f1': 0.40832095096582466}
+accuracy:
+	 {'accuracy': 0.4953105196451204}
+
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.4969574036511156}
+
+
+real	209m44.262s
+user	208m33.181s
+sys	0m41.886s
