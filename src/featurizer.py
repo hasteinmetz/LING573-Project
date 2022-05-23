@@ -1,3 +1,4 @@
+from tkinter import W
 import nltk
 import spacy
 import utils
@@ -9,7 +10,7 @@ from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
-
+pca = PCA(.95)
 
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
@@ -182,11 +183,35 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 	return np.array(features)
 
 
-def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
+def perform_pca(vector: np.ndarray, is_train: bool = False, n_comp: int = 0) -> np.ndarray:
+	'''
+	arguments: 
+		- vector: data to which pca should be performed on
+		- is_train: set to true if data represents training data
+		- n_comp: provide number of components if data is not training data
+	'''
+	final_vector = None
+	if not is_train:
+		pca = PCA(.95)
+		pca.fit(vector)
+		final_vector = pca.transform(vector)
+		print("\tnumber of principal components: {}".format(pca.n_components_))
+	else:
+		pca = PCA(n_components=n_comp)
+		pca.fit(vector)
+		final_vector = pca.transform(vector)
+		print("\tnumber of principal components: {}".format(pca.n_components_))
+	return final_vector
+
+
+def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set, is_train_data: bool) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
 		- labels: corresponding labels for sentenceds
+		- hurtlex_dict: lexical items corresponding to each hurtlex label
+		- hurtlex_cat: hurtlex labels
+		- is_train_data: whether sentences represents training data or not
 	returns:
 		a (n_samples, vector_space_size) feature vector 
 	
@@ -225,11 +250,13 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	print("\tnormalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, hv)
+	
+	# perform PCA
+	pv = None
+	if is_train_data:
+		pca.fit(nv)
+		pv = pca.transform(nv) 
+	else:
+		pv = pca.fit_transform(nv)
 
-	#perform pca
-	pca = PCA(.95)
-	pca.fit(nv)
-	final_vector = pca.transform(nv)
-	print("\tnumber of principal components: {}".format(pca.n_components_))
-
-	return final_vector
+	return pv
