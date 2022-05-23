@@ -15,7 +15,7 @@ import pandas as pd
 from typing import *
 from datasets import load_metric
 from torch.utils.data import DataLoader
-from transformers import RobertaTokenizer, PreTrainedModel
+from transformers import RobertaTokenizer, PreTrainedModel, RobertaConfig
 from finetune_dataset import FineTuneDataSet
 from transformers import RobertaModel as RobertaLM
 from transformers import RobertaForSequenceClassification as RobertaSeqCls
@@ -80,13 +80,16 @@ def evaluate(model: RobertaSeqCls, batch_size: int,
     print(values)
     return np.concatenate(predictions)
 
+# TODO: PRETRAIN ON REGRESSION
+# CAN SIMPLY DO model.roberta = roberta
 
 def pretrain_model(args: dict, data: FineTuneDataSet, data_collator: DataCollatorWithPadding, 
                     tokenizer: RobertaTokenizer, comp_measure: Callable, start_time: float) -> PreTrainedModel:
     '''Pretrain a model on headlines from the onion. Use a classification task'''
     # initialize sequence classifier
     
-    seq_classifier_model = RobertaSeqCls.from_pretrained('roberta-base')
+    config = RobertaConfig(name_or_path='roberta-base', problem_type='regression')
+    seq_classifier_model = RobertaSeqCls(config)
 
     # set the arguments
     pretrain_tune_args = TrainingArguments(
@@ -99,7 +102,7 @@ def pretrain_model(args: dict, data: FineTuneDataSet, data_collator: DataCollato
     )
 
     # create a trainer
-    print(f"({utils.get_time(start_time)}) Fine-tuning the model...\n")
+    print(f"({utils.get_time(start_time)}) Pre-training the model...")
     pretrain_tuned_model = Trainer(
         model=seq_classifier_model,
         args=pretrain_tune_args,
@@ -134,7 +137,8 @@ def fine_tune_model(model: RobertaSeqCls, args: argparse.Namespace,
     '''
 
     # initialize sequence classifier
-    seq_classifier_model = model
+    seq_classifier_model = RobertaSeqCls.from_pretrained('roberta-base', problem_type='single_label_classification')
+    seq_classifier_model.roberta = model.roberta
 
     # set the arguments
     fine_tune_args = TrainingArguments(
@@ -148,7 +152,7 @@ def fine_tune_model(model: RobertaSeqCls, args: argparse.Namespace,
     )
 
     # create a trainer
-    print(f"({utils.get_time(start_time)}) Fine-tuning the model...\n")
+    print(f"({utils.get_time(start_time)}) Fine-tuning the model...")
     fine_tuned_model = Trainer(
         model=seq_classifier_model,
         args=fine_tune_args,
@@ -201,11 +205,13 @@ def main(args: argparse.Namespace, pretrain_args: dict, finetune_args: dict) -> 
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
     # read in pretraining data
-    pretrain_sents, pretrain_labels = utils.read_data_from_file(args.pretrain_data)
+    pretrain_sents, pretrain_labels = utils.read_data_from_file(args.pretrain_data, index=2)
+    print(pretrain_sents[0:2], pretrain_labels.shape)
 
     # read in the training and development data
-    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences)
-    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences)
+    ind = 1 if args.job == 'humor' else 2
+    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences, index=ind)
+    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences, index=ind)
 
     # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
     if args.debug == 1:

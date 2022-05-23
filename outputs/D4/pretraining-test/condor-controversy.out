@@ -1,0 +1,18 @@
+(0min 16sec) Pre-training the model...
+{'loss': 0.2953, 'learning_rate': 2.206703910614525e-05, 'epoch': 0.56}
+{'eval_loss': 0.10112912952899933, 'eval_accuracy': 0.9629966106432789, 'eval_runtime': 1209.6465, 'eval_samples_per_second': 23.659, 'eval_steps_per_second': 2.958, 'epoch': 1.0}
+{'train_runtime': 4615.0707, 'train_samples_per_second': 6.201, 'train_steps_per_second': 0.194, 'train_loss': 0.2514245571370897, 'epoch': 1.0}
+(77min 21sec) Fine-tuning the model...
+{'eval_loss': 0.6867734789848328, 'eval_accuracy': 0.5415821501014199, 'eval_runtime': 6.9827, 'eval_samples_per_second': 70.603, 'eval_steps_per_second': 2.291, 'epoch': 1.0}
+{'train_runtime': 331.5244, 'train_samples_per_second': 11.9, 'train_steps_per_second': 0.374, 'train_loss': 0.7188152190177671, 'epoch': 1.0}
+f1:
+	 {'f1': 0.4065372829417773}
+accuracy:
+	 {'accuracy': 0.5581749049429657}
+
+f1:
+	 {'f1': 0.4083769633507853}
+accuracy:
+	 {'accuracy': 0.5415821501014199}
+
+(84min 56sec) Done!

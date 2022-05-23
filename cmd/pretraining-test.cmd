@@ -9,6 +9,5 @@ Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine
 transfer_executable   = false
 request_memory        = 2*1024
 queue job, arguments from (
-    humor, "--job humor --train_sentences src/data/hahackathon_prepo1_train.csv --dev_sentences src/data/hahackathon_prepo1_dev.csv --pretrain_data src/data/pretraining/onion_headlines.csv"
-    controversy, "--job controversy --train_sentences src/data/hahackathon_prepo1_train.csv --dev_sentences src/data/hahackathon_prepo1_dev.csv --pretrain_data src/data/pretraining/onion_headlines.csv"
+    regression, "--job regression --train_sentences src/data/D4_hahackathon_prepo1_train.csv --dev_sentences src/data/D4_hahackathon_prepo1_dev.csv --pretrain_data src/data/D4_1_hahackathon_prepo1_train.csv"
 )
