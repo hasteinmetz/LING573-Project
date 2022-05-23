@@ -1,4 +1,32 @@
 # Meeting notes
+## 5-22
+- [Eli] 
+    - trouble with getting local environment working
+    - still working on regression head
+    - will abandon regression head
+    - Eli will do initial perusal of final report & mark areas that need more detail
+- [Pangbo] 
+    - working on feature selection
+    - trouble with getting rf classifier to run locally and condor
+    - stick with percentile function
+    - need to 1) merge with existing ensembles, 2) tune hyperparameters
+- [Hilly]
+    - straight-forward model with GD running all the way through, after consulting Haotian
+    - update neural architecture picture
+- [Avani]
+    - reran rf ensemble with no jokes,acc is 52%
+    - fixing pca bug w/ mismatched dimensions
+    - pull Pangbo's changes and try to merge with rf
+- Haotian unable to run our D3 code
+    - shell scripts pointing to different conda environments
+    - have a fix option ready, will ask Haotian how he wants it to be patched
+- D4 report
+    - run all working models (baseline, k-fold neural ensemble, straightforward neural ensemble, rf ensemble)
+    - get numbers for test set
+    - discuss all model architectures and motivation for trying these designs
+- get everything working by Tuesday 3/24 7:00pm
+- put all the numbers in on Wednesday 3/25
+- potentially sync online on Monday for pair debugging
 
 ## 5-17
 - Seems like non-jokes were included in subtask 1c (can ignore non-jokes)
