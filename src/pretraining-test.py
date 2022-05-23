@@ -1,296 +1,370 @@
 #!/usr/bin/env python
 
-'''References:
-- https://huggingface.co/docs/transformers/tasks/sequence_classification
-- https://huggingface.co/transformers/v3.2.0/custom_datasets.html#seq-imdb
-'''
-
-import time
-import torch
 import utils
+import torch
 import argparse
-import json
+import sys
 import numpy as np
 import pandas as pd
 from typing import *
-from datasets import load_metric
-from torch.utils.data import DataLoader
-from transformers import RobertaTokenizer, PreTrainedModel, RobertaConfig
-from finetune_dataset import FineTuneDataSet
-from transformers import RobertaModel as RobertaLM
+from featurizer import featurize, DTFIDF
+from torch.utils.data import DataLoader, Dataset
+from torch.optim import AdamW
+from transformers import RobertaModel, RobertaTokenizer
 from transformers import RobertaForSequenceClassification as RobertaSeqCls
-from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
+from datasets import load_metric
+from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
-import sys
+import json
 
-def metrics(measure, evalpred: EvalPrediction) -> tuple:
-    '''Helper function to compute the f1 and accuracy scores using
-    the Transformers package's data structures'''
-    logits, labels = evalpred
-    predictions = np.argmax(logits, axis=-1)
-    return measure.compute(predictions=predictions, references=labels)
+nn = torch.nn
 
+class FineTuneDataSet(Dataset):
+	'''Class creates a list of dicts of sentences and labels
+	and behaves list a list but also stores sentences and labels for
+	future use'''
+	def __init__(self, sentences: List[str], labels: List[int]):
+		self.sentences = sentences
+		self.labels = labels
 
-def evaluate(model: RobertaSeqCls, batch_size: int, 
-    test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
-    '''Evaluate model performance on the test texts'''
-    # set the model to eval mode
-    model.eval()
-    model.to(device)
+	def tokenize_data(self, tokenizer: RobertaTokenizer):
+		if not hasattr(self, 'encodings'):
+			# encode the data
+			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
+			self.input_ids = self.encodings['input_ids']
 
-    # create a list of metrics to store data
-    metrics = []
-    for metric in measures:
-        m = load_metric(metric)
-        metrics.append(m)
+	def __getitem__(self, index: int):
+		if not hasattr(self, 'encodings'):
+			raise AttributeError("Did not initialize encodings or input_ids")
+		else:
+			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
+			# item['labels'] = torch.tensor(self.labels[index])
+			return item, self.sentences[index], torch.tensor(self.labels[index])
 
-    # convert dataset to a pytorch format and batch the data
-    eval_dataloader = DataLoader(test_data, batch_size=batch_size)
-
-    # store the argmax of each batch
-    predictions = []
-
-    # iterate through batches to get outputs
-    for batch in eval_dataloader:
-        batch['labels'] = batch.pop('label')
-        labels = batch['labels']
-
-        # assign each element of the batch to the device
-        batch = {k: v.to(device) for k, v in batch.items()}
-        with torch.no_grad():
-            outputs = model(**batch)
-        
-        # get batched results
-        logits = outputs.logits
-
-        # add batch to output
-        pred_argmax = torch.argmax(logits, dim = -1)
-        as_list = pred_argmax.clone().detach().to('cpu').tolist()
-        predictions.append(as_list)
-
-        # add batched results to metrics
-        for m in metrics:
-            m.add_batch(predictions=pred_argmax, references=labels)
-    
-    # output metrics to standard output
-    values = f"" # empty string 
-    for m in metrics:
-        val = m.compute()
-        values += f"{m.name}:\n\t {val}\n"
-    print(values)
-    return np.concatenate(predictions)
-
-# TODO: PRETRAIN ON REGRESSION
-# CAN SIMPLY DO model.roberta = roberta
-
-def pretrain_model(args: dict, data: FineTuneDataSet, data_collator: DataCollatorWithPadding, 
-                    tokenizer: RobertaTokenizer, comp_measure: Callable, start_time: float) -> PreTrainedModel:
-    '''Pretrain a model on headlines from the onion. Use a classification task'''
-    # initialize sequence classifier
-    
-    config = RobertaConfig(name_or_path='roberta-base', problem_type='regression')
-    seq_classifier_model = RobertaSeqCls(config)
-
-    # set the arguments
-    pretrain_tune_args = TrainingArguments(
-        output_dir = './outputs/test/',
-        learning_rate = args['learning_rate'],
-        per_device_train_batch_size = args['batch_size'],
-        num_train_epochs=args['epochs'],
-        weight_decay=0.01,
-        evaluation_strategy="epoch"
-    )
-
-    # create a trainer
-    print(f"({utils.get_time(start_time)}) Pre-training the model...")
-    pretrain_tuned_model = Trainer(
-        model=seq_classifier_model,
-        args=pretrain_tune_args,
-        train_dataset=data,
-        eval_dataset=data,
-        tokenizer=tokenizer,
-        data_collator=data_collator,
-        compute_metrics=comp_measure,
-    )
-
-    pretrain_tuned_model.train()
-
-    return pretrain_tuned_model.model
+	def __len__(self):
+		return len(self.labels)
 
 
-def fine_tune_model(model: RobertaSeqCls, args: argparse.Namespace,
-                    train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
-                    data_collator: DataCollatorWithPadding, tokenizer: RobertaTokenizer, 
-                    comp_measure: Callable, start_time: float) -> RobertaSeqCls:
-    '''**Fine-tune the RoBERTa model using input data**
-        Args:
-            - args: arguments passed into the program
-                - learning_rate: learning rate of model
-                - batch_size: batch size to train model (keep this below 50)
-                - epochs: number of times to iterate over the data
-            - model: the model desired to fine-tune (could be pre-trained)
-            - train_data: the training data to be used
-            - dev_data: the dataset to evaluate on
-            - tokenizer: the tokenizer to be used to encode sentences
-            - comp_measure: the measurement you want to report at each :evaluation_strategy:
-            - start_time: the time the program began running
-    '''
+def expand_labels(arr: np.ndarray) -> torch.Tensor:
+	'''Expand the array labels so that it's a [size, no_labels] matrix'''
+	labels = set(arr.tolist())
+	new_arr = np.zeros((arr.shape[0], len(labels)), dtype=float)
+	for i in range(len(arr)):
+		new_arr[i, int(arr[i])] = 1.0
+	return new_arr
+	
 
-    # initialize sequence classifier
-    seq_classifier_model = RobertaSeqCls.from_pretrained('roberta-base', problem_type='single_label_classification')
-    seq_classifier_model.roberta = model.roberta
+class Regression(nn.Module):
+	def __init__(self):
+		super(Regression, self).__init__()
+		self.roberta = RobertaModel.from_pretrained('roberta-base')
+		roberta_hidden_size = self.roberta.config.hidden_size
+		self.regression = nn.Linear(roberta_hidden_size, 1)
 
-    # set the arguments
-    fine_tune_args = TrainingArguments(
-        output_dir = './outputs/test/',
-        learning_rate = args['learning_rate'],
-        per_device_train_batch_size = args['batch_size'],
-        per_device_eval_batch_size = args['batch_size'],
-        num_train_epochs=args['epochs'],
-        weight_decay=0.01,
-        evaluation_strategy="epoch"
-    )
-
-    # create a trainer
-    print(f"({utils.get_time(start_time)}) Fine-tuning the model...")
-    fine_tuned_model = Trainer(
-        model=seq_classifier_model,
-        args=fine_tune_args,
-        train_dataset=train_data,
-        eval_dataset=dev_data,
-        tokenizer=tokenizer,
-        data_collator=data_collator,
-        compute_metrics=comp_measure,
-    )
-
-    #fine-tune the model
-    fine_tuned_model.train()
-    
-    return fine_tuned_model.model
-
-# def roberta_io(model: RobertaSeqCls, sentences: List[str],
-#     batch_size: int, device: str) -> np.ndarray:
-#     '''Function to export to other scripts that takes a model and list of sentences
-#     and outputs an ndarray of predicted classes. It also takes a batch_size (for evaluation)
-#     and a device (cpu or cuda)'''
-#     # initialize roberta tokenizer and pretrained model
-#     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-
-#     # read in the training and development data
-#     train_sentences, train_labels = utils.read_data_from_file(sentences)
-#     train_data = FineTuneDataSet(train_sentences, train_labels)
-
-#     # evaluate model
-#     y_pred_train = evaluate(model, batch_size, train_data, ['f1', 'accuracy'], device)
-
-#     return y_pred_train
-
-def main(args: argparse.Namespace, pretrain_args: dict, finetune_args: dict) -> None:
-    # get starting time
-    start_time = time.time()
-
-    # check if cuda is avaiable
-    if torch.cuda.is_available():
-        device = "cuda"
-        torch.device(device)
-        print(f"({utils.get_time(start_time)}) Using {device} device", file=sys.stderr)
-        print(f"Using the GPU:{torch.cuda.get_device_name(0)}", file=sys.stderr)
-    else:
-        device = "cpu"
-        torch.device(device)
-        print(f"({utils.get_time(start_time)}) Using {device} device", file=sys.stderr)
-
-    print(f"({utils.get_time(start_time)}) Reading data in from files...\n", file=sys.stderr)
-    # initialize roberta tokenizer and pretrained model
-    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-
-    # read in pretraining data
-    pretrain_sents, pretrain_labels = utils.read_data_from_file(args.pretrain_data, index=2)
-    print(pretrain_sents[0:2], pretrain_labels.shape)
-
-    # read in the training and development data
-    ind = 1 if args.job == 'humor' else 2
-    train_sentences, train_labels = utils.read_data_from_file(args.train_sentences, index=ind)
-    dev_sentences, dev_labels = utils.read_data_from_file(args.dev_sentences, index=ind)
-
-    # change the dimensions of the input sentences only when debugging (adding argument --debug 1)
-    if args.debug == 1:
-        shuffled_tr_sentences, shuffled_tr_labels = shuffle(train_sentences, train_labels, random_state = 0)
-        train_sentences, train_labels = shuffled_tr_sentences[0:50], shuffled_tr_labels[0:50]
-        shuffled_te_sentences, shuffled_te_labels = shuffle(dev_sentences, dev_labels, random_state = 0)
-        dev_sentences, dev_labels = shuffled_te_sentences[0:50], shuffled_te_labels[0:50]
-        shuffled_pt_sentences, shuffled_pt_labels = shuffle(train_sentences, train_labels, random_state = 0)
-        pretrain_sents, pretrain_labels = shuffled_pt_sentences[0:50], shuffled_pt_labels[0:50]
-
-    # load data into dataloader
-    pretrain_data = FineTuneDataSet(pretrain_sents, pretrain_labels)
-    train_data = FineTuneDataSet(train_sentences, train_labels)
-    dev_data = FineTuneDataSet(dev_sentences, dev_labels)
-
-    # get roberta encodings for each sentence (see FineTuneDataSet class)
-    pretrain_data.tokenize_data(tokenizer)
-    train_data.tokenize_data(tokenizer)
-    dev_data.tokenize_data(tokenizer)
-
-    print(f"({utils.get_time(start_time)}) Initalizating RoBERTa and creating data collator...\n", file=sys.stderr)
-
-    # create a data collator to obtain the encoding (and padding) for each sentence
-    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-
-    # initialize metrics
-    accuracy = load_metric("accuracy")
-    get_accuracy = lambda x: metrics(accuracy, x)
-
-    # pretrain the model on other data
-    print(f"({utils.get_time(start_time)}) Pre-train the model on other data...\n", file=sys.stderr)
-    pretrained_model = pretrain_model(pretrain_args, pretrain_data, data_collator, tokenizer, get_accuracy, start_time)
-    
-    # train the model on the training data
-    print(f"({utils.get_time(start_time)}) Fine-tune the model on the training data...\n", file=sys.stderr)
-    roberta_model = fine_tune_model(pretrained_model, finetune_args, train_data, dev_data, 
-        data_collator, tokenizer, get_accuracy, start_time)
-
-    # evaluate the model's performance
-    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on training data\n", file=sys.stderr)
-    y_pred_train = evaluate(roberta_model, pretrain_args['batch_size'], train_data, ['f1', 'accuracy'], device)
-
-    print(f"\n({utils.get_time(start_time)}) Evaluating the Transformer model on dev data\n", file=sys.stderr)
-    y_pred_dev = evaluate(roberta_model, finetune_args['batch_size'], dev_data, ['f1', 'accuracy'], device)
-
-    #write results to output file
-    train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
-    dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
-    train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(finetune_args['output_path'] + "-" + args.job, index=False, encoding='utf-8')
-
-    # write missing examples to one particular file
-    df = pd.concat((train_out, dev_out), axis=0)
-
-    # filter the data so that only negative examples are there
-    data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/roberta-misclassified-examples' + "-" + args.job + '.csv', index=False, encoding='utf-8')
-
-    # save the model
-    if finetune_args['save_model'] != 'None':
-        roberta_model.save_pretrained(finetune_args['save_model'] + "-" + args.job)
-
-    print(f"({utils.get_time(start_time)}) Done!")
+	def forward(self, data: dict, sentences: List[str], device: str):
+		# tokenize the data
+		inputs = {k:v.to(device) for k,v in data.items()}
+		outputs_roberta = self.roberta(**inputs).pooler_output
+		pred = self.regression(outputs_roberta)
+		return pred
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train_sentences', help="path to input data to pretrain on")
-    parser.add_argument('--pretrain_data', help="path to input training data file")
-    parser.add_argument('--dev_sentences', help="path to input dev data file")
-    parser.add_argument('--model_folder', help="path to a saved file to load")
-    parser.add_argument('--debug', help="(1 or 0) train on a smaller training set for debugging", default=0, type=int)
-    parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
-    args = parser.parse_args()
-    with open('src/configs/pretraining/pretrain.json', 'r') as f1:
-        configs1 = f1.read()
-        pretrain_args = json.loads(configs1)
-    with open('src/configs/pretraining/finetune.json', 'r') as f2:
-        configs2 = f2.read()
-        finetune_args = json.loads(configs2)
+class Classifier(nn.Module):
+	def __init__(self, roberta):
+		super(Classifier, self).__init__()
+		init_roberta = RobertaSeqCls.from_pretrained('roberta-base')
+		roberta.pooler = None
+		init_roberta.roberta = roberta
+		self.roberta = init_roberta
 
-    main(args, pretrain_args, finetune_args)
+	def forward(self, data: dict, sentences: List[str], device: str):
+		# tokenize the data
+		inputs = {k:v.to(device) for k,v in data.items()}
+		outputs_roberta = self.roberta(**inputs).logits
+		return outputs_roberta
+
+
+def train_model(model: Union[Regression, RobertaSeqCls], 
+		sentences: List[str], labels: List[str], 
+		test_sents: List[str], test_labels: List[str], 
+		epochs: int, batch_size: int, lr: int,
+		tokenizer: RobertaTokenizer, 
+		optimizer: torch.optim, loss_fn: Callable, device: str, cl: str, save_path: str):
+	'''Train the neural network'''
+	
+	model.to(device)
+	model.train()
+	optim = optimizer(model.parameters(), lr=lr, weight_decay=1e-5)
+
+	metrics = []
+	if cl == 'yes':
+		measurements = ['f1', 'accuracy']
+	else:
+		measurements = ['mse']
+	for metric in measurements:
+		m = load_metric(metric)
+		metrics.append(m)
+
+	# shuffle the data
+	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
+	if cl == 'yes':
+		labels_arr = expand_labels(shuffled_labels)
+	else:
+		labels_arr = shuffled_labels
+
+	# create a dataset and dataloader to go iterate in batches
+	dataset = FineTuneDataSet(shuffled_sentences, labels_arr)
+	dataset.tokenize_data(tokenizer)
+	dataloader = DataLoader(dataset, batch_size=batch_size)
+
+	for epoch in range(epochs):
+		for i, (batch, X, labels) in enumerate(dataloader):
+
+			if cl == 'yes':
+				batch['labels'] = labels
+			else:
+				labels = torch.unsqueeze(labels, 1)
+
+			# send to the correct device
+			y = labels.to(device)
+
+			optim.zero_grad()
+
+			output = model(batch, X, device)
+
+			loss = loss_fn(output, y)
+			loss.backward()
+			optim.step()
+
+			# add batched results to metrics
+			# if and else clause used to distinguish classifier from regressor
+			if cl == 'yes':
+				pred_argmax = torch.argmax(torch.sigmoid(output), dim=-1)
+				y_argmax = torch.argmax(y, dim=-1)
+			else:
+				pred_argmax = output
+				y_argmax = torch.squeeze(y)
+			for m in metrics:
+				m.add_batch(predictions=pred_argmax, references=y_argmax)
+		
+			if (i + 1) % 6 == 0:
+		
+				# output metrics to standard output
+				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
+
+		# output metrics to standard output
+		values = f"Training metrics:\n" # empty string 
+		for m in metrics:
+			val = m.compute()
+			values += f"\t{m.name}: {val}\n"
+		print(values, file = sys.stderr)
+
+		evaluate(model, test_sents, test_labels, batch_size, tokenizer, device, cl, outfile=sys.stderr)
+
+	# SAVE MODELS
+	if cl == 'yes':
+		try:
+			print(f"Saving model to {save_path}...")
+			torch.save(model, save_path + '/model.pt')
+		except:
+			print(f"(Saving error) Couldn't save model to {save_path}/model.pt")
+
+
+def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
+	tokenizer: RobertaTokenizer, device: str, cl: str, outfile: Union[str, object]):
+	'''Train the pretrained neural network'''
+	model.to(device)
+	model.eval()
+
+	metrics = []
+	if cl == 'yes':
+		measurements = ['f1', 'accuracy']
+	else:
+		measurements = ['mse']
+	for metric in measurements:
+		m = load_metric(metric)
+		metrics.append(m)
+
+	# shuffle the data
+	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
+	if cl == 'yes':
+		labels_arr = expand_labels(shuffled_labels)
+	else:
+		labels_arr = shuffled_labels
+
+	dataset = FineTuneDataSet(sentences, labels_arr)
+	dataset.tokenize_data(tokenizer)
+	dataloader = DataLoader(dataset, batch_size=batch_size)
+
+	# intialize a list to store predictions
+	predictions = []
+
+	for batch, X, labels in dataloader:
+
+		if cl == 'yes':
+			batch['labels'] = labels
+		else:
+			labels = torch.unsqueeze(labels, 1)
+
+		# send to the correct device
+		y = labels.to(device)
+
+		output = model(batch, X, device)
+
+		# add batched results to metrics
+		# if and else clause used to distinguish classifier from regressor
+		if cl == 'yes':
+			pred_argmax = torch.argmax(torch.sigmoid(output), dim=-1)
+			y_argmax = torch.argmax(y, dim=-1)
+			predictions.extend(pred_argmax.clone().detach().to('cpu').tolist())
+		else:
+			pred_argmax = output
+			y_argmax = torch.squeeze(y)
+		for m in metrics:
+			m.add_batch(predictions=pred_argmax, references=y_argmax)
+		
+	# output metrics to standard output
+	values = f"Evaluation metrics:\n" # empty string
+	for m in metrics:
+		val = m.compute()
+		values += f"\t{m.name}: {val}\n"
+	print(values, file = outfile)
+
+	return predictions
+
+
+def main(args: argparse.Namespace) -> None:
+	# check if cuda is avaiable
+	DEVICE = "cpu"
+	if torch.cuda.is_available():
+		DEVICE = "cuda"
+		torch.device(DEVICE)
+		print(f"Using {DEVICE} device")
+		print(f"Using the GPU:{torch.cuda.get_device_name(0)}", file = sys.stderr)
+	else:
+		torch.device(DEVICE)
+		print(f"Using {DEVICE} device")
+		print(f"Using {DEVICE} device", file = sys.stderr)
+
+	#load data
+	print("Loading training and development data...")
+	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
+	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path, index=args.index)
+	pt_sentences, pt_labels = utils.read_data_from_file(args.train_data_path, index=4)
+	dev_pt_sentences, dev_pt_labels = utils.read_data_from_file(args.dev_data_path, index=4)
+
+	if args.debug == 1:
+		print(f"NOTE: Running in debug mode", file=sys.stderr)
+		train_sentences, train_labels = shuffle(train_sentences, train_labels, random_state = 0)
+		dev_sentences, dev_labels = shuffle(dev_sentences, dev_labels, random_state = 0)
+		pt_sentences, pt_labels = shuffle(pt_sentences, pt_labels, random_state = 0)
+		dev_pt_sentences, dev_pt_labels = shuffle(dev_pt_sentences, dev_pt_labels, random_state = 0)
+		train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
+		dev_sentences, dev_labels = dev_sentences[0:10], dev_labels[0:10]
+		pt_sentences, pt_labels = pt_sentences[0:50], pt_labels[0:50]
+		dev_pt_sentences, dev_pt_labels = dev_pt_sentences[0:50], dev_pt_labels[0:50]
+	
+	# LOAD CONFIGURATION
+	config_file = f'src/configs/ensemble-humor.json'
+	with open(config_file, 'r') as f1:
+		configs = f1.read()
+		train_config = json.loads(configs)
+
+	# load important parts of the model
+	print("Initializing pretraining-test architecture...\n")
+	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
+
+	# load model is already available
+	if args.reevaluate != 1:
+		print("Training model...\n")
+
+		# initialize the model thingies
+		REGRESSOR = Regression()
+		OPTIMIZER = AdamW
+		LOSS_RE = nn.MSELoss()
+		LOSS_CL = nn.CrossEntropyLoss()
+	
+		# pretrain the model on the regression task
+		train_model(
+			model=REGRESSOR, 
+			sentences=pt_sentences,  
+			labels=pt_labels,
+			test_sents=dev_pt_sentences, 
+			test_labels=dev_pt_labels,
+			tokenizer=TOKENIZER, 
+			optimizer=OPTIMIZER,
+			loss_fn=LOSS_RE, 
+			device=DEVICE, 
+			cl='no',
+			save_path = f"{args.model_save_path}/{args.job}",
+			**train_config
+		)
+
+		# reload the model
+		CLASSIFIER = Classifier(REGRESSOR.roberta)
+
+		# finetune the model on the regression task
+		train_model(
+			model=CLASSIFIER, 
+			sentences=train_sentences, 
+			labels=train_labels,
+			test_sents=dev_sentences, 
+			test_labels=dev_labels,
+			tokenizer=TOKENIZER, 
+			optimizer=OPTIMIZER,
+			loss_fn=LOSS_CL, 
+			device=DEVICE, 
+			cl='yes',
+			save_path = f"{args.model_save_path}/{args.job}",
+			**train_config
+		)
+	else:
+		try:
+			print("Loading existing model...\n")
+			# TODO: Change the directory organization
+			model = torch.load(f'src/models/testing-pretraining/{args.job}/')
+		except ValueError:
+			print("No existing model found. Rerun without --reevaluate")
+
+
+	# evaluate the model on test data
+	print("Evaluating models...")
+	preds = evaluate(
+		model=CLASSIFIER, 
+		sentences=dev_sentences, 
+		labels=dev_labels, 
+		batch_size=train_config['batch_size'],
+		tokenizer=TOKENIZER, 
+		device=DEVICE, 
+		cl='yes',
+		outfile=sys.stdout
+	)
+
+	# write results to output file
+	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
+	dev_out = pd.DataFrame(dev_out_d)
+	output_file = f'{args.output_path}/{args.job}/pretrain-output.csv'
+	dev_out.to_csv(output_file, index=False, encoding='utf-8')
+
+	# filter the data so that only negative examples are there
+	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
+	error_file = f'{args.error_path}-{args.job}.csv'
+	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
+
+	print(f"Done! Exited normally :)")
+
+	
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--train_data_path', help="path to input training data file")
+	parser.add_argument('--dev_data_path', help="path to input dev data file")
+	parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
+	parser.add_argument('--output_path', help="path to output data file")
+	parser.add_argument('--model_save_path', help="path to save models")
+	parser.add_argument('--error_path', help="path to save error analysis")
+	parser.add_argument('--debug', help="debug the pretraining with small dataset", type=int)
+	parser.add_argument('--index', help="column to select from data", type=int)
+	parser.add_argument('--reevaluate', help="use 1 to reload an existing model if already completed", type=int, default=0)
+	args = parser.parse_args()
+
+	main(args)

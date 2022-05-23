@@ -9,6 +9,6 @@ Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine
 transfer_executable   = false
 request_memory        = 4*1024
 queue job, arguments from (
-    humor, "--index 1 --job $(job)"
-    controversy, "--index 2 --job $(job)"
+#    humor, "--index 1 --job $(job)"
+    controversy, "--debug 1 --index 2 --job $(job)"
 )

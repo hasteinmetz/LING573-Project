@@ -1,0 +1,49 @@
+Using the GPU:NVIDIA Quadro RTX 8000
+NOTE: Running in debug mode
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.dense.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+mse:
+	 {'mse': 5.54053923066737}
+
+	mse: {'mse': 4.0120620729639445}
+
+mse:
+	 {'mse': 3.4448537617496995}
+
+	mse: {'mse': 0.9950407696975223}
+
+mse:
+	 {'mse': 0.5730304499867067}
+
+	mse: {'mse': 0.43016936488393925}
+
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.dense.bias', 'lm_head.bias', 'roberta.pooler.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'roberta.pooler.dense.bias']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.out_proj.weight', 'classifier.out_proj.bias', 'classifier.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+f1:
+	 {'f1': 0.6933333333333332}
+accuracy:
+	 {'accuracy': 0.54}
+
+	f1: {'f1': 0.3333333333333333}
+	accuracy: {'accuracy': 0.6}
+
+f1:
+	 {'f1': 0.45333333333333325}
+accuracy:
+	 {'accuracy': 0.59}
+
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.8}
+
+f1:
+	 {'f1': 0.6956521739130436}
+accuracy:
+	 {'accuracy': 0.72}
+
+	f1: {'f1': 0.4444444444444445}
+	accuracy: {'accuracy': 0.5}
+

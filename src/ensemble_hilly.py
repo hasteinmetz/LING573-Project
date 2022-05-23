@@ -58,8 +58,8 @@ class FineTuneDataSet(Dataset):
 			raise AttributeError("Did not initialize encodings or input_ids")
 		else:
 			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			item['labels'] = torch.tensor(self.labels[index])
-			return item, self.sentences[index]
+			# item['labels'] = torch.tensor(self.labels[index])
+			return item, self.sentences[index], torch.tensor(self.labels[index])
 
 	def __len__(self):
 		return len(self.labels)
@@ -78,18 +78,19 @@ def expand_labels(arr: np.ndarray) -> torch.Tensor:
 class Ensemble(nn.Module):
 	def __init__(self, input_size: int, hidden_size: int, output_size: int):
 		super(Ensemble, self).__init__()
-		self.roberta = RobertaForSequenceClassification.from_pretrained('roberta-base')
+		self.roberta = RobertaModel.from_pretrained('roberta-base')
+		roberta_hidden_size = self.roberta.config.hidden_size
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
 			nn.Linear(hidden_size, output_size)
 		)
-		self.logistic = nn.Linear(output_size * 2, output_size)
+		self.logistic = nn.Linear(output_size + roberta_hidden_size, 2)
 
 	def forward(self, data: dict, sentences: List[str], featurizer: Callable, device: str):
 		# tokenize the data
 		inputs = {k:v.to(device) for k,v in data.items()}
-		outputs_roberta = self.roberta(**inputs).logits
+		outputs_roberta = self.roberta(**inputs).pooler_output
 		features_tensor = torch.tensor(featurizer(sentences), dtype=torch.float).to(device)
 		outputs_mlp = self.mlp(features_tensor)
 		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
@@ -124,10 +125,10 @@ def train_ensemble(model: Ensemble,
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
 	for epoch in range(epochs):
-		for i, (batch, X) in enumerate(dataloader):
+		for i, (batch, X, labels) in enumerate(dataloader):
 
 			# send to the correct device
-			y = batch['labels'].to(device)
+			y = labels.to(device)
 
 			optim.zero_grad()
 
@@ -148,23 +149,21 @@ def train_ensemble(model: Ensemble,
 				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
 
 		# output metrics to standard output
-		values = f"" # empty string 
+		values = f"Training metrics:\n" # empty string 
 		for m in metrics:
 			val = m.compute()
-			values += f"{m.name}:\n\t {val}\n"
+			values += f"\t{m.name}: {val}\n"
 		print(values, file = sys.stderr)
-
-		evaluate(model, test_sents, test_labels, batch_size, tokenizer, featurizer, device, outfile=sys.stderr)
 
 	# SAVE MODELS
 	try:
-		print("Saving model to {save_path}/ensemble/...")
-		torch.save(Ensemble, save_path + '/ensemble/')
+		print(f"Saving model to {save_path}/ensemble/...")
+		torch.save(model, save_path + '/ensemble.pt')
 	except:
 		print(f"(Saving error) Couldn't save model to {save_path}/ensemble/...")
 
 def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int,
-	tokenizer: RobertaTokenizer, featurizer: Callable, device: str, outfile: Union[str, object]):
+	tokenizer: RobertaTokenizer, featurizer: Callable, device: str, cl: str, outfile: Union[str, object]):
 	'''Train the Ensemble neural network'''
 	model.to(device)
 	model.eval()
@@ -183,10 +182,10 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 	# intialize a list to store predictions
 	predictions = []
 
-	for batch, X in dataloader:
+	for batch, X, labels in dataloader:
 
 		# send to the correct device
-		y = batch['labels'].to(device)
+		y = labels.to(device)
 
 		logits = model(batch, X, featurizer, device)
 
@@ -201,11 +200,11 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 			m.add_batch(predictions=predicted, references=torch.argmax(y, dim=-1))
 		
 	# output metrics to standard output
-	val = f"" # empty string
+	values = f"Evaluation metrics:\n" # empty string
 	for m in metrics:
 		val = m.compute()
-		val += f"\t{m.name}: {val}\n"
-	print(val, file = outfile)
+		values += f"\t{m.name}: {val}\n"
+	print(values, file = outfile)
 
 	return predictions
 
@@ -255,10 +254,10 @@ def main(args: argparse.Namespace) -> None:
 	training_feature_matrix = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
 	pca.fit(training_feature_matrix)
 	print(f"Fitted PCA. Previously there were {training_feature_matrix.shape[1]} " + 
-		f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
+	 	f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
 
 	# reduce the parameters of the featurize function
-	FEATURIZER = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf, pca)
+	FEATURIZER = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
 
 	#get features
 	print("preparing hurtlex dictionary...")
@@ -300,7 +299,7 @@ def main(args: argparse.Namespace) -> None:
 		print("Training model...\n")
 
 		# initialize ensemble model
-		ENSEMBLE = Ensemble(input_size, 100, 2)
+		ENSEMBLE = Ensemble(input_size, 100, 25)
 		OPTIMIZER = AdamW
 		LOSS = nn.CrossEntropyLoss()
 	
