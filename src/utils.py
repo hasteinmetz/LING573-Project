@@ -8,6 +8,7 @@ import csv
 import json
 import time
 import spacy
+import re
 import numpy as np
 import pandas as pd
 from typing import *
@@ -45,11 +46,17 @@ def read_data_from_file(filepath: str, encoding: str = 'utf-8', index: int = 1) 
 	with open(filepath, 'r', encoding=encoding) as datafile:
 		data = csv.reader(datafile, delimiter=',', quotechar='"')
 		for row in data:
-			if row[index].isnumeric(): 
+			if isanumber(row[index]):
 				sentences.append(row[0])
-				labels.append(int(row[index]))
-	return sentences, np.asarray(labels, dtype=int)
+				labels.append(row[index])
+	return sentences, np.asarray(labels, dtype=np.float32)
 
+def isanumber(string) -> bool:
+	'''Check is a string is a float or integer'''
+	if re.search(r'[0-9]+[\.]?[0-9]+', string) or string.isnumeric():
+		return True
+	else:
+		return False
 
 def write_output_to_file(filepath: str, data: List[str], labels: np.ndarray, encoding: str = 'utf-8') -> None:
 	with open(filepath, "w", newline='', encoding="utf-8") as my_csv:  # create training data file
