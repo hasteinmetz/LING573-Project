@@ -3,6 +3,7 @@
 ''' References:
 	- https://www.kaggle.com/code/ynouri/random-forest-k-fold-cross-validation/notebook
 '''
+from src.featurizer import get_all_features
 import utils
 import torch
 import argparse
@@ -181,8 +182,8 @@ def main(args: argparse.Namespace) -> None:
 	print("preparing hurtlex dictionary...")
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	train_feature_vector = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, True)
-	dev_feature_vector = featurize(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list, False)
+	train_feature_vector = get_all_features(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list)
+	dev_feature_vector = get_all_features(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list)
 	exit()
 
 	#get tokenized input

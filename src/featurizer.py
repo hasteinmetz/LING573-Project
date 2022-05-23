@@ -203,14 +203,12 @@ def perform_pca(vector: np.ndarray, is_train: bool = False, n_comp: int = 0) -> 
 	return final_vector
 
 
-def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set, is_train_data: bool) -> np.ndarray:
+def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
-		- labels: corresponding labels for sentenceds
 		- hurtlex_dict: lexical items corresponding to each hurtlex label
 		- hurtlex_cat: hurtlex labels
-		- is_train_data: whether sentences represents training data or not
 	returns:
 		a (n_samples, vector_space_size) feature vector 
 	
@@ -249,17 +247,32 @@ def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, 
 	print("\tnormalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, hv)
+
+	return nv
 	
+def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
+	'''
+	arguments:
+		- train sentences: list of input data to be featurized
+		- dev sentences: list of input data to be featurized
+		- hurtlex_dict: lexical items corresponding to each hurtlex label
+		- hurtlex_cat: hurtlex labels
+	returns:
+		two (n_samples, vector_space_size) feature vectors
+
+	featurizes data and performs principal component analyses on them
+	'''
+	train_features = featurize(train_sentences, hurtlex_dict, hurtlex_cat)
+	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat)
+
 	# perform PCA
 	pv = None
-	if is_train_data:
-		pca = PCA(.95)
-		pca.fit(nv)
-		pv = pca.transform(nv) 
-		pca_component_num = pca.n_components_
-	else:
-		pca = PCA(n_components=pca_component_num)
-		pv = pca.fit_transform(nv)
-	print("\tnum components: {}".format(pca.n_components))
+	train_pca = PCA(.95)
+	train_pca.fit(train_features)
+	train_pv = train_pca.transform(train_features) 
+	print("\tnum components: {}".format(train_pca.n_components))
+	dev_pca = PCA(n_components=train_pca.n_components_)
+	dev_pv = dev_pca.fit_transform(dev_features)
+	print("\tnum components: {}".format(dev_pca.n_components))
 
-	return pv
+	return train_pv, dev_pv
