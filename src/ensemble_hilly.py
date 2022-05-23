@@ -202,7 +202,7 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 		
 	# output metrics to standard output
 	val = f"" # empty string
-	for m in zip(metrics):
+	for m in metrics:
 		val = m.compute()
 		val += f"\t{m.name}: {val}\n"
 	print(val, file = outfile)
