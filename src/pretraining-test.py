@@ -186,11 +186,10 @@ def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
 		metrics.append(m)
 
 	# shuffle the data
-	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
 	if cl == 'yes':
-		labels_arr = expand_labels(shuffled_labels)
+		labels_arr = expand_labels(labels)
 	else:
-		labels_arr = shuffled_labels
+		labels_arr = labels
 
 	dataset = FineTuneDataSet(sentences, labels_arr)
 	dataset.tokenize_data(tokenizer)
@@ -250,8 +249,8 @@ def main(args: argparse.Namespace) -> None:
 	print("Loading training and development data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
 	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path, index=args.index)
-	pt_sentences, pt_labels = utils.read_data_from_file(args.train_data_path, index=4)
-	dev_pt_sentences, dev_pt_labels = utils.read_data_from_file(args.dev_data_path, index=4)
+	pt_sentences, pt_labels = utils.read_data_from_file(args.train_data_path, index=2)
+	dev_pt_sentences, dev_pt_labels = utils.read_data_from_file(args.dev_data_path, index=2)
 
 	if args.debug == 1:
 		print(f"NOTE: Running in debug mode", file=sys.stderr)
@@ -265,7 +264,7 @@ def main(args: argparse.Namespace) -> None:
 		dev_pt_sentences, dev_pt_labels = dev_pt_sentences[0:50], dev_pt_labels[0:50]
 	
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/ensemble-humor.json'
+	config_file = f'src/configs/pretrain.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
