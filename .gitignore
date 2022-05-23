@@ -8,4 +8,3 @@ log
 src/__pycache__/
 src/models/
 outputs/test/checkpoint-500
-
