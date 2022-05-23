@@ -50,3 +50,77 @@ Evaluation metrics:
 (1, 1344) Loss: 0.22027768194675446
 (1, 1536) Loss: 0.20829492807388306
 (1, 1728) Loss: 0.27799907326698303
+(1, 1920) Loss: 0.21924513578414917
+(1, 2112) Loss: 0.37907564640045166
+(1, 2304) Loss: 0.1906488686800003
+(1, 2496) Loss: 0.11708787083625793
+(1, 2688) Loss: 0.11001403629779816
+(1, 2880) Loss: 0.10296693444252014
+(1, 3072) Loss: 0.2048276960849762
+(1, 3264) Loss: 0.1787741333246231
+(1, 3456) Loss: 0.26702871918678284
+(1, 3648) Loss: 0.2737323045730591
+(1, 3840) Loss: 0.4729277491569519
+(1, 4032) Loss: 0.2431771159172058
+(1, 4224) Loss: 0.36485129594802856
+(1, 4416) Loss: 0.1100921630859375
+(1, 4608) Loss: 0.2520841360092163
+(1, 4800) Loss: 0.23208379745483398
+(1, 4992) Loss: 0.17047107219696045
+(1, 5184) Loss: 0.3303973078727722
+(1, 5376) Loss: 0.5081381797790527
+(1, 5568) Loss: 0.24094775319099426
+(1, 5760) Loss: 0.3919961452484131
+(1, 5952) Loss: 0.11538948118686676
+(1, 6144) Loss: 0.06348921358585358
+(1, 6336) Loss: 0.2544924020767212
+Training metrics:
+	mse:	 {'mse': 0.29335468281872257}
+
+Evaluation metrics:
+	mse: {'mse': 1.3705139569651448}
+
+(2, 192) Loss: 0.25293824076652527
+(2, 384) Loss: 0.12659448385238647
+(2, 576) Loss: 0.3271262049674988
+(2, 768) Loss: 0.1286601722240448
+(2, 960) Loss: 0.4359254240989685
+(2, 1152) Loss: 0.10995158553123474
+(2, 1344) Loss: 0.18565456569194794
+(2, 1536) Loss: 0.16131018102169037
+(2, 1728) Loss: 0.0780402272939682
+(2, 1920) Loss: 0.06228163465857506
+(2, 2112) Loss: 0.1755731999874115
+(2, 2304) Loss: 0.17922858893871307
+(2, 2496) Loss: 0.09487687796354294
+(2, 2688) Loss: 0.09142502397298813
+(2, 2880) Loss: 0.09582290053367615
+(2, 3072) Loss: 0.11140167713165283
+(2, 3264) Loss: 0.21145223081111908
+(2, 3456) Loss: 0.22941769659519196
+(2, 3648) Loss: 0.22661706805229187
+(2, 3840) Loss: 0.22448676824569702
+(2, 4032) Loss: 0.23199324309825897
+(2, 4224) Loss: 0.13813814520835876
+(2, 4416) Loss: 0.1960156261920929
+(2, 4608) Loss: 0.16887623071670532
+(2, 4800) Loss: 0.20781509578227997
+(2, 4992) Loss: 0.12838824093341827
+(2, 5184) Loss: 0.3108747601509094
+(2, 5376) Loss: 0.42087963223457336
+(2, 5568) Loss: 0.11379476636648178
+(2, 5760) Loss: 0.13597385585308075
+(2, 5952) Loss: 0.573427140712738
+(2, 6144) Loss: 0.11071527004241943
+(2, 6336) Loss: 0.08851364254951477
+Training metrics:
+	mse:	 {'mse': 0.1726134256913167}
+
+Evaluation metrics:
+	mse: {'mse': 1.5060563963557985}
+
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.weight', 'lm_head.dense.weight', 'roberta.pooler.dense.weight', 'roberta.pooler.dense.bias', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.out_proj.weight', 'classifier.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
