@@ -1,0 +1,52 @@
+Using the GPU:Tesla M10
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+(0, 192) Loss: 0.8624089360237122
+(0, 384) Loss: 0.972540020942688
+(0, 576) Loss: 1.8643229007720947
+(0, 768) Loss: 0.611488938331604
+(0, 960) Loss: 0.9729778170585632
+(0, 1152) Loss: 0.4967188835144043
+(0, 1344) Loss: 0.2676587700843811
+(0, 1536) Loss: 0.18634763360023499
+(0, 1728) Loss: 0.6379016041755676
+(0, 1920) Loss: 0.2799844741821289
+(0, 2112) Loss: 0.8544566631317139
+(0, 2304) Loss: 0.830757737159729
+(0, 2496) Loss: 0.19069448113441467
+(0, 2688) Loss: 0.4933869242668152
+(0, 2880) Loss: 0.9506598114967346
+(0, 3072) Loss: 0.6028900742530823
+(0, 3264) Loss: 0.6954032182693481
+(0, 3456) Loss: 0.7599621415138245
+(0, 3648) Loss: 0.6663111448287964
+(0, 3840) Loss: 0.8882513046264648
+(0, 4032) Loss: 0.4367232918739319
+(0, 4224) Loss: 1.0382394790649414
+(0, 4416) Loss: 0.3551528751850128
+(0, 4608) Loss: 0.49389776587486267
+(0, 4800) Loss: 0.30718955397605896
+(0, 4992) Loss: 0.2729176878929138
+(0, 5184) Loss: 0.7837482690811157
+(0, 5376) Loss: 0.6299794912338257
+(0, 5568) Loss: 0.5690460801124573
+(0, 5760) Loss: 0.7645237445831299
+(0, 5952) Loss: 0.2790851294994354
+(0, 6144) Loss: 0.2039680778980255
+(0, 6336) Loss: 0.4049263596534729
+Training metrics:
+	mse:	 {'mse': 0.602726089109186}
+
+Evaluation metrics:
+	mse: {'mse': 1.4872540939359413}
+
+(1, 192) Loss: 0.43310925364494324
+(1, 384) Loss: 0.22714433073997498
+(1, 576) Loss: 0.8704564571380615
+(1, 768) Loss: 0.385779470205307
+(1, 960) Loss: 0.8529784679412842
+(1, 1152) Loss: 0.22719897329807281
+(1, 1344) Loss: 0.22027768194675446
+(1, 1536) Loss: 0.20829492807388306
+(1, 1728) Loss: 0.27799907326698303
