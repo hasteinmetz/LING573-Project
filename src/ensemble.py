@@ -183,13 +183,15 @@ def main(args: argparse.Namespace) -> None:
 	print("preparing hurtlex dictionary...")
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	#train_feat_vector, dev_feat_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
-	train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
-	dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_feat_list)
-	print("reducing feature dimensions...")
-	train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
-	#train_feature_vector, feat_indices = k_best_f(train_feat_vector, train_labels, 40)
-	dev_feature_vector = prune_test(dev_feat_vector, feat_indices)
+	train_feat_vector, dev_feat_vector = [],[]
+	if args.dim_reduc_method == 'pca':
+		train_feat_vector, dev_feat_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
+	else:
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_feat_list)
+		print("reducing feature dimensions...")
+		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+		dev_feature_vector = prune_test(dev_feat_vector, feat_indices)
 
 	#get tokenized input
 	print("preparing input for roberta model...")
@@ -225,6 +227,7 @@ if __name__ == "__main__":
 	parser.add_argument("--roberta_config", help="configuration settings for roberta model")
 	parser.add_argument("--random_forest_config", help="configuration settings for random forest classifier")
 	parser.add_argument("--logistic_regression_config", help="configuration settings for logistic regression classifier")
+	parser.add_argument("--dim_reduc_method", help="which method to use for reducing feature vector dimensions", choices=['mutual_info','pca'])
 	parser.add_argument("--train_data_path", help="path to input training data file")
 	parser.add_argument("--dev_data_path", help="path to input dev data file")
 	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
