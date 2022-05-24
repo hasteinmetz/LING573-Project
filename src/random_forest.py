@@ -5,6 +5,7 @@ import argparse
 import pandas as pd
 from typing import *
 from featurizer import featurize
+from feature_selection import *
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 
@@ -37,8 +38,12 @@ def main(args: argparse.Namespace) -> None:
 	print("preparing hurtlex dictionary...")
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	train_feature_vector = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list)
-	dev_feature_vector = featurize(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list)
+	train_feat_vector = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list)
+	dev_feat_vector = featurize(dev_sentences, dev_labels, hurtlex_dict, hurtlex_feat_list)
+	print("reducing feature dimensions...")
+	train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+	#train_feature_vector, feat_indices = k_best_f(train_feat_vector, train_labels, 40)
+	dev_feature_vector = prune_test(dev_feat_vector, feat_indices)
 
 	print("finding optimal parameter settings...")
 	print(f"({utils.get_time(start_time)}) starting random forest hyperparameter search...\n")

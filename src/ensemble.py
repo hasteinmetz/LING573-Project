@@ -10,10 +10,11 @@ import argparse
 import numpy as np
 import pandas as pd
 from typing import *
-from featurizer import featurize, get_all_features
+from feature_selection import *
 from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
 from finetune_dataset import FineTuneDataSet
+from featurizer import featurize, get_all_features
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -182,12 +183,16 @@ def main(args: argparse.Namespace) -> None:
 	print("preparing hurtlex dictionary...")
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	train_feature_vector, dev_feature_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
+	#train_feat_vector, dev_feat_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
+	train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+	dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_feat_list)
+	print("reducing feature dimensions...")
+	train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+	#train_feature_vector, feat_indices = k_best_f(train_feat_vector, train_labels, 40)
+	dev_feature_vector = prune_test(dev_feat_vector, feat_indices)
 
 	#get tokenized input
 	print("preparing input for roberta model...")
-	train_tokenized_input = ensemble_model.roberta_tokenizer(train_sentences, return_tensors="pt", padding=True)
-	dev_tokenized_input = ensemble_model.roberta_tokenizer(dev_sentences, return_tensors="pt", padding=True)
 
 	train_dataset = FineTuneDataSet(train_sentences, train_labels)
 	dev_dataset = FineTuneDataSet(dev_sentences, dev_labels)
