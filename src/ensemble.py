@@ -183,9 +183,9 @@ def main(args: argparse.Namespace) -> None:
 	print("preparing hurtlex dictionary...")
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 	print("featurizing training and dev data...")
-	train_feat_vector, dev_feat_vector = [],[]
+	train_feature_vector, dev_feature_vector = [],[]
 	if args.dim_reduc_method == 'pca':
-		train_feat_vector, dev_feat_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feature_vector, dev_feature_vector  = get_all_features(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list)
 	else:
 		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
 		dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_feat_list)
