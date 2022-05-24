@@ -99,11 +99,12 @@ def train_model(model: Union[Regression, RobertaSeqCls],
 	metrics = []
 	if cl == 'yes':
 		measurements = ['f1', 'accuracy']
+		for metric in measurements:
+			m = load_metric(metric)
+			metrics.append(m)
 	else:
-		measurements = ['mse']
-	for metric in measurements:
-		m = load_metric(metric)
-		metrics.append(m)
+		m = load_metric('mse', squared=False)
+		metrics = [m]
 
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
@@ -155,8 +156,13 @@ def train_model(model: Union[Regression, RobertaSeqCls],
 		# output metrics to standard output
 		values = f"Training metrics:\n" # empty string 
 		for m in metrics:
-			val = m.compute()
-			values += f"\t{m.name}: {val}\n"
+			if m.name == 'mse':
+				val = m.compute(squared=False)
+				name = 'rmse'
+			else:
+				val = m.compute()
+				name = m.name
+			values += f"\t{name}: {val}\n"
 		print(values, file = sys.stderr)
 
 		evaluate(model, test_sents, test_labels, batch_size, tokenizer, device, cl, outfile=sys.stderr)
@@ -179,11 +185,12 @@ def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
 	metrics = []
 	if cl == 'yes':
 		measurements = ['f1', 'accuracy']
+		for metric in measurements:
+			m = load_metric(metric)
+			metrics.append(m)
 	else:
-		measurements = ['mse']
-	for metric in measurements:
-		m = load_metric(metric)
-		metrics.append(m)
+		m = load_metric('mse', squared=False)
+		metrics = [m]
 
 	# shuffle the data
 	if cl == 'yes':
@@ -225,8 +232,13 @@ def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
 	# output metrics to standard output
 	values = f"Evaluation metrics:\n" # empty string
 	for m in metrics:
-		val = m.compute()
-		values += f"\t{m.name}: {val}\n"
+		if m.name == 'mse':
+			val = m.compute(squared=False)
+			name = 'rmse'
+		else:
+			val = m.compute()
+			name = m.name
+		values += f"\t{name}: {val}\n"
 	print(values, file = outfile)
 
 	return predictions
@@ -264,7 +276,7 @@ def main(args: argparse.Namespace) -> None:
 		dev_pt_sentences, dev_pt_labels = dev_pt_sentences[0:50], dev_pt_labels[0:50]
 	
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/pretrain.json'
+	config_file = f'src/configs/pretrain-{args.job}.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
