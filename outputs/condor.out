@@ -1,17 +1,24 @@
-iter   1  #CD cycles 1
-iter   2  #CD cycles 2
-iter   3  #CD cycles 1
-iter   4  #CD cycles 2
-iter   5  #CD cycles 1
+iter   1  #CD cycles 2
+iter   2  #CD cycles 1
+iter   3  #CD cycles 2
+iter   4  #CD cycles 1
+iter   5  #CD cycles 4
 iter   6  #CD cycles 1
-iter   7  #CD cycles 3
+iter   7  #CD cycles 10
 iter   8  #CD cycles 4
-iter   9  #CD cycles 1
+iter   9  #CD cycles 3
 iter  10  #CD cycles 1
-iter  11  #CD cycles 20
+iter  11  #CD cycles 10
+iter  12  #CD cycles 1
+iter  13  #CD cycles 7
+iter  14  #CD cycles 1
+iter  15  #CD cycles 3
+iter  16  #CD cycles 1
+iter  17  #CD cycles 11
+iter  18  #CD cycles 1
 =========================
-optimization finished, #iter = 11
-Objective value = 482.049433
+optimization finished, #iter = 18
+Objective value = 677.683452
 #nonzeros/#features = 2/5
 Using cuda device
 Using the GPU:Tesla M10
@@ -27,25 +34,24 @@ featurizing training and dev data...
 	create lexical vector...
 	get empathy ratings...
 	normalizing vectors...
-	num components: 0.95
-	num components: 23
+reducing feature dimensions...
 preparing input for roberta model...
 training ensemble model...
 	training random forest classifier...
 random forest classifier accuracy
       train      test
-0  0.999430  0.533030
-1  0.999430  0.546697
-2  0.999430  0.480638
-3  0.999145  0.481735
-4  0.999430  0.461187
-5  0.999145  0.545662
-6  0.999145  0.511416
-7  0.999430  0.488584
-8  0.999430  0.541096
+0  0.987450  0.480638
+1  0.993440  0.512528
+2  0.994010  0.501139
+3  0.992586  0.520548
+4  0.991161  0.488584
+5  0.989735  0.493151
+6  0.988879  0.495434
+7  0.991161  0.474886
+8  0.990305  0.506849
 	training logistic regression classifier
-[LibLinear]logreg classifier training accuracy: 0.9480354879594424
+[LibLinear]logreg classifier training accuracy: 0.9391634980988594
 predicting dev labels...
-	dev accuracy: 0.5111561866125761
+	dev accuracy: 0.5172413793103449
 outputting dev classification output...
 outputting results...
