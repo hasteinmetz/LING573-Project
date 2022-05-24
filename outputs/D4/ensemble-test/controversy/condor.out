@@ -1,18 +1,101 @@
 Using cuda device
 Loading training and development data...
-Fitted PCA. Previously there were 9109features. Now there are [ 1.42493891e-01  1.11031066e-01  7.41666744e-02 ...  0.00000000e+00
-  4.80786178e-03 -4.89256017e-05] features. <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>
 Initializing ensemble architecture...
 
-Saving models to /src/models/testing-ensemble/...
-(Saving error) Saving models to src/models/testing-ensemble/...
+Training model...
+
+labels and len {0.0, 1.0} 2
+labels and len {0.0, 1.0} 2
+[[1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]]
+tensor([[1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
+tensor([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
+labels and len {0.0, 1.0} 2
+[[1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]]
+tensor([[1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
+tensor([0, 1, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
+labels and len {0.0, 1.0} 2
+[[1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]]
+tensor([[1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
+tensor([0, 0, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
+Saving model to {save_path}/ensemble/...
 Evaluating models...
-Ensemble	f1: {'f1': 0.6693657219973009}
-Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+labels and len {0.0, 1.0} 2
+[[1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [1. 0.]
+ [0. 1.]
+ [1. 0.]
+ [1. 0.]]
+tensor([[1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [1., 0.],
+        [0., 1.],
+        [1., 0.],
+        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
+tensor([0, 0, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.1}
 
-Transformer	f1: {'f1': 0.0}
-Transformer	accuracy: {'accuracy': 0.4969574036511156}
-
-Featurizer	f1: {'f1': 0.4640371229698376}
-Featurizer	accuracy: {'accuracy': 0.5314401622718052}
-
+Done! Exited normally :)

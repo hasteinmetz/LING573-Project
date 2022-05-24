@@ -1,4 +1,4 @@
-Using cuda device
+Using cpu device
 Loading training and development data...
 Initializing ensemble architecture...
 
@@ -9,9 +9,10 @@ labels and len {0.0, 1.0} 2
 labels and len {0.0, 1.0} 2
 labels and len {0.0, 1.0} 2
 Saving model to {save_path}/ensemble/...
+(Saving error) Couldn't save model to src/models/testing-ensemble/controversy/ensemble/...
 Evaluating models...
 labels and len {0.0, 1.0} 2
-	f1: {'f1': 0.942713567839196}
-	accuracy: {'accuracy': 0.92875}
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.4969574036511156}
 
 Done! Exited normally :)
