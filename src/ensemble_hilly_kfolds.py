@@ -23,29 +23,29 @@ nn = torch.nn
 softmax = nn.functional.softmax
 
 class FineTuneDataSet(Dataset):
-    '''Class creates a list of dicts of sentences and labels
-    and behaves list a list but also stores sentences and labels for
-    future use'''
-    def __init__(self, sentences: List[str], labels: List[int]):
-        self.sentences = sentences
-        self.labels = labels
+	'''Class creates a list of dicts of sentences and labels
+	and behaves list a list but also stores sentences and labels for
+	future use'''
+	def __init__(self, sentences: List[str], labels: List[int]):
+		self.sentences = sentences
+		self.labels = labels
 
-    def tokenize_data(self, tokenizer: RobertaTokenizer):
-        if not hasattr(self, 'encodings'):
-            # encode the data
-            self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-            self.input_ids = self.encodings['input_ids']
+	def tokenize_data(self, tokenizer: RobertaTokenizer):
+		if not hasattr(self, 'encodings'):
+			# encode the data
+			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
+			self.input_ids = self.encodings['input_ids']
 
-    def __getitem__(self, index: int):
-        if not hasattr(self, 'encodings'):
-            raise AttributeError("Did not initialize encodings or input_ids")
-        else:
-            item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-            item['labels'] = torch.tensor(self.labels[index])
-            return item, self.sentences[index]
+	def __getitem__(self, index: int):
+		if not hasattr(self, 'encodings'):
+			raise AttributeError("Did not initialize encodings or input_ids")
+		else:
+			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
+			item['labels'] = torch.tensor(self.labels[index])
+			return item, self.sentences[index]
 
-    def __len__(self):
-        return len(self.labels)
+	def __len__(self):
+		return len(self.labels)
 
 
 class RoBERTa(nn.Module):
@@ -418,7 +418,7 @@ def main(args: argparse.Namespace) -> None:
 		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
 	)
 
-    # write results to output file
+	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
 	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')

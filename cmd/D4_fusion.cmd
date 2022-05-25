@@ -1,4 +1,4 @@
-executable            = src/executables/run_ensemble.sh 
+executable            = src/executables/run_fusion.sh 
 getenv                = true
 output                = outputs/D4/ensemble-test/$(job)/condor.out
 error                 = outputs/D4/ensemble-test/$(job)/condor.error
