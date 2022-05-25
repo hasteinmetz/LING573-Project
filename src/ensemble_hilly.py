@@ -193,7 +193,7 @@ def main(args: argparse.Namespace) -> None:
 		print("\tnum components: {}".format(train_pca.n_components))
 		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
 		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
 		# use the features inside the model using a featurize function
 		FEATURIZER = lambda x: prune_test(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
