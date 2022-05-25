@@ -38,12 +38,10 @@
     - Add section about qualitative error analysis on best model’s output
 - Conclusion
     - Change “future” talk to what we did
-
 - Presentation 5/31
-        - Eli can contribute to report after Tuesday
-        - Pangbo has presentation tomorrow Wed 5/26, can work after that
-        - Avani will work report + pres as much as possible by Friday
-
+	- Eli can contribute to report after Tuesday
+	- Pangbo has presentation tomorrow Wed 5/26, can work after that
+	- Avani will work report + pres as much as possible by Friday
 - Planning to turn in paper after giving it a final look over after presentation day
 
 ## 5-22
