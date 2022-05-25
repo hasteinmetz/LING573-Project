@@ -12,6 +12,40 @@
 - [Avani]
     - incorporated k_best & pred_test fxns to rf_ensemble architecture
     - ran on controversy only
+- Paper
+    - Add Title (not ling573 project lol)
+    - Abstract
+        - Add final test scores for both tasks
+- Introduction
+	- Update description of system with finalized architecture
+    - Will know which architecture this is after comparing all the runs
+- System Overview
+    - Looks fine
+- Approach
+    - Final paragraph needs reworking
+    - Update with which lexical features we used
+- Results
+    - Need neat table with all the results for both tasks
+    - All models:
+        - Baseline
+        - BertTweet + RoBERTa + scikit logreg (joint training)
+        - Random Forest + BertTweet
+        - BERTTweet + RoBERTa + neural layer (join training)
+- Discussion
+    - Last paragraph needs to be done
+        - Update with what we did and why
+        - Motivations
+    - Add section about qualitative error analysis on best model’s output
+- Conclusion
+    - Change “future” talk to what we did
+
+- Presentation 5/31
+        - Eli can contribute to report after Tuesday
+        - Pangbo has presentation tomorrow Wed 5/26, can work after that
+        - Avani will work report + pres as much as possible by Friday
+
+- Planning to turn in paper after giving it a final look over after presentation day
+
 ## 5-22
 - [Eli] 
     - trouble with getting local environment working
