@@ -10,8 +10,9 @@ import pandas as pd
 from typing import *
 from empath import Empath
 from string import punctuation
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import PCA
+from math import log
 
 pca_component_num = 0
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
@@ -54,7 +55,6 @@ def get_ner_matrix(data: List[str]) -> np.ndarray:
 
 	return ner_array
 
-
 def create_lexical_matrix(sentences: List[str], chars: List[str]) -> np.ndarray:
 	'''Take a dataset and return an [num_sentences, num_chars] matrix of counts
 	of the number of times each character appears in a list'''
@@ -80,6 +80,20 @@ def get_empath_ratings(sentences: List[str], categories: List[str] = []) -> np.n
 			dictionary[k].append(v)
 	as_lists = [dictionary[k] for k in dictionary]
 	return np.column_stack(as_lists)
+
+def remove_stopwords(sentence: str, stopwords: set) -> str:
+	'''Helper function to remove stops words from a sentence'''
+	filtered = list(filter(lambda l: l not in stopwords, [w.lower() for w in word_tokenize(sentence)]))
+	return reduce(lambda x, y: str(x) + " " + str(y), filtered)
+
+def get_word_counts(sentences: List[str], labels: List[str], stopws: Union[set, str]) -> np.ndarray:
+	'''Get a matrix of counts for each word in a sentence. Returns a numpy array of size [sentences x vocab]'''
+	if stopws != 'no':
+		sentences = [remove_stopwords(s, stopws) for s in sentences]
+	vectorizer = CountVectorizer(analyzer='word')
+	counts = vectorizer.fit_transform(sentences)
+	names = vectorizer.get_feature_names_out()
+	return counts, names
 
 class DTFIDF:
 	'''Implementation of DELTA TF-IDF as described in https://ebiquity.umbc.edu/_file_directory_/papers/446.pdf'''
@@ -118,30 +132,6 @@ class DTFIDF:
 					freq = (c * p) - (c * n)
 					return_vector[i, np.where([v == tkn for v in self.names])] = freq
 		return return_vector
-
-
-def get_vocabulary(training_sents: List[str], stop_words: str = None, 
-	concat_labels: List[str] = None) -> TfidfVectorizer:
-	'''Get counts of the training data set to calculate TD-IDF
-		Args:
-			- training_sents: sentences from the training data
-			- stop_words: whether or not to include stop words in the vectorizer
-				To exclude stop words use the string 'english' as a parameter
-			- concat_labels: whether to concatenate the each label's sentences into a single document
-				- If None don't concatenate
-				- Otherwise provide a list of labels with corresponding indices to the sentences
-	''' 
-	vectorizer = TfidfVectorizer(decode_error='ignore', stop_words=stop_words) # ALL WORDS ARE LOWERCASED!
-	if isinstance(concat_labels, list):
-		sents = {k: '' for k in set(concat_labels)}
-		for s, label in zip(training_sents, concat_labels):
-			sents[label] += s
-		sents = [sents[1], sents[0]]
-		fitted_vectorizer = vectorizer.fit(sents) # NOTE: DO NOT fit the vectorizer to the test data!
-	else:
-		fitted_vectorizer = vectorizer.fit(training_sents) # NOTE: DO NOT fit the vectorizer to the test data!
-
-	return fitted_vectorizer
 
 
 def check_phrase(sentence: str, lex_dict: Dict[str, str]) -> Tuple[bool, List[str]]:
@@ -255,31 +245,26 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
-	print("\tpreprocessing data...")
 	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
-	print("\tcreate lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	print("\tget empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
  	
-	 # get tfidf
+	# get tfidf
 	tf = tfidf_generator.calculate_delta_tfidf(preprocessed_sentences)
 
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	print("\tnormalizing vectors...")
-	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, tf, hv)
 
 	return nv
 	
-def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_generator: DTFIDF) -> Tuple[np.ndarray, np.ndarray]:
+def get_all_features(train_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_generator: DTFIDF, pca: PCA) -> Tuple[np.ndarray, np.ndarray]:
 	'''
 	arguments:
 		- train sentences: list of input data to be featurized
@@ -292,11 +277,10 @@ def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtl
 	featurizes data and performs principal component analyses on them
 	'''
 	train_features = featurize(train_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
-	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
 
 	# perform PCA
 	pv = None
-	train_pca = PCA(.95)
+	
 	train_pca.fit(train_features)
 	train_pv = train_pca.transform(train_features) 
 	print("\tnum components: {}".format(train_pca.n_components))

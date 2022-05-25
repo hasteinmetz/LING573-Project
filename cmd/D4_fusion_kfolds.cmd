@@ -1,8 +1,8 @@
-executable            = src/executables/run_fusion_no_kfolds.sh 
+executable            = src/executables/run_fusion_kfolds.sh 
 getenv                = true
-output                = outputs/D4/ensemble-fusion/$(job)/condor.out
-error                 = outputs/D4/ensemble-fusion/$(job)/condor.error
-log                   = outputs/D4/ensemble-fusion/$(job)/condor.log
+output                = outputs/D4/ensemble-kfolds/$(job)/condor.out
+error                 = outputs/D4/ensemble-kfolds/$(job)/condor.error
+log                   = outputs/D4/ensemble-kfolds/$(job)/condor.log
 request_GPUs          = 1
 requirements          = (CUDACapability >= 10.2) && $(requirements:True)
 Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine == "patas-gn1.ling.washington.edu") || (machine == "patas-gn3.ling.washington.edu")

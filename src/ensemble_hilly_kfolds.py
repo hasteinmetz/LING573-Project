@@ -10,8 +10,10 @@ import sys
 import numpy as np
 import pandas as pd
 from typing import *
-from featurizer import featurize, TFIDFGenerator, DTFIDF
-from torch.utils.data import DataLoader, Dataset
+from featurizer import featurize, DTFIDF
+from torch.utils.data import DataLoader
+from feature_selection import k_perc_best_f, prune_test
+from pytorch_utils import FineTuneDataSet, make_labels_binary
 from torch.optim import AdamW, SGD, Adagrad
 from transformers import RobertaForSequenceClassification, RobertaTokenizer
 from datasets import load_metric
@@ -20,33 +22,6 @@ from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 
 nn = torch.nn
-softmax = nn.functional.softmax
-
-class FineTuneDataSet(Dataset):
-	'''Class creates a list of dicts of sentences and labels
-	and behaves list a list but also stores sentences and labels for
-	future use'''
-	def __init__(self, sentences: List[str], labels: List[int]):
-		self.sentences = sentences
-		self.labels = labels
-
-	def tokenize_data(self, tokenizer: RobertaTokenizer):
-		if not hasattr(self, 'encodings'):
-			# encode the data
-			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-			self.input_ids = self.encodings['input_ids']
-
-	def __getitem__(self, index: int):
-		if not hasattr(self, 'encodings'):
-			raise AttributeError("Did not initialize encodings or input_ids")
-		else:
-			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			item['labels'] = torch.tensor(self.labels[index])
-			return item, self.sentences[index]
-
-	def __len__(self):
-		return len(self.labels)
-
 
 class RoBERTa(nn.Module):
 	'''A wrapper around the RoBERTa model with a defined forward function'''
@@ -59,7 +34,6 @@ class RoBERTa(nn.Module):
 		inputs = {k:v.to(device) for k,v in data.items()}
 		roberta_out = self.roberta(**inputs)
 		return roberta_out
-
 
 class FeatureClassifier(nn.Module):
 	'''Simple feed forward neural network to classify a word's lexical features'''
@@ -89,15 +63,6 @@ class LogisticRegression(nn.Module):
 		linear = self.linear(input_logits)
 		return torch.sigmoid(linear)
 
-
-def make_torch_labels_binary(labels: torch.tensor) -> torch.tensor:
-	'''Helper function that turns [n x 1] labels into [n x 2] labels'''
-	zeros = torch.zeros((labels.shape[0], 2), dtype=float)
-	for i in range(len(labels)):
-		zeros[i, labels[i]] = 1.0
-	return zeros
-
-
 def train_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
 		sentences: List[str], labels: np.ndarray, featurizer: Callable,
@@ -123,9 +88,6 @@ def train_ensemble(
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
 	
-	# for debugging, uncomment the line below:
-	# shuffled_sentences, shuffled_labels = shuffled_sentences[0:50], shuffled_labels[0:50]
-
 	# set up regression loss function
 	loss_logistic = nn.BCELoss()
 
@@ -140,13 +102,18 @@ def train_ensemble(
 		for fold, (train_i, test_i) in enumerate(kfolder.split(shuffled_sentences, shuffled_labels)):
 
 			X = np.array(shuffled_sentences)
-			y = np.array(shuffled_labels)
+			y = shuffled_labels
 
-			X_models, y_models = X[train_i].tolist(), y[train_i].tolist()
-			X_meta, y_meta = X[test_i].tolist(), y[test_i].tolist()
+			# split into models and metamodel training data
+			X_models, y_models = X[train_i].tolist(), y[train_i]
+			X_meta, y_meta = X[test_i].tolist(), y[test_i]
+
+			# turn into [n, 2] matrices
+			y_models = make_labels_binary(y_models)
+			y_meta = make_labels_binary(y_meta)
 
 			# make the data a Dataset and put it in a DataLoader to batch it
-			dataset = FineTuneDataSet(X_models, y_models)
+			dataset = FineTuneDataSet(X_models, y_models, verbose = 'verbose')
 			dataset.tokenize_data(tokenizer)
 			dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -156,6 +123,9 @@ def train_ensemble(
 			LogRegressor.train()
 
 			for i, (batch, X) in enumerate(dataloader):
+
+				# change the shape of labels to [n, 2]
+				y = batch['labels'].to(device)
 
 				# TRANSFORMER TRAINING
 
@@ -176,9 +146,6 @@ def train_ensemble(
 				# initialize the feature tensor
 				features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
 
-				# change the shape of labels to [n, 2]
-				y = make_torch_labels_binary(batch['labels']).to(device)
-
 				classifier_outputs = FClassifier(features_tensor)
 
 				loss_cl = loss_fn(classifier_outputs, y)
@@ -195,7 +162,7 @@ def train_ensemble(
 					)
 
 			# make the data a Dataset and put it in a DataLoader to batch it
-			dataset = FineTuneDataSet(X_meta, y_meta)
+			dataset = FineTuneDataSet(X_meta, y_meta, verbose = 'verbose')
 			dataset.tokenize_data(tokenizer)
 			dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -221,7 +188,11 @@ def train_ensemble(
 				all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
 				output = LogRegressor(all_logits)
 				
-				y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+				# reshape true labels
+				true_ys = torch.argmax(batch['labels'], dim = 1)
+				y = torch.reshape(true_ys, (true_ys.size()[0], 1)).float().to(device)
+
+				# get loss and do backpropagation
 				loss_lg = loss_logistic(output, y)
 				loss_lg.backward()
 				optim_log.step()
@@ -248,12 +219,12 @@ def train_ensemble(
 
 	# SAVE MODELS
 	try:
-		print("Saving models to /src/models/testing-ensemble/...")
+		print("Saving models to /src/models/kfold-ensemble/...")
 		torch.save(Transformer, save_path + 'roberta')
 		torch.save(FClassifier, save_path + 'featurizer')
 		torch.save(LogRegressor, save_path + 'regression')
 	except:
-		print("(Saving error) Saving models to src/models/testing-ensemble/...")
+		print("(Saving error) Saving models to src/models/kfold-ensemble/...")
 		torch.save(Transformer, 'src/models/tmp_roberta')
 		torch.save(FClassifier, 'src/models/tmp_featurizer')
 		torch.save(LogRegressor, 'src/models/tmp_regression')
@@ -279,8 +250,11 @@ def evaluate_ensemble(
 		tr_metrics.append(load_metric(metric))
 		cl_metrics.append(load_metric(metric))
 
+	# convert the model labels to a [n, 2] matrix (needed for roberta)
+	labels_arr = make_labels_binary(labels)
+
 	# make the data a Dataset and put it in a DataLoader to batch it
-	dataset = FineTuneDataSet(sentences, labels)
+	dataset = FineTuneDataSet(sentences, labels_arr, verbose = 'verbose')
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -290,7 +264,7 @@ def evaluate_ensemble(
 	for batch, X in dataloader:
 
 		# send labels to device
-		y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+		y = batch['labels'].to(device)
 
 		# GET LOGITS
 
@@ -304,11 +278,12 @@ def evaluate_ensemble(
 			
 		# OUTPUT EACH CLASSIFIER'S RESULT INDIVIDUALLY
 		tr_argmax = torch.argmax(transformer_logits, dim = -1)
-		for m1 in tr_metrics:
-			m1.add_batch(predictions=tr_argmax, references=y)
 		cl_argmax = torch.argmax(feature_logits, dim = -1)
+		y_argmax = torch.argmax(y, dim = -1)
+		for m1 in tr_metrics:
+			m1.add_batch(predictions=tr_argmax, references=y_argmax)
 		for m2 in cl_metrics:
-			m2.add_batch(predictions=cl_argmax, references=y)
+			m2.add_batch(predictions=cl_argmax, references=y_argmax)
 
 		# EVALUATE REGRESSOR
 		all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
@@ -322,7 +297,7 @@ def evaluate_ensemble(
 
 		# add batched results to metrics
 		for m3 in metrics:
-			m3.add_batch(predictions=torch.round(y_hats), references=y)
+			m3.add_batch(predictions=torch.round(y_hats), references=y_argmax)
 
 	# output metrics to standard output
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
@@ -366,18 +341,21 @@ def main(args: argparse.Namespace) -> None:
 	# get hurtlex dictionary
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 
-	# load PCA and extract principle components from the training data
-	pca = PCA()
-	training_feature_matrix = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
-	pca.fit(training_feature_matrix)
-	print(f"Fitted PCA. Previously there were {training_feature_matrix.shape[1]} " + 
-		f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
-
-	# reduce the parameters of the featurize function
-	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf, pca)
+	print("reducing feature dimensions...")
+	if args.dim_reduc_method == 'pca':
+		train_feature_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+		train_pca = PCA(.95)
+		train_pca.fit(train_feature_vector)
+		print("\tnum components: {}".format(train_pca.n_components))
+		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
+	else:
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+		# use the features inside the model using a featurize function
+		FEATURIZER = lambda x: prune_test(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
 
 	# get input size
-	input_size = featurizer(train_sentences[0:1]).shape[1]
+	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 
 	# initialize ensemble model
 	# TODO: MAKE ADD THIS TO A CONFIG FILE INSTEAD
@@ -402,30 +380,32 @@ def main(args: argparse.Namespace) -> None:
 	# train the model
 	train_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		train_sentences, train_labels, featurizer, 
+		train_sentences, train_labels, FEATURIZER, 
 		dev_sentences, dev_labels,
 		EPOCHS, BATCH_SIZE, 
 		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
 		KFOLDS,
 		OPTIMIZER_TRANSFORMER, OPTIMIZER_CLASSIFIER, OPTIMIZER_REGRESSOR,
-		LOSS, DEVICE, save_path = args.model_save_location
+		LOSS, DEVICE, save_path = args.model_save_path
 	)
 
 	# evaluate the model on test data
 	print("Evaluating models...")
 	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
+		dev_sentences, dev_labels, FEATURIZER, BATCH_SIZE, DEVICE
 	)
 
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
+	output_file = f'{args.output_path}/{args.job}/fusion-output.csv'
+	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv(args.error_path, index=False, encoding='utf-8')
+	error_file = f'{args.error_path}-{args.job}.csv'
+	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":
@@ -433,9 +413,11 @@ if __name__ == "__main__":
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
-	parser.add_argument('--output_file', help="path to output data file")
-	parser.add_argument('--model_save_location', help="path to save models")
+	parser.add_argument('--output_path', help="path to output data file")
+	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors", default = 'pca')
+	parser.add_argument('--model_save_path', help="path to save models")
 	parser.add_argument('--error_path', help="path to save error analysis")
+	parser.add_argument('--job', help="job being done (humor or controversy) to help with folder organization")
 	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)
 	parser.add_argument('--index', help="column to select from data", type=int)
 	args = parser.parse_args()
