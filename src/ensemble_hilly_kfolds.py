@@ -11,7 +11,9 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize, DTFIDF
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
+from feature_selection import k_perc_best_f, prune_test
+from pytorch_utils import FineTuneDataSet, make_torch_labels_binary
 from torch.optim import AdamW, SGD, Adagrad
 from transformers import RobertaForSequenceClassification, RobertaTokenizer
 from datasets import load_metric
@@ -20,34 +22,6 @@ from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 
 nn = torch.nn
-softmax = nn.functional.softmax
-
-class FineTuneDataSet(Dataset):
-	'''Class creates a list of dicts of sentences and labels
-	and behaves list a list but also stores sentences and labels for
-	future use'''
-	def __init__(self, sentences: List[str], labels: List[int]):
-		self.sentences = sentences
-		self.labels = labels
-
-	def tokenize_data(self, tokenizer: RobertaTokenizer):
-		if not hasattr(self, 'encodings'):
-			# encode the data
-			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-			self.input_ids = self.encodings['input_ids']
-
-	def __getitem__(self, index: int):
-		if not hasattr(self, 'encodings'):
-			raise AttributeError("Did not initialize encodings or input_ids")
-		else:
-			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			item['labels'] = torch.tensor(self.labels[index])
-			return item, self.sentences[index]
-
-	def __len__(self):
-		return len(self.labels)
-
-
 class RoBERTa(nn.Module):
 	'''A wrapper around the RoBERTa model with a defined forward function'''
 	def __init__(self):
@@ -59,8 +33,6 @@ class RoBERTa(nn.Module):
 		inputs = {k:v.to(device) for k,v in data.items()}
 		roberta_out = self.roberta(**inputs)
 		return roberta_out
-
-
 class FeatureClassifier(nn.Module):
 	'''Simple feed forward neural network to classify a word's lexical features'''
 	def __init__(self, input_size: int, hidden_size: int, num_classes: int):
@@ -88,14 +60,6 @@ class LogisticRegression(nn.Module):
 	def forward(self, input_logits: torch.tensor):
 		linear = self.linear(input_logits)
 		return torch.sigmoid(linear)
-
-
-def make_torch_labels_binary(labels: torch.tensor) -> torch.tensor:
-	'''Helper function that turns [n x 1] labels into [n x 2] labels'''
-	zeros = torch.zeros((labels.shape[0], 2), dtype=float)
-	for i in range(len(labels)):
-		zeros[i, labels[i]] = 1.0
-	return zeros
 
 
 def train_ensemble(
@@ -248,12 +212,12 @@ def train_ensemble(
 
 	# SAVE MODELS
 	try:
-		print("Saving models to /src/models/testing-ensemble/...")
+		print("Saving models to /src/models/kfold-ensemble/...")
 		torch.save(Transformer, save_path + 'roberta')
 		torch.save(FClassifier, save_path + 'featurizer')
 		torch.save(LogRegressor, save_path + 'regression')
 	except:
-		print("(Saving error) Saving models to src/models/testing-ensemble/...")
+		print("(Saving error) Saving models to src/models/kfold-ensemble/...")
 		torch.save(Transformer, 'src/models/tmp_roberta')
 		torch.save(FClassifier, 'src/models/tmp_featurizer')
 		torch.save(LogRegressor, 'src/models/tmp_regression')
@@ -366,18 +330,21 @@ def main(args: argparse.Namespace) -> None:
 	# get hurtlex dictionary
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 
-	# load PCA and extract principle components from the training data
-	pca = PCA()
-	training_feature_matrix = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
-	pca.fit(training_feature_matrix)
-	print(f"Fitted PCA. Previously there were {training_feature_matrix.shape[1]} " + 
-		f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
-
-	# reduce the parameters of the featurize function
-	featurizer = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf, pca)
+	print("reducing feature dimensions...")
+	if args.dim_reduc_method == 'pca':
+		train_feature_vector = featurize(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+		train_pca = PCA(.95)
+		train_pca.fit(train_feature_vector)
+		print("\tnum components: {}".format(train_pca.n_components))
+		FEATURIZER = lambda x: train_pca.transform(featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf))
+	else:
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+		# use the features inside the model using a featurize function
+		FEATURIZER = lambda x: prune_test(featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
 
 	# get input size
-	input_size = featurizer(train_sentences[0:1]).shape[1]
+	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 
 	# initialize ensemble model
 	# TODO: MAKE ADD THIS TO A CONFIG FILE INSTEAD
@@ -402,7 +369,7 @@ def main(args: argparse.Namespace) -> None:
 	# train the model
 	train_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		train_sentences, train_labels, featurizer, 
+		train_sentences, train_labels, FEATURIZER, 
 		dev_sentences, dev_labels,
 		EPOCHS, BATCH_SIZE, 
 		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
@@ -415,7 +382,7 @@ def main(args: argparse.Namespace) -> None:
 	print("Evaluating models...")
 	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		dev_sentences, dev_labels, featurizer, BATCH_SIZE, DEVICE
+		dev_sentences, dev_labels, FEATURIZER, BATCH_SIZE, DEVICE
 	)
 
 	# write results to output file
