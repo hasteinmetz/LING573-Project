@@ -245,26 +245,21 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
-	print("\tpreprocessing data...")
 	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
-	print("\tcreate lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	print("\tget empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
  	
-	 # get tfidf
+	# get tfidf
 	tf = tfidf_generator.calculate_delta_tfidf(preprocessed_sentences)
 
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	print("\tnormalizing vectors...")
-	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, tf, hv)
 
 	return nv

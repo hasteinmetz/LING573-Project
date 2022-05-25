@@ -1,15 +1,80 @@
-Using cpu device
-Traceback (most recent call last):
-  File "/home2/hsteinm/573/repo/src/ensemble_hilly.py", line 284, in <module>
-    main(args)
-  File "/home2/hsteinm/573/repo/src/ensemble_hilly.py", line 185, in main
-    train_feature_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
-  File "/home2/hsteinm/573/repo/src/featurizer.py", line 259, in featurize
-    tf = tfidf_generator.calculate_delta_tfidf(preprocessed_sentences)
-  File "/home2/hsteinm/573/repo/src/featurizer.py", line 129, in calculate_delta_tfidf
-    p = log(self.pos_labels/p_t.count_nonzero(), 2) if p_t.count_nonzero() > 0 else 0
-NameError: name 'log' is not defined
+Using the GPU:NVIDIA Quadro RTX 8000
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.dense.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+(0, 192) Loss: 0.7377947401255369
+(0, 384) Loss: 0.6922388337552547
+(0, 576) Loss: 0.7077474528923631
+(0, 768) Loss: 0.6964841298758984
+(0, 960) Loss: 0.6899420991539955
+(0, 1152) Loss: 0.6881199069321156
+(0, 1344) Loss: 0.7020851317793131
+(0, 1536) Loss: 0.7023789584636688
+(0, 1728) Loss: 0.6920776572078466
+(0, 1920) Loss: 0.690290555357933
+(0, 2112) Loss: 0.6963597983121872
+(0, 2304) Loss: 0.6937963105738163
+(0, 2496) Loss: 0.6998945381492376
+(0, 2688) Loss: 0.6973320357501507
+(0, 2880) Loss: 0.6977234780788422
+(0, 3072) Loss: 0.69323655590415
+(0, 3264) Loss: 0.6907104309648275
+(0, 3456) Loss: 0.6949751228094101
+(0, 3648) Loss: 0.6926606949418783
+(0, 3840) Loss: 0.6931045148521662
+Evaluation metrics:
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.5011406844106464}
 
-real	1m57.372s
-user	1m52.262s
-sys	0m1.924s
+(1, 192) Loss: 0.6783309783786535
+(1, 384) Loss: 0.6817902512848377
+(1, 576) Loss: 0.7055718936026096
+(1, 768) Loss: 0.6971977651119232
+(1, 960) Loss: 0.6998837050050497
+(1, 1152) Loss: 0.69267887622118
+(1, 1344) Loss: 0.6936042383313179
+(1, 1536) Loss: 0.702598325908184
+(1, 1728) Loss: 0.6913756802678108
+(1, 1920) Loss: 0.6941697783768177
+(1, 2112) Loss: 0.6921544130891562
+(1, 2304) Loss: 0.6933008618652821
+(1, 2496) Loss: 0.6916273478418589
+(1, 2688) Loss: 0.6930537950247526
+(1, 2880) Loss: 0.697275510057807
+(1, 3072) Loss: 0.6950814928859472
+(1, 3264) Loss: 0.6922945603728294
+(1, 3456) Loss: 0.6929929405450821
+(1, 3648) Loss: 0.6933283787220716
+(1, 3840) Loss: 0.6920087411999702
+Evaluation metrics:
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.5011406844106464}
+
+(2, 192) Loss: 0.6856245305389166
+(2, 384) Loss: 0.6850512307137251
+(2, 576) Loss: 0.6993095371872187
+(2, 768) Loss: 0.6939683090895414
+(2, 960) Loss: 0.693412397056818
+(2, 1152) Loss: 0.6686416417360306
+(2, 1344) Loss: 0.6932035554200411
+(2, 1536) Loss: 0.6940592955797911
+(2, 1728) Loss: 0.6923587080091238
+(2, 1920) Loss: 0.6833797991275787
+(2, 2112) Loss: 0.6812746748328209
+(2, 2304) Loss: 0.6934899818152189
+(2, 2496) Loss: 0.6902244854718447
+(2, 2688) Loss: 0.7022596122696996
+(2, 2880) Loss: 0.7178928256034851
+(2, 3072) Loss: 0.698842529207468
+(2, 3264) Loss: 0.6938815861940384
+(2, 3456) Loss: 0.6939730681478977
+(2, 3648) Loss: 0.6935933381319046
+(2, 3840) Loss: 0.6941716056317091
+Evaluation metrics:
+	f1: {'f1': 0.0}
+	accuracy: {'accuracy': 0.5011406844106464}
+
+
+real	44m12.577s
+user	42m58.939s
+sys	0m39.587s

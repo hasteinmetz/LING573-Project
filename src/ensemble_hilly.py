@@ -9,7 +9,7 @@ import pandas as pd
 from typing import *
 from featurizer import featurize, DTFIDF
 from feature_selection import k_perc_best_f, prune_test
-from pytorch_utils import FineTuneDataSet, make_torch_labels_binary
+from pytorch_utils import FineTuneDataSet, make_labels_binary
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW
 from transformers import RobertaModel, RobertaTokenizer
@@ -19,6 +19,7 @@ from sklearn.utils import shuffle
 import json
 
 nn = torch.nn
+softmax = nn.Softmax(dim=1)
 
 class Ensemble(nn.Module):
 	def __init__(self, input_size: int, hidden_size: int, output_size: int):
@@ -40,11 +41,12 @@ class Ensemble(nn.Module):
 		outputs_mlp = self.mlp(features_tensor)
 		classifier_in = torch.cat((outputs_roberta, outputs_mlp), axis=1)
 		logits = self.logistic(classifier_in)
-		return logits
+		predicted_probs = softmax(logits)
+		return predicted_probs
 
 
 def train_ensemble(model: Ensemble, 
-		sentences: List[str], labels: List[str], 
+		sentences: List[str], labels: np.ndarray, 
 		test_sents: List[str], test_labels: List[str], 
 		epochs: int, batch_size: int, lr: int,
 		featurizer: Callable, tokenizer: RobertaTokenizer, 
@@ -62,18 +64,19 @@ def train_ensemble(model: Ensemble,
 
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
-	labels_arr = make_torch_labels_binary(shuffled_labels)
+	labels_arr = make_labels_binary(shuffled_labels)
 
 	# create a dataset and dataloader to go iterate in batches
-	dataset = FineTuneDataSet(shuffled_sentences, labels_arr)
+	dataset = FineTuneDataSet(shuffled_sentences, labels_arr, verbose = 'verbose')
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
 	for epoch in range(epochs):
-		for i, (batch, X, labels) in enumerate(dataloader):
+		for i, (batch, X) in enumerate(dataloader):
 
 			# send to the correct device
-			y = labels.to(device)
+			batch_labels = batch.pop('labels')
+			y = batch_labels.to(device)
 
 			optim.zero_grad()
 
@@ -84,7 +87,7 @@ def train_ensemble(model: Ensemble,
 			optim.step()
 
 			# add batched results to metrics
-			pred_argmax = torch.argmax(torch.sigmoid(output), dim=-1)
+			pred_argmax = torch.argmax(output, dim=-1)
 			for m in metrics:
 				m.add_batch(predictions=pred_argmax, references=torch.argmax(y, dim=-1))
 		
@@ -98,11 +101,12 @@ def train_ensemble(model: Ensemble,
 	# SAVE MODELS
 	try:
 		print(f"Saving model to {save_path}/ensemble-fusion/...")
-		torch.save(model, save_path + '/ensemble-fusion.pt')
+		torch.save(model, save_path + '/ensemble.pt')
 	except Exception("Could not save model..."):
 		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-fusion/...")
 
-def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_size: int,
+
+def evaluate(model: Ensemble, sentences: List[str], labels: np.ndarray, batch_size: int,
 	tokenizer: RobertaTokenizer, featurizer: Callable, device: str, outfile: Union[str, object]):
 	'''Train the Ensemble neural network'''
 	model.to(device)
@@ -113,24 +117,25 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 		metrics.append(load_metric(metric))
 		
 	# convert labels to the correct shape
-	labels_arr = make_torch_labels_binary(labels)
+	labels_arr = make_labels_binary(labels)
 
-	dataset = FineTuneDataSet(sentences, labels_arr)
+	dataset = FineTuneDataSet(sentences, labels_arr, verbose = 'verbose')
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
 	# intialize a list to store predictions
 	predictions = []
 
-	for batch, X, labels in dataloader:
+	for batch, X in dataloader:
 
 		# send to the correct device
-		y = labels.to(device)
+		batch_labels = batch.pop('labels')
+		y = batch_labels.to(device)
 
-		logits = model(batch, X, featurizer, device)
+		output = model(batch, X, featurizer, device)
 
 		# add batch to output
-		predicted = torch.argmax(torch.sigmoid(logits), dim=-1)
+		predicted = torch.argmax(output, dim=-1)
 		
 		# append predictions to list
 		predictions.extend(predicted.clone().detach().to('cpu').tolist())
@@ -188,10 +193,10 @@ def main(args: argparse.Namespace) -> None:
 		print("\tnum components: {}".format(train_pca.n_components))
 		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
 		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
 		# use the features inside the model using a featurize function
-		FEATURIZER = lambda x: prune_test(featurize(x,  hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
+		FEATURIZER = lambda x: prune_test(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
 
 	# get input size
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
@@ -234,7 +239,7 @@ def main(args: argparse.Namespace) -> None:
 		try:
 			print("Loading existing model...\n")
 			# TODO: Change the directory organization
-			ENSEMBLE = torch.load(f'src/models/testing-ensemble/{args.job}/')
+			ENSEMBLE = torch.load(f'src/models/ensemble-fusion/{args.job}/ensemble.pt')
 		except ValueError:
 			print("No existing model found. Rerun without --reevaluate")
 
