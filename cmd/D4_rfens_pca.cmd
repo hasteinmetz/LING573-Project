@@ -1,4 +1,4 @@
-executable           = ../src/executables/run_ensemble.sh 
+executable           = ../src/executables/d4_rfens_pca.sh 
 getenv               = true
 arguments            = 
 output               = ../outputs/condor.out

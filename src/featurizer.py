@@ -1,3 +1,4 @@
+from tkinter import W
 import nltk
 import spacy
 import utils
@@ -7,8 +8,9 @@ from typing import *
 from empath import Empath
 from string import punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
 
-
+pca_component_num = 0
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
 	arguments:
@@ -180,47 +182,97 @@ def extract_hurtlex(sentences: List[str], lex_dict: Dict[str, str], feature: set
 	return np.array(features)
 
 
-def featurize(sentences: List[str], labels: np.ndarray, hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
+def perform_pca(vector: np.ndarray, is_train: bool = False, n_comp: int = 0) -> np.ndarray:
+	'''
+	arguments: 
+		- vector: data to which pca should be performed on
+		- is_train: set to true if data represents training data
+		- n_comp: provide number of components if data is not training data
+	'''
+	final_vector = None
+	if not is_train:
+		pca = PCA(.95)
+		pca.fit(vector)
+		final_vector = pca.transform(vector)
+		print("\tnumber of principal components: {}".format(pca.n_components_))
+	else:
+		pca = PCA(n_components=n_comp)
+		pca.fit(vector)
+		final_vector = pca.transform(vector)
+		print("\tnumber of principal components: {}".format(pca.n_components_))
+	return final_vector
+
+
+def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> np.ndarray:
 	'''
 	arguments:
 		- sentences: list of input data to be featurized
-		- labels: corresponding labels for sentenceds
+		- hurtlex_dict: lexical items corresponding to each hurtlex label
+		- hurtlex_cat: hurtlex labels
 	returns:
 		a (n_samples, vector_space_size) feature vector 
 	
 	featurizes the input data for named entities, hurtful lexicon, punctuation counts, bigram tf-idf, and empathy ratings
 	'''
 	# get NER vector 
-	# TODO: check with eli whether ner will still work after lemmatization is applied
 	nerv = get_ner_matrix(sentences)
 
 	# preprocess to remove quotation marks and lemmatize
-	print("preprocessing data...")
+	print("\tpreprocessing data...")
 	preprocessed_sentences = utils.lemmatize(sentences)
 
 	# create lexical vector
-	print("create lexical vector...")
+	print("\tcreate lexical vector...")
 	lv = create_lexical_matrix(preprocessed_sentences, [c for c in punctuation])
 
 	# get empathy vectors
-	print("get empathy ratings...")
+	print("\tget empathy ratings...")
 	em = get_empath_ratings(preprocessed_sentences)
  
+	'''
+	TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get vocabulary counts (fit the vectorizer)
 	vectorizer = get_vocabulary(preprocessed_sentences, 'english', concat_labels = labels)
 
-	#TODO: normalize tf-idf space so that dev and train vector have the same featurize dimensions
 	# get tfidf
-	#print("getting tf-idf...")
-	#tf = get_tfidf(preprocessed_sentences, vectorizer)
-	#print("tf shape: {}".format(np.shape(tf)))
+	print("getting tf-idf...")
+	tf = get_tfidf(preprocessed_sentences, vectorizer)
+	print("tf shape: {}".format(np.shape(tf)))
+	'''
 
 	#get hurtlex feature vector
 	hv = extract_hurtlex(sentences, hurtlex_dict, hurtlex_cat)
 
 	# normalize the vectors
-	print("normalizing vectors...")
+	print("\tnormalizing vectors...")
 	#nv = utils.normalize_vector(nerv, lv, tf, em)
 	nv = utils.normalize_vector(nerv, lv, em, hv)
-	
+
 	return nv
+	
+def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
+	'''
+	arguments:
+		- train sentences: list of input data to be featurized
+		- dev sentences: list of input data to be featurized
+		- hurtlex_dict: lexical items corresponding to each hurtlex label
+		- hurtlex_cat: hurtlex labels
+	returns:
+		two (n_samples, vector_space_size) feature vectors
+
+	featurizes data and performs principal component analyses on them
+	'''
+	train_features = featurize(train_sentences, hurtlex_dict, hurtlex_cat)
+	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat)
+
+	# perform PCA
+	pv = None
+	train_pca = PCA(.95)
+	train_pca.fit(train_features)
+	train_pv = train_pca.transform(train_features) 
+	print("\tnum components: {}".format(train_pca.n_components))
+	dev_pca = PCA(n_components=train_pca.n_components_)
+	dev_pv = dev_pca.fit_transform(dev_features)
+	print("\tnum components: {}".format(dev_pca.n_components))
+
+	return train_pv, dev_pv

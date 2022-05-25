@@ -108,3 +108,20 @@ def read_from_tsv(lex_data: str) -> Tuple[Dict[str,str], set]:
 	output_dict = dict(zip(df.lemma, df.category))
 	
 	return output_dict, feature_list
+
+def read_adaptation_data(filepath: str) -> Tuple[List[str], List[int]]:
+	"""
+	arguments:
+		- filepath: path to data file
+	returns:
+		a list of string representing input sentences, and a list of ints representing controversy classification labels
+	"""
+
+	sentences, labels = [], []
+	with open(filepath, 'r', encoding='utf-8') as datafile:
+		data = csv.reader(datafile, delimiter=',', quotechar='"')
+		for row in data:
+			if row[2] != 'n/a':
+				sentences.append(row[0])
+				labels.append(int(row[2]))
+	return sentences, np.asarray(labels, dtype=int)
