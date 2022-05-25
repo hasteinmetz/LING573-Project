@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import pandas as pd
 from typing import *
-from featurizer import featurize, TFIDFGenerator, DTFIDF
+from featurizer import featurize, DTFIDF
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW, SGD, Adagrad
 from transformers import RobertaForSequenceClassification, RobertaTokenizer
