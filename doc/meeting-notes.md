@@ -1,4 +1,17 @@
 # Meeting notes
+## 5-24
+- [Eli]
+    - did initial review of report
+    - marked sections that need elaboration for D4
+- [Hilly]
+    - refactoring code based on recent merge to main
+    - will do comprehensive run once merge conflicts are resolved
+    - will save most successful model from earlier epoch
+- [Pangbo]
+    - we should try a binary search on a couple data points and pick the best one
+- [Avani]
+    - incorporated k_best & pred_test fxns to rf_ensemble architecture
+    - ran on controversy only
 ## 5-22
 - [Eli] 
     - trouble with getting local environment working
