@@ -388,11 +388,13 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
+	output_file = f'{args.output_path}/{args.job}/fusion-output.csv'
+	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv(args.error_path, index=False, encoding='utf-8')
+	error_file = f'{args.error_path}-{args.job}.csv'
+	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
 	
 if __name__ == "__main__":
@@ -400,7 +402,8 @@ if __name__ == "__main__":
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
-	parser.add_argument('--output_file', help="path to output data file")
+	parser.add_argument('--output_path', help="path to output data file")
+	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors", default = 'pca')
 	parser.add_argument('--model_save_location', help="path to save models")
 	parser.add_argument('--error_path', help="path to save error analysis")
 	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)

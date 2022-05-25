@@ -9,6 +9,6 @@ Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine
 transfer_executable   = false
 request_memory        = 2*1024
 queue job, arguments from (
-    humor, "--error_path src/data/ensemble-misclassified-humor.csv --index 1 --model_save_location src/models/ensemble-kfolds/humor/ --output_file outputs/D4/ensemble-kfolds/humor/ensemble-kfolds-output.csv"
-    controversy, "--error_path src/data/ensemble-misclassified-controvery.csv --index 2 --model_save_location src/models/ensemble-kfolds/controvery/ --output_file outputs/D4/ensemble-kfolds/controversy/ensemble-kfolds-output.csv"
+    humor, "--index 1 --job $(job)"
+    controversy, "--index 2 --job $(job)"
 )

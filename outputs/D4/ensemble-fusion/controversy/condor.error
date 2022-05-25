@@ -1,34 +1,15 @@
-Using the GPU:Tesla M10
-NOTE: Running in debug mode
-Fitted PCA. Previously there were 974 features. Now there are 100 features.
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias']
-- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-f1:
-	 {'f1': 0.7261146496815287}
-accuracy:
-	 {'accuracy': 0.57}
+Using cpu device
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/ensemble_hilly.py", line 284, in <module>
+    main(args)
+  File "/home2/hsteinm/573/repo/src/ensemble_hilly.py", line 185, in main
+    train_feature_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+  File "/home2/hsteinm/573/repo/src/featurizer.py", line 259, in featurize
+    tf = tfidf_generator.calculate_delta_tfidf(preprocessed_sentences)
+  File "/home2/hsteinm/573/repo/src/featurizer.py", line 129, in calculate_delta_tfidf
+    p = log(self.pos_labels/p_t.count_nonzero(), 2) if p_t.count_nonzero() > 0 else 0
+NameError: name 'log' is not defined
 
-	f1: {'f1': 0.33333333333333337}
-	accuracy: {'accuracy': 0.2}
-
-f1:
-	 {'f1': 0.7261146496815287}
-accuracy:
-	 {'accuracy': 0.57}
-
-	f1: {'f1': 0.2}
-	accuracy: {'accuracy': 0.2}
-
-f1:
-	 {'f1': 0.8793103448275862}
-accuracy:
-	 {'accuracy': 0.86}
-
-	f1: {'f1': 0.0}
-	accuracy: {'accuracy': 0.1}
-
-
-real	1m44.611s
-user	0m54.890s
-sys	0m10.419s
+real	1m57.372s
+user	1m52.262s
+sys	0m1.924s

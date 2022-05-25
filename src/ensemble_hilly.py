@@ -182,16 +182,16 @@ def main(args: argparse.Namespace) -> None:
 
 	print("reducing feature dimensions...")
 	if args.dim_reduc_method == 'pca':
-		train_feature_vector = featurize(train_sentences, dev_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
+		train_feature_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
 		train_pca = PCA(.95)
 		train_pca.fit(train_feature_vector)
 		print("\tnum components: {}".format(train_pca.n_components))
-		FEATURIZER = lambda x: train_pca.transform(featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf))
+		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
 		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
 		# use the features inside the model using a featurize function
-		FEATURIZER = lambda x: prune_test(featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
+		FEATURIZER = lambda x: prune_test(featurize(x,  hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
 
 	# get input size
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
@@ -271,7 +271,7 @@ if __name__ == "__main__":
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
-	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors")
+	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors", default = 'pca')
 	parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
 	parser.add_argument('--output_path', help="path to output data file")
 	parser.add_argument('--model_save_path', help="path to save models")
