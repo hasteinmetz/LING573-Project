@@ -10,6 +10,7 @@ from typing import *
 from featurizer import featurize, DTFIDF
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW
+from custom_pytorch_utils import FineTuneDataSet, make_torch_labels_binary
 from transformers import RobertaModel, RobertaTokenizer
 from datasets import load_metric
 from sklearn.decomposition import PCA
@@ -17,42 +18,6 @@ from sklearn.utils import shuffle
 import json
 
 nn = torch.nn
-
-class FineTuneDataSet(Dataset):
-	'''Class creates a list of dicts of sentences and labels
-	and behaves list a list but also stores sentences and labels for
-	future use'''
-	def __init__(self, sentences: List[str], labels: List[int]):
-		self.sentences = sentences
-		self.labels = labels
-
-	def tokenize_data(self, tokenizer: RobertaTokenizer):
-		if not hasattr(self, 'encodings'):
-			# encode the data
-			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-			self.input_ids = self.encodings['input_ids']
-
-	def __getitem__(self, index: int):
-		if not hasattr(self, 'encodings'):
-			raise AttributeError("Did not initialize encodings or input_ids")
-		else:
-			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			# item['labels'] = torch.tensor(self.labels[index])
-			return item, self.sentences[index], torch.tensor(self.labels[index])
-
-	def __len__(self):
-		return len(self.labels)
-
-
-def expand_labels(arr: np.ndarray) -> torch.Tensor:
-	'''Expand the array labels so that it's a [size, no_labels] matrix'''
-	labels = set(arr.tolist())
-	print('labels and len', labels, len(labels))
-	new_arr = np.zeros((arr.shape[0], len(labels)), dtype=float)
-	for i in range(len(arr)):
-		new_arr[i, int(arr[i])] = 1.0
-	return new_arr
-
 
 class Ensemble(nn.Module):
 	def __init__(self, input_size: int, hidden_size: int, output_size: int):
@@ -96,7 +61,7 @@ def train_ensemble(model: Ensemble,
 
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
-	labels_arr = expand_labels(shuffled_labels)
+	labels_arr = make_torch_labels_binary(shuffled_labels)
 
 	# create a dataset and dataloader to go iterate in batches
 	dataset = FineTuneDataSet(shuffled_sentences, labels_arr)
@@ -152,7 +117,7 @@ def evaluate(model: Ensemble, sentences: List[str], labels: List[str], batch_siz
 		metrics.append(load_metric(metric))
 		
 	# convert labels to the correct shape
-	labels_arr = expand_labels(labels)
+	labels_arr = make_torch_labels_binary(labels)
 
 	dataset = FineTuneDataSet(sentences, labels_arr)
 	dataset.tokenize_data(tokenizer)

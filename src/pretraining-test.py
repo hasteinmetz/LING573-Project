@@ -8,241 +8,15 @@ import numpy as np
 import pandas as pd
 from typing import *
 from featurizer import featurize, DTFIDF
-from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW
-from transformers import RobertaModel, RobertaTokenizer
-from transformers import RobertaForSequenceClassification as RobertaSeqCls
-from datasets import load_metric
+from transformers import RobertaModel as RoBERTa
+from transformers import RobertaTokenizer
+from pretraining import EnsembleModel, train_model, evaluate_model, RoBERTaClassifier
 from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 import json
 
 nn = torch.nn
-
-class FineTuneDataSet(Dataset):
-	'''Class creates a list of dicts of sentences and labels
-	and behaves list a list but also stores sentences and labels for
-	future use'''
-	def __init__(self, sentences: List[str], labels: List[int]):
-		self.sentences = sentences
-		self.labels = labels
-
-	def tokenize_data(self, tokenizer: RobertaTokenizer):
-		if not hasattr(self, 'encodings'):
-			# encode the data
-			self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-			self.input_ids = self.encodings['input_ids']
-
-	def __getitem__(self, index: int):
-		if not hasattr(self, 'encodings'):
-			raise AttributeError("Did not initialize encodings or input_ids")
-		else:
-			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			# item['labels'] = torch.tensor(self.labels[index])
-			return item, self.sentences[index], torch.tensor(self.labels[index])
-
-	def __len__(self):
-		return len(self.labels)
-
-
-def expand_labels(arr: np.ndarray) -> torch.Tensor:
-	'''Expand the array labels so that it's a [size, no_labels] matrix'''
-	labels = set(arr.tolist())
-	new_arr = np.zeros((arr.shape[0], len(labels)), dtype=float)
-	for i in range(len(arr)):
-		new_arr[i, int(arr[i])] = 1.0
-	return new_arr
-	
-
-class Regression(nn.Module):
-	def __init__(self):
-		super(Regression, self).__init__()
-		self.roberta = RobertaModel.from_pretrained('roberta-base')
-		roberta_hidden_size = self.roberta.config.hidden_size
-		self.regression = nn.Linear(roberta_hidden_size, 1)
-
-	def forward(self, data: dict, sentences: List[str], device: str):
-		# tokenize the data
-		inputs = {k:v.to(device) for k,v in data.items()}
-		outputs_roberta = self.roberta(**inputs).pooler_output
-		pred = self.regression(outputs_roberta)
-		return pred
-
-
-class Classifier(nn.Module):
-	def __init__(self, roberta):
-		super(Classifier, self).__init__()
-		init_roberta = RobertaSeqCls.from_pretrained('roberta-base')
-		roberta.pooler = None
-		init_roberta.roberta = roberta
-		self.roberta = init_roberta
-
-	def forward(self, data: dict, sentences: List[str], device: str):
-		# tokenize the data
-		inputs = {k:v.to(device) for k,v in data.items()}
-		outputs_roberta = self.roberta(**inputs).logits
-		return outputs_roberta
-
-
-def train_model(model: Union[Regression, RobertaSeqCls], 
-		sentences: List[str], labels: List[str], 
-		test_sents: List[str], test_labels: List[str], 
-		epochs: int, batch_size: int, lr: int,
-		tokenizer: RobertaTokenizer, 
-		optimizer: torch.optim, loss_fn: Callable, device: str, cl: str, save_path: str):
-	'''Train the neural network'''
-	
-	model.to(device)
-	model.train()
-	optim = optimizer(model.parameters(), lr=lr, weight_decay=1e-5)
-
-	metrics = []
-	if cl == 'yes':
-		measurements = ['f1', 'accuracy']
-		for metric in measurements:
-			m = load_metric(metric)
-			metrics.append(m)
-	else:
-		m = load_metric('mse', squared=False)
-		metrics = [m]
-
-	# shuffle the data
-	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
-	if cl == 'yes':
-		labels_arr = expand_labels(shuffled_labels)
-	else:
-		labels_arr = shuffled_labels
-
-	# create a dataset and dataloader to go iterate in batches
-	dataset = FineTuneDataSet(shuffled_sentences, labels_arr)
-	dataset.tokenize_data(tokenizer)
-	dataloader = DataLoader(dataset, batch_size=batch_size)
-
-	for epoch in range(epochs):
-		for i, (batch, X, labels) in enumerate(dataloader):
-
-			if cl == 'yes':
-				batch['labels'] = labels
-			else:
-				labels = torch.unsqueeze(labels, 1)
-
-			# send to the correct device
-			y = labels.to(device)
-
-			optim.zero_grad()
-
-			output = model(batch, X, device)
-
-			loss = loss_fn(output, y)
-			loss.backward()
-			optim.step()
-
-			# add batched results to metrics
-			# if and else clause used to distinguish classifier from regressor
-			if cl == 'yes':
-				pred_argmax = torch.argmax(torch.sigmoid(output), dim=-1)
-				y_argmax = torch.argmax(y, dim=-1)
-			else:
-				pred_argmax = output
-				y_argmax = torch.squeeze(y)
-			for m in metrics:
-				m.add_batch(predictions=pred_argmax, references=y_argmax)
-		
-			if (i + 1) % 6 == 0:
-		
-				# output metrics to standard output
-				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
-
-		# output metrics to standard output
-		values = f"Training metrics:\n" # empty string 
-		for m in metrics:
-			if m.name == 'mse':
-				val = m.compute(squared=False)
-				name = 'rmse'
-			else:
-				val = m.compute()
-				name = m.name
-			values += f"\t{name}: {val}\n"
-		print(values, file = sys.stderr)
-
-		evaluate(model, test_sents, test_labels, batch_size, tokenizer, device, cl, outfile=sys.stderr)
-
-	# SAVE MODELS
-	if cl == 'yes':
-		try:
-			print(f"Saving model to {save_path}...")
-			torch.save(model, save_path + '/model.pt')
-		except:
-			print(f"(Saving error) Couldn't save model to {save_path}/model.pt")
-
-
-def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
-	tokenizer: RobertaTokenizer, device: str, cl: str, outfile: Union[str, object]):
-	'''Train the pretrained neural network'''
-	model.to(device)
-	model.eval()
-
-	metrics = []
-	if cl == 'yes':
-		measurements = ['f1', 'accuracy']
-		for metric in measurements:
-			m = load_metric(metric)
-			metrics.append(m)
-	else:
-		m = load_metric('mse', squared=False)
-		metrics = [m]
-
-	# shuffle the data
-	if cl == 'yes':
-		labels_arr = expand_labels(labels)
-	else:
-		labels_arr = labels
-
-	dataset = FineTuneDataSet(sentences, labels_arr)
-	dataset.tokenize_data(tokenizer)
-	dataloader = DataLoader(dataset, batch_size=batch_size)
-
-	# intialize a list to store predictions
-	predictions = []
-
-	for batch, X, labels in dataloader:
-
-		if cl == 'yes':
-			batch['labels'] = labels
-		else:
-			labels = torch.unsqueeze(labels, 1)
-
-		# send to the correct device
-		y = labels.to(device)
-
-		output = model(batch, X, device)
-
-		# add batched results to metrics
-		# if and else clause used to distinguish classifier from regressor
-		if cl == 'yes':
-			pred_argmax = torch.argmax(torch.sigmoid(output), dim=-1)
-			y_argmax = torch.argmax(y, dim=-1)
-			predictions.extend(pred_argmax.clone().detach().to('cpu').tolist())
-		else:
-			pred_argmax = output
-			y_argmax = torch.squeeze(y)
-		for m in metrics:
-			m.add_batch(predictions=pred_argmax, references=y_argmax)
-		
-	# output metrics to standard output
-	values = f"Evaluation metrics:\n" # empty string
-	for m in metrics:
-		if m.name == 'mse':
-			val = m.compute(squared=False)
-			name = 'rmse'
-		else:
-			val = m.compute()
-			name = m.name
-		values += f"\t{name}: {val}\n"
-	print(values, file = outfile)
-
-	return predictions
-
 
 def main(args: argparse.Namespace) -> None:
 	# check if cuda is avaiable
@@ -275,79 +49,101 @@ def main(args: argparse.Namespace) -> None:
 		pt_sentences, pt_labels = pt_sentences[0:50], pt_labels[0:50]
 		dev_pt_sentences, dev_pt_labels = dev_pt_sentences[0:50], dev_pt_labels[0:50]
 	
+	# initialize tf-idf vectorizer
+	tfidf = DTFIDF(train_sentences, train_labels)
+
+	# get hurtlex dictionary
+	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
+
+	# load PCA and extract principle components from the training data
+	pca = PCA()
+	training_feature_matrix = featurize(train_sentences, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
+	pca.fit(training_feature_matrix)
+	print(f"Fitted PCA. Previously there were {training_feature_matrix.shape[1]} " + 
+	 	f"features. Now there are {pca.n_components_} features.", file=sys.stderr)
+
+	# reduce the parameters of the featurize function
+	FEATURIZER = lambda x: featurize(x, train_labels, hurtlex_dict, hurtlex_feat_list, tfidf)
+
+	# get input size
+	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
+	
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/pretrain-{args.job}.json'
+	config_file = f'src/configs/ensemble-{args.job}.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
 
 	# load important parts of the model
-	print("Initializing pretraining-test architecture...\n")
+	print("Initializing tokenizer...\n")
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 
 	# load model is already available
 	if args.reevaluate != 1:
-		print("Training model...\n")
+		print("Pre-training model...\n")
 
 		# initialize the model thingies
-		REGRESSOR = Regression()
+		ENSEMBLE = EnsembleModel(input_size, train_config['hidden_size'], train_config['output_size'])
 		OPTIMIZER = AdamW
 		LOSS_RE = nn.MSELoss()
-		LOSS_CL = nn.CrossEntropyLoss()
+		LOSS_CL = nn.BCEWithLogitsLoss()
 	
 		# pretrain the model on the regression task
 		train_model(
-			model=REGRESSOR, 
+			model=ENSEMBLE, 
 			sentences=pt_sentences,  
 			labels=pt_labels,
 			test_sents=dev_pt_sentences, 
 			test_labels=dev_pt_labels,
 			tokenizer=TOKENIZER, 
+			featurizer=FEATURIZER,
 			optimizer=OPTIMIZER,
 			loss_fn=LOSS_RE, 
 			device=DEVICE, 
-			cl='no',
-			save_path = f"{args.model_save_path}/{args.job}",
-			**train_config
+			measures=['mse'],
+			epochs=train_config['epochs'], 
+			batch_size=train_config['batch_size'], 
+			lr=train_config['lr'],
+			regression = 'linear'
 		)
-
-		# reload the model
-		CLASSIFIER = Classifier(REGRESSOR.roberta)
 
 		# finetune the model on the regression task
 		train_model(
-			model=CLASSIFIER, 
+			model=ENSEMBLE, 
 			sentences=train_sentences, 
 			labels=train_labels,
 			test_sents=dev_sentences, 
 			test_labels=dev_labels,
 			tokenizer=TOKENIZER, 
 			optimizer=OPTIMIZER,
+			featurizer=FEATURIZER,
 			loss_fn=LOSS_CL, 
 			device=DEVICE, 
-			cl='yes',
+			measures = ['f1', 'accuracy'],
 			save_path = f"{args.model_save_path}/{args.job}",
-			**train_config
+			epochs=train_config['epochs'], 
+			batch_size=train_config['batch_size'], 
+			lr=train_config['lr'],
+			regression = 'linear'
 		)
 	else:
 		try:
 			print("Loading existing model...\n")
 			# TODO: Change the directory organization
-			model = torch.load(f'src/models/testing-pretraining/{args.job}/')
+			model = torch.load(f'src/models/with-pretraining/{args.job}/')
 		except ValueError:
 			print("No existing model found. Rerun without --reevaluate")
 
-
 	# evaluate the model on test data
 	print("Evaluating models...")
-	preds = evaluate(
-		model=CLASSIFIER, 
+	preds = evaluate_model(
+		model=ENSEMBLE, 
 		sentences=dev_sentences, 
 		labels=dev_labels, 
 		batch_size=train_config['batch_size'],
 		tokenizer=TOKENIZER, 
+		featurizer=FEATURIZER,
 		device=DEVICE, 
-		cl='yes',
 		outfile=sys.stdout
 	)
 
@@ -369,11 +165,12 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
+	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
 	parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
 	parser.add_argument('--output_path', help="path to output data file")
 	parser.add_argument('--model_save_path', help="path to save models")
 	parser.add_argument('--error_path', help="path to save error analysis")
-	parser.add_argument('--debug', help="debug the pretraining with small dataset", type=int)
+	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)
 	parser.add_argument('--index', help="column to select from data", type=int)
 	parser.add_argument('--reevaluate', help="use 1 to reload an existing model if already completed", type=int, default=0)
 	args = parser.parse_args()

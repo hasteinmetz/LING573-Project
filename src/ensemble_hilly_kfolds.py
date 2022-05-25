@@ -10,7 +10,8 @@ import sys
 import numpy as np
 import pandas as pd
 from typing import *
-from featurizer import featurize, TFIDFGenerator, DTFIDF
+from featurizer import featurize,  DTFIDF
+from custom_pytorch_utils import FineTuneDataSet, make_torch_labels_binary
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW, SGD, Adagrad
 from transformers import RobertaForSequenceClassification, RobertaTokenizer
@@ -20,33 +21,6 @@ from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
 
 nn = torch.nn
-softmax = nn.functional.softmax
-
-class FineTuneDataSet(Dataset):
-    '''Class creates a list of dicts of sentences and labels
-    and behaves list a list but also stores sentences and labels for
-    future use'''
-    def __init__(self, sentences: List[str], labels: List[int]):
-        self.sentences = sentences
-        self.labels = labels
-
-    def tokenize_data(self, tokenizer: RobertaTokenizer):
-        if not hasattr(self, 'encodings'):
-            # encode the data
-            self.encodings = tokenizer(self.sentences, return_tensors="pt", padding=True)
-            self.input_ids = self.encodings['input_ids']
-
-    def __getitem__(self, index: int):
-        if not hasattr(self, 'encodings'):
-            raise AttributeError("Did not initialize encodings or input_ids")
-        else:
-            item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-            item['labels'] = torch.tensor(self.labels[index])
-            return item, self.sentences[index]
-
-    def __len__(self):
-        return len(self.labels)
-
 
 class RoBERTa(nn.Module):
 	'''A wrapper around the RoBERTa model with a defined forward function'''
@@ -88,14 +62,6 @@ class LogisticRegression(nn.Module):
 	def forward(self, input_logits: torch.tensor):
 		linear = self.linear(input_logits)
 		return torch.sigmoid(linear)
-
-
-def make_torch_labels_binary(labels: torch.tensor) -> torch.tensor:
-	'''Helper function that turns [n x 1] labels into [n x 2] labels'''
-	zeros = torch.zeros((labels.shape[0], 2), dtype=float)
-	for i in range(len(labels)):
-		zeros[i, labels[i]] = 1.0
-	return zeros
 
 
 def train_ensemble(
@@ -155,12 +121,16 @@ def train_ensemble(
 			FClassifier.train()
 			LogRegressor.train()
 
-			for i, (batch, X) in enumerate(dataloader):
+			for i, (batch, X, labels) in enumerate(dataloader):
 
 				# TRANSFORMER TRAINING
 
 				# set transformer optimizer to 0-grad
 				optim_tr.zero_grad()
+				
+				# change the shape of labels to [n, 2]
+				y = torch.Tensor(make_torch_labels_binary(labels)).to(device)
+				batch['labels'] = y
 
 				transformer_outputs = Transformer(batch, device)
 				
@@ -175,9 +145,6 @@ def train_ensemble(
 
 				# initialize the feature tensor
 				features_tensor = torch.tensor(featurizer(X), dtype=torch.float).to(device)
-
-				# change the shape of labels to [n, 2]
-				y = make_torch_labels_binary(batch['labels']).to(device)
 
 				classifier_outputs = FClassifier(features_tensor)
 
@@ -203,7 +170,7 @@ def train_ensemble(
 			Transformer.eval()
 			FClassifier.eval()
 
-			for i, (batch, X) in enumerate(dataloader):
+			for i, (batch, X, labels) in enumerate(dataloader):
 
 				optim_log.zero_grad()
 
@@ -221,7 +188,7 @@ def train_ensemble(
 				all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
 				output = LogRegressor(all_logits)
 				
-				y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+				y = torch.reshape(labels, (labels.size()[0], 1)).float().to(device)
 				loss_lg = loss_logistic(output, y)
 				loss_lg.backward()
 				optim_log.step()
@@ -248,15 +215,15 @@ def train_ensemble(
 
 	# SAVE MODELS
 	try:
-		print("Saving models to /src/models/testing-ensemble/...")
-		torch.save(Transformer, save_path + 'roberta')
-		torch.save(FClassifier, save_path + 'featurizer')
-		torch.save(LogRegressor, save_path + 'regression')
+		print(f"Saving model to {save_path}/ensemble-kfolds/...")
+		torch.save(Transformer, save_path + '/ensemble-kfolds/roberta.pt')
+		torch.save(FClassifier, save_path + '/ensemble-kfolds/featurizer.pt')
+		torch.save(LogRegressor, save_path + '/ensemble-kfolds/regression.pt')
 	except:
-		print("(Saving error) Saving models to src/models/testing-ensemble/...")
-		torch.save(Transformer, 'src/models/tmp_roberta')
-		torch.save(FClassifier, 'src/models/tmp_featurizer')
-		torch.save(LogRegressor, 'src/models/tmp_regression')
+		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-kfolds/...")
+		torch.save(Transformer, 'src/models/tmp_roberta.pt')
+		torch.save(FClassifier, 'src/models/tmp_featurizer.pt')
+		torch.save(LogRegressor, 'src/models/tmp_regression.pt')
 
 def evaluate_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
@@ -287,10 +254,10 @@ def evaluate_ensemble(
 	# intialize a list to store predictions
 	predictions, roberta_preds, feature_preds = [], [], []
 
-	for batch, X in dataloader:
+	for batch, X, labels in dataloader:
 
-		# send labels to device
-		y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float().to(device)
+		y = torch.Tensor(make_torch_labels_binary(labels)).to(device)
+		batch['labels'] = y
 
 		# GET LOGITS
 
@@ -304,11 +271,12 @@ def evaluate_ensemble(
 			
 		# OUTPUT EACH CLASSIFIER'S RESULT INDIVIDUALLY
 		tr_argmax = torch.argmax(transformer_logits, dim = -1)
-		for m1 in tr_metrics:
-			m1.add_batch(predictions=tr_argmax, references=y)
 		cl_argmax = torch.argmax(feature_logits, dim = -1)
+		true_ys = torch.argmax(y, dim = -1)
+		for m1 in tr_metrics:
+			m1.add_batch(predictions=tr_argmax, references=true_ys)
 		for m2 in cl_metrics:
-			m2.add_batch(predictions=cl_argmax, references=y)
+			m2.add_batch(predictions=cl_argmax, references=true_ys)
 
 		# EVALUATE REGRESSOR
 		all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
@@ -322,7 +290,7 @@ def evaluate_ensemble(
 
 		# add batched results to metrics
 		for m3 in metrics:
-			m3.add_batch(predictions=torch.round(y_hats), references=y)
+			m3.add_batch(predictions=torch.round(y_hats), references=true_ys)
 
 	# output metrics to standard output
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
@@ -408,7 +376,7 @@ def main(args: argparse.Namespace) -> None:
 		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
 		KFOLDS,
 		OPTIMIZER_TRANSFORMER, OPTIMIZER_CLASSIFIER, OPTIMIZER_REGRESSOR,
-		LOSS, DEVICE, save_path = args.model_save_location
+		LOSS, DEVICE, save_path = args.model_save_path
 	)
 
 	# evaluate the model on test data
@@ -421,20 +389,24 @@ def main(args: argparse.Namespace) -> None:
     # write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
+	output_file = f'{args.output_path}/{args.job}/ensemble-kfolds-output.csv'
+	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	data_filtered.to_csv(args.error_path, index=False, encoding='utf-8')
+	error_file = f'{args.error_path}-{args.job}-kfolds.csv'
+	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
-	
+	print("Finished normally :)")
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_data_path', help="path to input training data file")
 	parser.add_argument('--dev_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
-	parser.add_argument('--output_file', help="path to output data file")
-	parser.add_argument('--model_save_location', help="path to save models")
+	parser.add_argument('--output_path', help="path to output data file")
+	parser.add_argument('--job', help="path to output data file")
+	parser.add_argument('--model_save_path', help="path to save models")
 	parser.add_argument('--error_path', help="path to save error analysis")
 	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)
 	parser.add_argument('--index', help="column to select from data", type=int)
