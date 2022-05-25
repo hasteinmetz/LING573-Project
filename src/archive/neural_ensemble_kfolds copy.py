@@ -23,7 +23,6 @@ from sklearn.utils import shuffle
 import json
 
 nn = torch.nn
-
 class RoBERTa(nn.Module):
 	'''A wrapper around the RoBERTa model with a defined forward function'''
 	def __init__(self):
@@ -35,7 +34,6 @@ class RoBERTa(nn.Module):
 		inputs = {k:v.to(device) for k,v in data.items()}
 		roberta_out = self.roberta(**inputs)
 		return roberta_out
-
 class FeatureClassifier(nn.Module):
 	'''Simple feed forward neural network to classify a word's lexical features'''
 	def __init__(self, input_size: int, hidden_size: int, num_classes: int, dropout: float):
