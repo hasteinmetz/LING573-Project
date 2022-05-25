@@ -1,34 +1,72 @@
-Using the GPU:Tesla M10
+Using cpu device
 NOTE: Running in debug mode
 Fitted PCA. Previously there were 974 features. Now there are 100 features.
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias']
-- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-f1:
-	 {'f1': 0.7261146496815287}
-accuracy:
-	 {'accuracy': 0.57}
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.dense.bias', 'roberta.pooler.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.dense.bias', 'classifier.out_proj.weight', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
 
-	f1: {'f1': 0.33333333333333337}
-	accuracy: {'accuracy': 0.2}
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
 
-f1:
-	 {'f1': 0.7261146496815287}
-accuracy:
-	 {'accuracy': 0.57}
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
 
-	f1: {'f1': 0.2}
-	accuracy: {'accuracy': 0.2}
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
 
-f1:
-	 {'f1': 0.8793103448275862}
-accuracy:
-	 {'accuracy': 0.86}
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
 
-	f1: {'f1': 0.0}
-	accuracy: {'accuracy': 0.1}
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
+
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
+
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
+
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
+
+Fold 3 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
+
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
+
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
+
+Fold 4 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
+
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
+
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
+
+Epoch 0 accuracies:
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
+
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
+
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
 
 
-real	1m44.611s
-user	0m54.890s
-sys	0m10.419s
+real	5m33.249s
+user	4m30.926s
+sys	0m8.109s

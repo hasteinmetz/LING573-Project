@@ -178,9 +178,8 @@ def train_model(
 		for i, (batch, X, labels) in enumerate(dataloader):
 
 			# send to the correct device
-			labels = torch.unsqueeze(labels, 1)
-			y = labels
-			y.to(device)
+			y = torch.Tensor(labels)
+			y = torch.unsqueeze(y, 1).to(device)
 
 			# zero gradients
 			optim.zero_grad()
@@ -193,10 +192,13 @@ def train_model(
 			optim.step()
 
 			# add batched results to metrics
-			pred_argmax = output
+			if regression == 'linear':
+				pred_argmax = output
+			else:
+				pred_argmax = (output>0).float()
 			y_argmax = torch.squeeze(y)
 			for m in metrics:
-				m.add_batch(predictions=pred_argmax, references=y_argmax)
+				m.add_batch(predictions=torch.round(pred_argmax), references=y_argmax)
 		
 			if (i + 1) % 6 == 0:
 		
@@ -248,10 +250,9 @@ def evaluate_model(
 
 	for batch, X, labels in dataloader:
 
-		labels = torch.unsqueeze(labels, 1)
-
 		# send to the correct device
-		y = labels.to(device)
+		y = torch.Tensor(labels)
+		y = torch.unsqueeze(y, 1).to(device)
 
 		output = model(batch, X, featurizer, device)
 
@@ -259,13 +260,16 @@ def evaluate_model(
 		if regression == 'linear':
 			pred_argmax = output
 		else:
-			pred_argmax = torch.sigmoid(output)
+			pred_argmax = (output>0).float()
 		y_argmax = torch.squeeze(y)
 		for m in metrics:
-			m.add_batch(predictions=pred_argmax, references=y_argmax)
+			m.add_batch(predictions=torch.round(pred_argmax), references=y_argmax)
+
+		# append predictions to list
+		predictions.extend(torch.round(pred_argmax).clone().detach().to('cpu').tolist())
 		
 	# output metrics to standard output
-	values = f"Training metrics:\n" # empty string 
+	values = f"Evaluation metrics:\n" # empty string 
 	for m in metrics:
 		val = m.compute()
 		name = m.name if m.name != 'mse' else 'rmse'

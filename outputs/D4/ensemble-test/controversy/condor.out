@@ -1,101 +1,17 @@
-Using cuda device
+Using cpu device
 Loading training and development data...
 Initializing ensemble architecture...
 
-Training model...
-
-labels and len {0.0, 1.0} 2
-labels and len {0.0, 1.0} 2
-[[1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]]
-tensor([[1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
-tensor([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
-labels and len {0.0, 1.0} 2
-[[1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]]
-tensor([[1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
-tensor([0, 1, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
-labels and len {0.0, 1.0} 2
-[[1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]]
-tensor([[1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
-tensor([0, 0, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
-Saving model to {save_path}/ensemble/...
+Saving model to src/models/testing-ensemble/ensemble-kfolds/...
+(Saving error) Couldn't save model to src/models/testing-ensemble/ensemble-kfolds/...
 Evaluating models...
-labels and len {0.0, 1.0} 2
-[[1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [1. 0.]
- [0. 1.]
- [1. 0.]
- [1. 0.]]
-tensor([[1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [1., 0.],
-        [0., 1.],
-        [1., 0.],
-        [1., 0.]], dtype=torch.float64) torch.Size([10, 2])
-tensor([0, 0, 1, 1, 1, 1, 1, 0, 1, 1], device='cuda:0') tensor([0, 1, 0, 0, 0, 0, 0, 1, 0, 0], device='cuda:0')
-	f1: {'f1': 0.0}
-	accuracy: {'accuracy': 0.1}
+Ensemble	f1: {'f1': 0.33333333333333337}
+Ensemble	accuracy: {'accuracy': 0.2}
 
-Done! Exited normally :)
+Transformer	f1: {'f1': 0.33333333333333337}
+Transformer	accuracy: {'accuracy': 0.2}
+
+Featurizer	f1: {'f1': 0.33333333333333337}
+Featurizer	accuracy: {'accuracy': 0.2}
+
+Finished normally :)

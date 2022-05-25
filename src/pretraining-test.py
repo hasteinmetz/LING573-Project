@@ -124,7 +124,7 @@ def main(args: argparse.Namespace) -> None:
 			epochs=train_config['epochs'], 
 			batch_size=train_config['batch_size'], 
 			lr=train_config['lr'],
-			regression = 'linear'
+			regression = 'log'
 		)
 	else:
 		try:
@@ -143,8 +143,10 @@ def main(args: argparse.Namespace) -> None:
 		batch_size=train_config['batch_size'],
 		tokenizer=TOKENIZER, 
 		featurizer=FEATURIZER,
+		measures = ['f1', 'accuracy'],
 		device=DEVICE, 
-		outfile=sys.stdout
+		outfile=sys.stdout,
+		regression = 'log'
 	)
 
 	# write results to output file
