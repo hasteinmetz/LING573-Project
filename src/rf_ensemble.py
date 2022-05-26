@@ -15,10 +15,10 @@ from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
 from pytorch_utils import FineTuneDataSet
 from featurizer import featurize, get_all_features
-from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
+from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 
 nn = torch.nn
 
@@ -173,7 +173,6 @@ def main(args: argparse.Namespace) -> None:
 	print("loading training and development data...")
 	train_sentences, train_labels = utils.read_adaptation_data(args.train_data_path)
 	dev_sentences,  dev_labels = utils.read_adaptation_data(args.dev_data_path)
-	
 	
 	#initialize ensemble model
 	print("initializing ensemble architecture")

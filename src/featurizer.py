@@ -1,20 +1,18 @@
-from tkinter import W
 import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from functools import reduce
 import spacy
 import utils
 import numpy as np
 import pandas as pd
+from math import log
 from typing import *
 from empath import Empath
+from functools import reduce
 from string import punctuation
-from sklearn.feature_extraction.text import CountVectorizer
+from nltk.corpus import stopwords
 from sklearn.decomposition import PCA
-from math import log
+from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import CountVectorizer
 
-pca_component_num = 0
 def get_ner_matrix(data: List[str]) -> np.ndarray:  
 	'''
 	arguments:
@@ -264,7 +262,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 
 	return nv
 	
-def get_all_features(train_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_generator: DTFIDF, pca: PCA) -> Tuple[np.ndarray, np.ndarray]:
+def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_generator: DTFIDF) -> Tuple[np.ndarray, np.ndarray]:
 	'''
 	arguments:
 		- train sentences: list of input data to be featurized
@@ -277,10 +275,10 @@ def get_all_features(train_sentences: List[str], hurtlex_dict: Dict[str, str], h
 	featurizes data and performs principal component analyses on them
 	'''
 	train_features = featurize(train_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
+	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
 
 	# perform PCA
-	pv = None
-	
+	train_pca = PCA(.95)
 	train_pca.fit(train_features)
 	train_pv = train_pca.transform(train_features) 
 	print("\tnum components: {}".format(train_pca.n_components))
