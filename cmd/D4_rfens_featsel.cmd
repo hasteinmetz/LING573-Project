@@ -1,10 +1,9 @@
 executable           = ../src/executables/d4_rfens_featsel.sh 
 getenv               = true
 arguments            = 
-output               = ../outputs/condor.out
-error                = ../outputs/condor.error
-log                  = ../outputs/condor.log
+output               = ../outputs/D4/rf_ensemble/condor.out
+error                = ../outputs/D4/rf_ensemble/condor.error
+log                  = ../outputs/D4/rf_ensemble/condor.log
 request_GPUs         = 1
-transfer_executable  = false
 request_memory       = 2*1024
 queue
