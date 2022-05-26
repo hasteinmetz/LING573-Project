@@ -9,6 +9,7 @@ Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine
 transfer_executable   = false
 request_memory        = 2*1024
 stream_output         = True
+<<<<<<< HEAD
 notify_user           = hsteinm@uw.edu
 notification          = always
 queue job, dim_red, arguments from (
@@ -16,4 +17,11 @@ queue job, dim_red, arguments from (
     controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
     humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
     controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
+=======
+queue job, dim_red, arguments from (
+    humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red)"
+    controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red)"
+    humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red)"
+    controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red)"
+>>>>>>> 7b20617 (renamed files)
 )
