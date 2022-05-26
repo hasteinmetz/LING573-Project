@@ -262,7 +262,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 
 	return nv
 	
-def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set, tfidf_generator: DTFIDF) -> Tuple[np.ndarray, np.ndarray]:
+def get_all_features(train_sentences: List[str], train_labels: np.ndarray, dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
 	'''
 	arguments:
 		- train sentences: list of input data to be featurized
@@ -274,6 +274,7 @@ def get_all_features(train_sentences: List[str], dev_sentences: List[str], hurtl
 
 	featurizes data and performs principal component analyses on them
 	'''
+	tfidf_generator = DTFIDF(train_sentences, train_labels)
 	train_features = featurize(train_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
 	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
 
