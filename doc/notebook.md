@@ -3,6 +3,33 @@
 Use this file to document any important changes you've made or any records of running the system.
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
+
+## 5-26 Neural Ensemble performances (dev set)
+
+- Vanilla neural:
+	- K-Best:
+		- humor: 
+			- f1: {'f1': 0.9326530612244897} | accuracy: {'accuracy': 0.9175}
+		- controversy:
+			- f1: {'f1': 0.0} | accuracy: {'accuracy': 0.4969574036511156}
+	- PCA:
+		- humor: 
+			- f1: {'f1': 0.9156398104265402} | accuracy: {'accuracy': 0.88875}
+		- controversy:
+			- f1: {'f1': 0.0} | accuracy: {'accuracy': 0.4969574036511156}
+- neural w/ kfolds:
+	- K-Best:
+		- humor: 
+			- f1: {'f1': 0.9404517453798769} | accuracy: {'accuracy': 0.9275}
+		- controversy:
+			- f1: {'f1': 0.5246548323471399} | accuracy: {'accuracy': 0.5111561866125761} 
+	- PCA:
+		- humor: 
+			- f1: {'f1': 0.9454905847373637} | accuracy: {'accuracy': 0.93125}
+		- controversy:
+			- f1: {'f1': 0.5010266940451744} | accuracy: {'accuracy': 0.5070993914807302} 
+	- **In both there are higher f1 scores in the earlier epochs... it seems to be unstable though... the transformer is not able to learn more than guessing the majority group**
+
 ### 5-9 Avani
 - v1 ensemble 
 	- 100 estimator rf
