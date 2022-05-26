@@ -97,7 +97,7 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 
 	roberta_class_prob = None 
 	for batch in dl:
-		batch['labels'] = batch.pop('label')
+		batch['labels'] = batch.pop('labels')
 		inputs = {k: y.to(device) for k,y in batch.items()}
 
 		with torch.no_grad():
@@ -138,7 +138,7 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 
 	roberta_class_prob = None
 	for batch in dl:
-		batch['labels'] = batch.pop('label')
+		batch['labels'] = batch.pop('labels')
 		inputs = {k: y.to(device) for k,y in batch.items()}
 
 		with torch.no_grad():
