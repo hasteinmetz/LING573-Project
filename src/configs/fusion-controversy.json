@@ -1,8 +1,0 @@
-{
-	"lr": 1e-4,
-	"batch_size": 32,
-	"hidden_size": 40,
-	"output_size": 25,
-	"dropout": 0.25,
-	"epochs": 4
-}
