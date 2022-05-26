@@ -24,11 +24,15 @@ import json
 
 nn = torch.nn
 
+torch.manual_seed(770613)
+
 class RoBERTa(nn.Module):
 	'''A wrapper around the RoBERTa model with a defined forward function'''
-	def __init__(self):
+	def __init__(self, dropout_roberta: float = 0.1):
 		super(RoBERTa, self).__init__()
-		self.roberta = RobertaForSequenceClassification.from_pretrained('roberta-base')
+		self.roberta = RobertaForSequenceClassification.from_pretrained(
+			'roberta-base', num_labels = 2, hidden_dropout_prob = dropout_roberta, attention_probs_dropout_prob = dropout_roberta
+		)
 
 	def forward(self, data: dict, device: str):
 		# tokenize the data
@@ -71,7 +75,7 @@ class LogisticRegression(nn.Module):
 def train_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
 		sentences: List[str], labels: np.ndarray, featurizer: Callable,
-		dev_sentences: List[str], dev_labels: np.ndarray,
+		test_sentences: List[str], test_labels: np.ndarray,
 		epochs: int, batch_size: int, 
 		lr_transformer: float, lr_classifier: float, lr_regressor: float,
 		kfolds: int,
@@ -219,7 +223,7 @@ def train_ensemble(
 				
 			# Get the accuracy of the fold on the test data
 			print(f"Fold {fold} accuracies:", file = sys.stderr)
-			preds1, preds2, preds3 = evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
+			preds1, preds2, preds3 = evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, test_sentences, test_labels, featurizer, batch_size, device, sys.stderr)
 					
 	# SAVE MODEL
 	try:
@@ -329,14 +333,14 @@ def main(args: argparse.Namespace) -> None:
 	#load data
 	print("Loading training and development data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
-	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path, index=args.index)
+	test_sentences, test_labels = utils.read_data_from_file(args.test_data_path, index=args.index)
 
 	if args.debug == 1:
 		print(f"NOTE: Running in debug mode", file=sys.stderr)
 		train_sentences, train_labels = shuffle(train_sentences, train_labels, random_state = 0)
-		dev_sentences, dev_labels = shuffle(dev_sentences, dev_labels, random_state = 0)
+		test_sentences, test_labels = shuffle(test_sentences, test_labels, random_state = 0)
 		train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
-		dev_sentences, dev_labels = dev_sentences[0:10], dev_labels[0:10]
+		test_sentences, test_labels = test_sentences[0:10], test_labels[0:10]
 
 	# initialize tf-idf vectorizer
 	tfidf = DTFIDF(train_sentences, train_labels)
@@ -368,14 +372,21 @@ def main(args: argparse.Namespace) -> None:
 
 	# initialize ensemble model
 	print("Initializing ensemble architecture...\n")
+
+	# optimizers and loss functions
 	OPTIMIZER_TRANSFORMER = AdamW
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
 	LOSS = nn.CrossEntropyLoss()
+
+	# roberta
+	dropout_roberta = train_config.pop('dropout_roberta')
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
-	ROBERTA = RoBERTa()
+	ROBERTA = RoBERTa(dropout_roberta=dropout_roberta)
+
+	# MLP and regressor
 	hidden_layers = train_config.pop('hidden_size')
-	dropout = train_config.pop('dropout')
+	dropout = train_config.pop('dropout_mlp')
 	FEATURECLASSIFIER = FeatureClassifier(input_size, hidden_layers, 2, dropout)
 	LOGREGRESSION = LogisticRegression(4)
 
@@ -388,8 +399,8 @@ def main(args: argparse.Namespace) -> None:
 		sentences=train_sentences, 
 		labels=train_labels, 
 		featurizer=FEATURIZER, 
-		dev_sentences=dev_sentences, 
-		dev_labels=dev_labels,
+		test_sentences=test_sentences, 
+		test_labels=test_labels,
 		optimizer_transformer=OPTIMIZER_TRANSFORMER, 
 		optimizer_classifier=OPTIMIZER_CLASSIFIER, 
 		optimizer_regression=OPTIMIZER_REGRESSOR,
@@ -412,17 +423,17 @@ def main(args: argparse.Namespace) -> None:
 	print("Evaluating models...")
 	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE
+		test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
 	)
 
 	# write results to output file
-	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
-	dev_out = pd.DataFrame(dev_out_d)
+	test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
+	test_out = pd.DataFrame(test_out_d)
 	output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}.csv'
-	dev_out.to_csv(output_file, index=False, encoding='utf-8')
+	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
-	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
+	data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
 	error_file = f'{args.error_path}-{args.job}-{args.dim_reduc_method}.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
@@ -432,7 +443,7 @@ def main(args: argparse.Namespace) -> None:
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_data_path', help="path to input training data file")
-	parser.add_argument('--dev_data_path', help="path to input dev data file")
+	parser.add_argument('--test_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
 	parser.add_argument('--output_path', help="path to output data file")
 	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors", default = 'pca')

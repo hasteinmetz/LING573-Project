@@ -1,0 +1,191 @@
+Using the GPU:Tesla M10
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.weight', 'lm_head.decoder.weight', 'roberta.pooler.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.out_proj.weight', 'classifier.dense.bias', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+	(epoch 1, fold 1, samples 320) FClassifier Loss: 0.7042969390749931 Transformer Loss: 0.6938697559817228
+	(epoch 1, fold 1, samples 640) FClassifier Loss: 0.6885200049728155 Transformer Loss: 0.6731768091703998
+	(epoch 1, fold 1, samples 960) FClassifier Loss: 0.6905253138393164 Transformer Loss: 0.6880750667769462
+	(epoch 1, fold 1, samples 1280) FClassifier Loss: 0.6977965850383043 Transformer Loss: 0.7071097017615102
+	(epoch 1, fold 1, samples 1600) FClassifier Loss: 0.6947700679302216 Transformer Loss: 0.696183994099556
+	(epoch 1, fold 1, samples 1920) FClassifier Loss: 0.6921797432005405 Transformer Loss: 0.6967402894842962
+	(epoch 1, fold 1, samples 2240) FClassifier Loss: 0.6890252716839314 Transformer Loss: 0.6939668194208934
+	(epoch 1, fold 1, samples 2560) FClassifier Loss: 0.6955813597887754 Transformer Loss: 0.6879256773536326
+(epoch 1, fold 1, samples 640) Regression Accuracy: 0.59375, Loss: 0.6814717054367065
+(epoch 1, fold 1, samples 1280) Regression Accuracy: 0.5625, Loss: 0.6863915324211121
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.6693657219973009}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.0}
+Featurizer	accuracy: {'accuracy': 0.4969574036511156}
+
+	(epoch 1, fold 2, samples 320) FClassifier Loss: 0.6942815817892551 Transformer Loss: 0.6902401143306633
+	(epoch 1, fold 2, samples 640) FClassifier Loss: 0.6974175106734037 Transformer Loss: 0.6982472511845117
+	(epoch 1, fold 2, samples 960) FClassifier Loss: 0.690135583281517 Transformer Loss: 0.6860150662250817
+	(epoch 1, fold 2, samples 1280) FClassifier Loss: 0.6918913293629885 Transformer Loss: 0.6855907340359408
+	(epoch 1, fold 2, samples 1600) FClassifier Loss: 0.6880747526884079 Transformer Loss: 0.7016652656020597
+	(epoch 1, fold 2, samples 1920) FClassifier Loss: 0.6915622614324093 Transformer Loss: 0.6948386348085478
+	(epoch 1, fold 2, samples 2240) FClassifier Loss: 0.681729719042778 Transformer Loss: 0.685814595039119
+	(epoch 1, fold 2, samples 2560) FClassifier Loss: 0.6888227891176939 Transformer Loss: 0.6977020632330095
+(epoch 1, fold 2, samples 640) Regression Accuracy: 0.46875, Loss: 0.7076897621154785
+(epoch 1, fold 2, samples 1280) Regression Accuracy: 0.5, Loss: 0.6997613310813904
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.6693657219973009}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.047058823529411764}
+Featurizer	accuracy: {'accuracy': 0.5070993914807302}
+
+	(epoch 1, fold 3, samples 320) FClassifier Loss: 0.6684672106057405 Transformer Loss: 0.6904119804967195
+	(epoch 1, fold 3, samples 640) FClassifier Loss: 0.6862303875386715 Transformer Loss: 0.711049075529445
+	(epoch 1, fold 3, samples 960) FClassifier Loss: 0.6727216523140669 Transformer Loss: 0.6737727006911882
+	(epoch 1, fold 3, samples 1280) FClassifier Loss: 0.6723894905298948 Transformer Loss: 0.6822389867165839
+	(epoch 1, fold 3, samples 1600) FClassifier Loss: 0.6481438893824816 Transformer Loss: 0.7004053622431456
+	(epoch 1, fold 3, samples 1920) FClassifier Loss: 0.6783383172005415 Transformer Loss: 0.6905504843834933
+	(epoch 1, fold 3, samples 2240) FClassifier Loss: 0.6639997065067291 Transformer Loss: 0.694416669124621
+	(epoch 1, fold 3, samples 2560) FClassifier Loss: 0.659629906527698 Transformer Loss: 0.696480517355667
+(epoch 1, fold 3, samples 640) Regression Accuracy: 0.5625, Loss: 0.6876471042633057
+(epoch 1, fold 3, samples 1280) Regression Accuracy: 0.40625, Loss: 0.7156878113746643
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.6693657219973009}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.2712933753943218}
+Transformer	accuracy: {'accuracy': 0.5314401622718052}
+
+Featurizer	f1: {'f1': 0.2310030395136778}
+Featurizer	accuracy: {'accuracy': 0.486815415821501}
+
+	(epoch 2, fold 1, samples 320) FClassifier Loss: 0.5449868571013212 Transformer Loss: 0.6959470398142003
+	(epoch 2, fold 1, samples 640) FClassifier Loss: 0.5601789187639952 Transformer Loss: 0.710225559247192
+	(epoch 2, fold 1, samples 960) FClassifier Loss: 0.5054998470004648 Transformer Loss: 0.6994235348538496
+	(epoch 2, fold 1, samples 1280) FClassifier Loss: 0.5208628652617335 Transformer Loss: 0.7128333330038004
+	(epoch 2, fold 1, samples 1600) FClassifier Loss: 0.5506360498256981 Transformer Loss: 0.7004807015619008
+	(epoch 2, fold 1, samples 1920) FClassifier Loss: 0.6323220822960138 Transformer Loss: 0.6976114346871327
+	(epoch 2, fold 1, samples 2240) FClassifier Loss: 0.5829775459133089 Transformer Loss: 0.6892674529262877
+	(epoch 2, fold 1, samples 2560) FClassifier Loss: 0.617830591276288 Transformer Loss: 0.6927111207332928
+(epoch 2, fold 1, samples 640) Regression Accuracy: 0.59375, Loss: 0.6786397695541382
+(epoch 2, fold 1, samples 1280) Regression Accuracy: 0.5625, Loss: 0.6719167828559875
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.6693657219973009}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4174757281553398}
+Featurizer	accuracy: {'accuracy': 0.513184584178499}
+
+	(epoch 2, fold 2, samples 320) FClassifier Loss: 0.4365676420275122 Transformer Loss: 0.7048202373553067
+	(epoch 2, fold 2, samples 640) FClassifier Loss: 0.48322385060600936 Transformer Loss: 0.7098556320997886
+	(epoch 2, fold 2, samples 960) FClassifier Loss: 0.41084054531529546 Transformer Loss: 0.6940770514775068
+	(epoch 2, fold 2, samples 1280) FClassifier Loss: 0.447976230410859 Transformer Loss: 0.6820633473107591
+	(epoch 2, fold 2, samples 1600) FClassifier Loss: 0.3569574027787894 Transformer Loss: 0.687750481229159
+	(epoch 2, fold 2, samples 1920) FClassifier Loss: 0.45941281763953157 Transformer Loss: 0.6916608804895077
+	(epoch 2, fold 2, samples 2240) FClassifier Loss: 0.5267457415466197 Transformer Loss: 0.6872234277543612
+	(epoch 2, fold 2, samples 2560) FClassifier Loss: 0.523965158034116 Transformer Loss: 0.6928715923149866
+(epoch 2, fold 2, samples 640) Regression Accuracy: 0.78125, Loss: 0.6282442808151245
+(epoch 2, fold 2, samples 1280) Regression Accuracy: 0.875, Loss: 0.5801311731338501
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.5811965811965812}
+Ensemble	accuracy: {'accuracy': 0.5030425963488844}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4365256124721604}
+Featurizer	accuracy: {'accuracy': 0.486815415821501}
+
+	(epoch 2, fold 3, samples 320) FClassifier Loss: 0.22949738224269822 Transformer Loss: 0.6891058770706877
+	(epoch 2, fold 3, samples 640) FClassifier Loss: 0.48569128033705056 Transformer Loss: 0.705362980341306
+	(epoch 2, fold 3, samples 960) FClassifier Loss: 0.2828426519408822 Transformer Loss: 0.7020102435053559
+	(epoch 2, fold 3, samples 1280) FClassifier Loss: 0.31803203898016363 Transformer Loss: 0.6913389116029975
+	(epoch 2, fold 3, samples 1600) FClassifier Loss: 0.3619445327494759 Transformer Loss: 0.6820781147107482
+	(epoch 2, fold 3, samples 1920) FClassifier Loss: 0.3972924374975264 Transformer Loss: 0.6910555713593567
+	(epoch 2, fold 3, samples 2240) FClassifier Loss: 0.4398883530520834 Transformer Loss: 0.7026882807022048
+	(epoch 2, fold 3, samples 2560) FClassifier Loss: 0.292742163175717 Transformer Loss: 0.6889935584385967
+(epoch 2, fold 3, samples 640) Regression Accuracy: 0.90625, Loss: 0.5006537437438965
+(epoch 2, fold 3, samples 1280) Regression Accuracy: 0.84375, Loss: 0.5017863512039185
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.5267326732673268}
+Ensemble	accuracy: {'accuracy': 0.5152129817444219}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4454342984409799}
+Featurizer	accuracy: {'accuracy': 0.4949290060851927}
+
+	(epoch 3, fold 1, samples 320) FClassifier Loss: 0.24340410067816265 Transformer Loss: 0.6911194295680616
+	(epoch 3, fold 1, samples 640) FClassifier Loss: 0.2321078739623772 Transformer Loss: 0.6900748022344487
+	(epoch 3, fold 1, samples 960) FClassifier Loss: 0.3488473471952602 Transformer Loss: 0.7029946111870231
+	(epoch 3, fold 1, samples 1280) FClassifier Loss: 0.22286072158021852 Transformer Loss: 0.6874531635621679
+	(epoch 3, fold 1, samples 1600) FClassifier Loss: 0.22335837065475062 Transformer Loss: 0.6938938767543732
+	(epoch 3, fold 1, samples 1920) FClassifier Loss: 0.33480948297074065 Transformer Loss: 0.6917396696444484
+	(epoch 3, fold 1, samples 2240) FClassifier Loss: 0.47948808484943584 Transformer Loss: 0.6879136968345847
+	(epoch 3, fold 1, samples 2560) FClassifier Loss: 0.42969819254903996 Transformer Loss: 0.6915617968188599
+(epoch 3, fold 1, samples 640) Regression Accuracy: 0.90625, Loss: 0.45192450284957886
+(epoch 3, fold 1, samples 1280) Regression Accuracy: 0.90625, Loss: 0.4006718099117279
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.5341130604288499}
+Ensemble	accuracy: {'accuracy': 0.5152129817444219}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.48945147679324896}
+Featurizer	accuracy: {'accuracy': 0.5091277890466531}
+
+	(epoch 3, fold 2, samples 320) FClassifier Loss: 0.27633007342228666 Transformer Loss: 0.6952806677436456
+	(epoch 3, fold 2, samples 640) FClassifier Loss: 0.32586082244233694 Transformer Loss: 0.7036447817808948
+	(epoch 3, fold 2, samples 960) FClassifier Loss: 0.2781298589779908 Transformer Loss: 0.7048195372044574
+	(epoch 3, fold 2, samples 1280) FClassifier Loss: 0.3067118646868039 Transformer Loss: 0.6918855861513293
+	(epoch 3, fold 2, samples 1600) FClassifier Loss: 0.2112402039783774 Transformer Loss: 0.6903501827491709
+	(epoch 3, fold 2, samples 1920) FClassifier Loss: 0.322772101033479 Transformer Loss: 0.6906868511246103
+	(epoch 3, fold 2, samples 2240) FClassifier Loss: 0.4104360061974148 Transformer Loss: 0.6875611098803347
+	(epoch 3, fold 2, samples 2560) FClassifier Loss: 0.40653505927184597 Transformer Loss: 0.6917445105029856
+(epoch 3, fold 2, samples 640) Regression Accuracy: 0.90625, Loss: 0.36498743295669556
+(epoch 3, fold 2, samples 1280) Regression Accuracy: 0.9375, Loss: 0.3286091685295105
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.5139442231075697}
+Ensemble	accuracy: {'accuracy': 0.5050709939148073}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4759916492693111}
+Featurizer	accuracy: {'accuracy': 0.4908722109533469}
+
+	(epoch 3, fold 3, samples 320) FClassifier Loss: 0.21036178988288157 Transformer Loss: 0.6982529158121906
+	(epoch 3, fold 3, samples 640) FClassifier Loss: 0.26228636148152873 Transformer Loss: 0.7106086072471953
+	(epoch 3, fold 3, samples 960) FClassifier Loss: 0.2478537690549274 Transformer Loss: 0.694296503716032
+	(epoch 3, fold 3, samples 1280) FClassifier Loss: 0.24311244943237398 Transformer Loss: 0.6919906158732374
+	(epoch 3, fold 3, samples 1600) FClassifier Loss: 0.16085770777863218 Transformer Loss: 0.6757574675430078
+	(epoch 3, fold 3, samples 1920) FClassifier Loss: 0.36564497559447773 Transformer Loss: 0.6895616594265448
+	(epoch 3, fold 3, samples 2240) FClassifier Loss: 0.22563147643813863 Transformer Loss: 0.6914985690600588
+	(epoch 3, fold 3, samples 2560) FClassifier Loss: 0.18388736021734076 Transformer Loss: 0.687231678068656
+(epoch 3, fold 3, samples 640) Regression Accuracy: 0.875, Loss: 0.30219197273254395
+(epoch 3, fold 3, samples 1280) Regression Accuracy: 0.8125, Loss: 0.32523131370544434
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.5010266940451744}
+Ensemble	accuracy: {'accuracy': 0.5070993914807302}
+
+Transformer	f1: {'f1': 0.32121212121212117}
+Transformer	accuracy: {'accuracy': 0.5456389452332657}
+
+Featurizer	f1: {'f1': 0.4723404255319149}
+Featurizer	accuracy: {'accuracy': 0.4969574036511156}
+
+Saving models to /src/models/nn_ensemble_kfolds/controversy/...
+
+real	119m31.876s
+user	105m51.500s
+sys	11m7.149s

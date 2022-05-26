@@ -21,21 +21,25 @@ import json
 nn = torch.nn
 softmax = nn.Softmax(dim=1)
 
+torch.manual_seed(770613)
+
 class Ensemble(nn.Module):
-	def __init__(self, input_size: int, hidden_size: int, output_size: int, dropout: float):
+	def __init__(self, input_size: int, hidden_size: int, output_size: int, dropout_mlp: float, dropout_roberta: float = 0.1):
 		super(Ensemble, self).__init__()
-		self.roberta = RobertaModel.from_pretrained('roberta-base')
+		self.roberta = RobertaModel.from_pretrained(
+			'roberta-base', hidden_dropout_prob = dropout_roberta, attention_probs_dropout_prob = dropout_roberta
+		)
 		roberta_hidden_size = self.roberta.config.hidden_size
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout), 
+			nn.Dropout(dropout_mlp), 
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout),
+			nn.Dropout(dropout_mlp),
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout),
+			nn.Dropout(dropout_mlp),
 			nn.Linear(hidden_size, output_size)
 		)
 		self.logistic = nn.Linear(output_size + roberta_hidden_size, 2)
@@ -179,14 +183,14 @@ def main(args: argparse.Namespace) -> None:
 	#load data
 	print("Loading training and development data...")
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
-	dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path, index=args.index)
+	test_sentences, test_labels = utils.read_data_from_file(args.test_data_path, index=args.index)
 
 	if args.debug == 1:
 		print(f"NOTE: Running in debug mode", file=sys.stderr)
 		train_sentences, train_labels = shuffle(train_sentences, train_labels, random_state = 0)
-		dev_sentences, dev_labels = shuffle(dev_sentences, dev_labels, random_state = 0)
+		test_sentences, test_labels = shuffle(test_sentences, test_labels, random_state = 0)
 		train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
-		dev_sentences, dev_labels = dev_sentences[0:10], dev_labels[0:10]
+		test_sentences, test_labels = test_sentences[0:10], test_labels[0:10]
 
 	# initialize tf-idf vectorizer
 	tfidf = DTFIDF(train_sentences, train_labels)
@@ -217,20 +221,21 @@ def main(args: argparse.Namespace) -> None:
 		train_config = json.loads(configs)
 
 	# get hidden layers for MLP
-	dropout = train_config.pop('dropout')
+	dropout_mlp = train_config.pop('dropout_mlp')
 	hidden_size = train_config.pop('hidden_size')
 	output_size = train_config.pop('output_size')
 
 	# load important parts of the model
 	print("Initializing ensemble architecture...\n")
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
+	dropout_roberta = train_config.pop('dropout_roberta')
 
 	# load model is already available
 	if args.reevaluate != 1:
 		print("Training model...\n")
 
 		# initialize ensemble model
-		ENSEMBLE = Ensemble(input_size, hidden_size, output_size, dropout)
+		ENSEMBLE = Ensemble(input_size, hidden_size, output_size, dropout_mlp, dropout_roberta)
 		OPTIMIZER = AdamW
 		LOSS = nn.CrossEntropyLoss()
 	
@@ -239,8 +244,8 @@ def main(args: argparse.Namespace) -> None:
 			model=ENSEMBLE, 
 			sentences=train_sentences, 
 			labels=train_labels,
-			test_sents=dev_sentences, 
-			test_labels=dev_labels,
+			test_sents=test_sentences, 
+			test_labels=test_labels,
 			featurizer=FEATURIZER, 
 			tokenizer=TOKENIZER, 
 			optimizer=OPTIMIZER,
@@ -268,8 +273,8 @@ def main(args: argparse.Namespace) -> None:
 	print("Evaluating model...")
 	preds = evaluate(
 		model=ENSEMBLE, 
-		sentences=dev_sentences, 
-		labels=dev_labels, 
+		sentences=test_sentences, 
+		labels=test_labels, 
 		batch_size=train_config['batch_size'],
 		tokenizer=TOKENIZER, 
 		featurizer=FEATURIZER, 
@@ -278,13 +283,13 @@ def main(args: argparse.Namespace) -> None:
 	)
 
 	# write results to output file
-	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
-	dev_out = pd.DataFrame(dev_out_d)
+	test_out_d = {'sentence': test_sentences, 'predicted': preds, 'correct_label': test_labels}
+	test_out = pd.DataFrame(test_out_d)
 	output_file = f'{args.output_path}/{args.job}/nn_{args.dim_reduc_method}.csv'
-	dev_out.to_csv(output_file, index=False, encoding='utf-8')
+	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
-	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
+	data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
 	error_file = f'{args.error_path}-{args.job}-{args.dim_reduc_method}.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
@@ -294,7 +299,7 @@ def main(args: argparse.Namespace) -> None:
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_data_path', help="path to input training data file")
-	parser.add_argument('--dev_data_path', help="path to input dev data file")
+	parser.add_argument('--test_data_path', help="path to input dev data file")
 	parser.add_argument('--hurtlex_path', help="path to hurtlex dictionary")
 	parser.add_argument('--dim_reduc_method', help="method used to reduce the dimensionality of feature vectors", default = 'pca')
 	parser.add_argument('--job', help="to help name files when running batches", default='test', type=str)
