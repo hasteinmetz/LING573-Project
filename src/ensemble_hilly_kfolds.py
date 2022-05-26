@@ -20,6 +20,7 @@ from datasets import load_metric
 from sklearn.model_selection import StratifiedKFold
 from sklearn.decomposition import PCA
 from sklearn.utils import shuffle
+import json
 
 nn = torch.nn
 
@@ -37,15 +38,19 @@ class RoBERTa(nn.Module):
 
 class FeatureClassifier(nn.Module):
 	'''Simple feed forward neural network to classify a word's lexical features'''
-	def __init__(self, input_size: int, hidden_size: int, num_classes: int):
+	def __init__(self, input_size: int, hidden_size: int, num_classes: int, dropout: float):
+		'''MLP composed of 4 hidden layers with dropout'''
 		super(FeatureClassifier, self).__init__()
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.75), # high-ish dropout to avoid overfitting to certain features
+			nn.Dropout(dropout), 
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(0.75),
+			nn.Dropout(dropout),
+			nn.Linear(hidden_size, hidden_size),
+			nn.ReLU(),
+			nn.Dropout(dropout),
 			nn.Linear(hidden_size, num_classes)
 		)
 
@@ -71,7 +76,7 @@ def train_ensemble(
 		lr_transformer: float, lr_classifier: float, lr_regressor: float,
 		kfolds: int,
 		optimizer_transformer: torch.optim, optimizer_classifier: torch.optim, optimizer_regression: torch.optim,
-		loss_fn: Callable, device: str, save_path: str = 'src/models/'
+		loss_fn: Callable, device: str, save_path: str, dim_spec: str
 	):
 	'''Train the ensemble on the training data'''
 
@@ -79,6 +84,9 @@ def train_ensemble(
 	Transformer.to(device)
 	FClassifier.to(device)
 	LogRegressor.to(device)
+
+	# intialize the f1 used for comparison
+	best_f1 = 0.0
 
 	# initialize the optimizers for the Transformer and FClassifier
 	optim_tr = optimizer_transformer(Transformer.parameters(), lr=lr_transformer, weight_decay=1e-5)
@@ -211,23 +219,17 @@ def train_ensemble(
 				
 			# Get the accuracy of the fold on the test data
 			print(f"Fold {fold} accuracies:", file = sys.stderr)
-			evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
-
-		# Get the accuracy of each epoch on the test data
-		print(f"Epoch {epoch} accuracies:", file = sys.stderr)
-		evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
-
-	# SAVE MODELS
+			preds1, preds2, preds3 = evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, dev_sentences, dev_labels, featurizer, batch_size, device, sys.stderr)
+					
+	# SAVE MODEL
 	try:
-		print("Saving models to /src/models/kfold-ensemble/...")
-		torch.save(Transformer, save_path + 'roberta')
-		torch.save(FClassifier, save_path + 'featurizer')
-		torch.save(LogRegressor, save_path + 'regression')
-	except:
-		print("(Saving error) Saving models to src/models/kfold-ensemble/...")
-		torch.save(Transformer, 'src/models/tmp_roberta')
-		torch.save(FClassifier, 'src/models/tmp_featurizer')
-		torch.save(LogRegressor, 'src/models/tmp_regression')
+		print(f"Saving models to /src/models/ensemble-kfolds/{args.job}/...", file=sys.stderr)
+		torch.save(Transformer, save_path + f'/{args.job}/roberta-{dim_spec}.pt')
+		torch.save(FClassifier, save_path + f'/{args.job}/featurizer-{dim_spec}.pt')
+		torch.save(LogRegressor, save_path + f'/{args.job}/regression-{dim_spec}.pt')
+	except Exception("Could not save model..."):
+		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-kfolds/{args.job}/...", file=sys.stderr)
+
 
 def evaluate_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
@@ -306,6 +308,7 @@ def evaluate_ensemble(
 		val_en += f"Ensemble\t{m1.name}: {val1}\n"
 		val_tr += f"Transformer\t{m2.name}: {val2}\n"
 		val_cl += f"Featurizer\t{m3.name}: {val3}\n"
+		# output metrics to standard output
 	print("\n".join([val_en, val_tr, val_cl]), file = file)
 	return predictions, roberta_preds, feature_preds
 
@@ -349,7 +352,7 @@ def main(args: argparse.Namespace) -> None:
 		print("\tnum components: {}".format(train_pca.n_components))
 		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
 		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
 		# use the features inside the model using a featurize function
 		FEATURIZER = lambda x: prune_test(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
@@ -357,55 +360,73 @@ def main(args: argparse.Namespace) -> None:
 	# get input size
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 
+	# LOAD CONFIGURATION
+	config_file = f'src/configs/kfolds-{args.job}.json'
+	with open(config_file, 'r') as f1:
+		configs = f1.read()
+		train_config = json.loads(configs)
+
 	# initialize ensemble model
-	# TODO: MAKE ADD THIS TO A CONFIG FILE INSTEAD
 	print("Initializing ensemble architecture...\n")
 	OPTIMIZER_TRANSFORMER = AdamW
 	OPTIMIZER_CLASSIFIER = Adagrad
 	OPTIMIZER_REGRESSOR = SGD
-	LR_TRANSFORMER = 5e-5
-	LR_CLASSIFIER = 8e-3
-	LR_REGRESSOR = 1e-2
-	BATCH_SIZE = 32
 	LOSS = nn.CrossEntropyLoss()
-	EPOCHS = 1
-	# TODO: CONFIGURE DROPOUT RATES FOR ROBERTA TO AVOID OVERFITTING
-	# TODO: LOAD MODEL IF AVAILABLE
 	TOKENIZER = RobertaTokenizer.from_pretrained("roberta-base")
 	ROBERTA = RoBERTa()
-	FEATURECLASSIFIER = FeatureClassifier(input_size, 100, 2)
+	hidden_layers = train_config.pop('hidden_size')
+	dropout = train_config.pop('dropout')
+	FEATURECLASSIFIER = FeatureClassifier(input_size, hidden_layers, 2, dropout)
 	LOGREGRESSION = LogisticRegression(4)
-	KFOLDS = 5
 
 	# train the model
 	train_ensemble(
-		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		train_sentences, train_labels, FEATURIZER, 
-		dev_sentences, dev_labels,
-		EPOCHS, BATCH_SIZE, 
-		LR_TRANSFORMER, LR_CLASSIFIER, LR_REGRESSOR,
-		KFOLDS,
-		OPTIMIZER_TRANSFORMER, OPTIMIZER_CLASSIFIER, OPTIMIZER_REGRESSOR,
-		LOSS, DEVICE, save_path = args.model_save_path
+		Transformer=ROBERTA, 
+		FClassifier=FEATURECLASSIFIER, 
+		LogRegressor=LOGREGRESSION, 
+		tokenizer=TOKENIZER,
+		sentences=train_sentences, 
+		labels=train_labels, 
+		featurizer=FEATURIZER, 
+		dev_sentences=dev_sentences, 
+		dev_labels=dev_labels,
+		optimizer_transformer=OPTIMIZER_TRANSFORMER, 
+		optimizer_classifier=OPTIMIZER_CLASSIFIER, 
+		optimizer_regression=OPTIMIZER_REGRESSOR,
+		loss_fn=LOSS, 
+		device=DEVICE, 
+		save_path=args.model_save_path,
+		dim_spec=args.dim_reduc_method,
+		**train_config
 	)
+
+	try:
+		print("Loading the best models...")
+		ROBERTA = torch.load(f'{args.model_save_path}/{args.job}/roberta-{args.dim_reduc_method}.pt')
+		FEATURECLASSIFIER = torch.load(f'{args.model_save_path}/{args.job}/featurizer-{args.dim_reduc_method}.pt')
+		LOGREGRESSION = torch.load(f'{args.model_save_path}/{args.job}/regression-{args.dim_reduc_method}.pt')
+	except Exception("Could not load models..."):
+		print("Couldn't load the best models... Using the most recently trained model.")
 
 	# evaluate the model on test data
 	print("Evaluating models...")
 	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		dev_sentences, dev_labels, FEATURIZER, BATCH_SIZE, DEVICE
+		dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE
 	)
 
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	output_file = f'{args.output_path}/{args.job}/fusion-output.csv'
+	output_file = f'{args.output_path}/{args.job}/kfolds-output-{args.dim_reduc_method}.csv'
 	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	error_file = f'{args.error_path}-{args.job}.csv'
+	error_file = f'{args.error_path}-{args.job}-{args.dim_reduc_method}.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
+
+	print(f"Done! Exited normally :)")
 
 	
 if __name__ == "__main__":
