@@ -8,6 +8,7 @@ from typing import *
 from empath import Empath
 from functools import reduce
 from string import punctuation
+from feature_selection import *
 from nltk.corpus import stopwords
 from sklearn.decomposition import PCA
 from nltk.tokenize import word_tokenize
@@ -262,7 +263,7 @@ def featurize(sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: s
 
 	return nv
 	
-def get_all_features(train_sentences: List[str], train_labels: np.ndarray, dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
+def get_all_features_pca(train_sentences: List[str], train_labels: np.ndarray, dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
 	'''
 	arguments:
 		- train sentences: list of input data to be featurized
@@ -279,6 +280,7 @@ def get_all_features(train_sentences: List[str], train_labels: np.ndarray, dev_s
 	dev_features = featurize(dev_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
 
 	# perform PCA
+	print("\treducing feature dimensions...")
 	train_pca = PCA(.95)
 	train_pca.fit(train_features)
 	train_pv = train_pca.transform(train_features) 
@@ -287,5 +289,26 @@ def get_all_features(train_sentences: List[str], train_labels: np.ndarray, dev_s
 	#dev_pv = dev_pca.fit_transform(dev_features)
 	dev_pv = train_pca.transform(dev_features)
 	print("\tnum components: {}".format(dev_pv.shape))
+
+	return train_pv, dev_pv
+
+def get_all_features_mi(train_sentences: List[str], train_labels: np.ndarray, dev_sentences: List[str], hurtlex_dict: Dict[str, str], hurtlex_cat: set) -> Tuple[np.ndarray, np.ndarray]:
+	'''
+	arguments:
+		- train sentences: list of input data to be featurized
+		- dev sentences: list of input data to be featurized
+		- hurtlex_dict: lexical items corresponding to each hurtlex label
+		- hurtlex_cat: hurtlex labels
+	returns:
+		two (n_samples, vector_space_size) feature vectors
+
+	featurizes data and performs principal component analyses on them
+	'''
+	tfidf_generator = DTFIDF(train_sentences, train_labels)
+	train_feat_vector= featurize(train_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
+	dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_cat, tfidf_generator)
+	print("\treducing feature dimensions...")
+	train_pv, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
+	dev_pv = prune_test(dev_feat_vector, feat_indices)
 
 	return train_pv, dev_pv

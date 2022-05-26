@@ -10,11 +10,10 @@ import argparse
 import numpy as np
 import pandas as pd
 from typing import *
-from feature_selection import *
 from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
 from pytorch_utils import FineTuneDataSet
-from featurizer import featurize, get_all_features
+from featurizer import get_all_features_mi, get_all_features_pca
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
@@ -169,10 +168,15 @@ def main(args: argparse.Namespace) -> None:
 		torch.device(device)
 		print(f"Using {device} device")
 
+	train_sentences, train_labels, dev_sentences, dev_labels = [], [], [], []
 	#load data
 	print("loading training and development data...")
-	train_sentences, train_labels = utils.read_adaptation_data(args.train_data_path)
-	dev_sentences,  dev_labels = utils.read_adaptation_data(args.dev_data_path)
+	if args.is_eval:
+		train_sentences, train_labels = utils.read_adaptation_data(args.train_data_path)
+		dev_sentences,  dev_labels = utils.read_adaptation_data(args.dev_data_path)
+	else:
+		train_sentences, train_labels = utils.read_data_from_file(args.train_data_path)
+		dev_sentences, dev_labels = utils.read_data_from_file(args.dev_data_path)
 	
 	#initialize ensemble model
 	print("initializing ensemble architecture")
@@ -184,13 +188,9 @@ def main(args: argparse.Namespace) -> None:
 	print("featurizing training and dev data...")
 	train_feature_vector, dev_feature_vector = [],[]
 	if args.dim_reduc_method == 'pca':
-		train_feature_vector, dev_feature_vector  = get_all_features(train_sentences, train_labels, dev_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feature_vector, dev_feature_vector  = get_all_features_pca(train_sentences, train_labels, dev_sentences, hurtlex_dict, hurtlex_feat_list)
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
-		dev_feat_vector = featurize(dev_sentences, hurtlex_dict, hurtlex_feat_list)
-		print("reducing feature dimensions...")
-		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
-		dev_feature_vector = prune_test(dev_feat_vector, feat_indices)
+		train_feature_vector, dev_feature_vector = get_all_features_mi(train_sentences, train_labels, dev_sentences, hurtlex_dict, hurtlex_feat_list)
 
 	#get tokenized input
 	print("preparing input for roberta model...")
@@ -229,6 +229,7 @@ if __name__ == "__main__":
 	parser.add_argument("--dim_reduc_method", help="which method to use for reducing feature vector dimensions", choices=['mutual_info','pca'])
 	parser.add_argument("--train_data_path", help="path to input training data file")
 	parser.add_argument("--dev_data_path", help="path to input dev data file")
+	parser.add_argument("--is_eval", help="include this flag if dev data points to evaluation data", action='store_true')
 	parser.add_argument("--hurtlex_path", help="path to hurtlex lexicon file")
 	parser.add_argument("--output_file", help="path to output data file")
 	parser.add_argument("--results_file", help="path to which accuracy and f1 score will be written to")
