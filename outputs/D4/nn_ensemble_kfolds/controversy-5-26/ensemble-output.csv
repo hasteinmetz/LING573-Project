@@ -1,4 +1,3 @@
-<<<<<<< HEAD:outputs/D4/nn_ensemble_kfolds/controversy-5-26/ensemble-output.csv
 sentence,predicted,correct_label
 "Have to remember my stocked fridge is to last my family for weeks, not a challenge for me to finish all in one day 🙄",0,0.0
 "Sins are like viruses, it's better you keep them to yourself",0,1.0
@@ -10,7 +9,6 @@ Can someone get me some rohypnol or chloroform? I've got a date tomorrow tonight
 I drink water throughout the day to stay hydrated and also just in case someone says something shocking so I can spit it out.,0,1.0
 "After a long debate with my wife, I decided that we won't vaccinate our kids We think the doctor would do a way better job than us.",1,0.0
 "Abdul, my neighbour was crying... ""What's wrong?"" I asked. ""We lost our baby daughter, cot death"" he replied. ""Oh dear, that's so sad, never mind Abdul"" I said, ""just think of her as another virgin in paradise for your brave soldiers now""",1,0.0
-=======
 sentence,predicted,transformer,featurizer,correct_label
 What's the difference between a Mormon man and a Muslim man. A Mormon man gets 72 virgins and THEN kills himself.,[0.0],0,1,0.0
 "My girlfriend is like the square root of -100. She's a 10, but she's imaginary.",[0.0],0,1,0.0
@@ -505,4 +503,5 @@ What's comforting and scary at the same time? A warm toilet seat.,[0.0],0,0,1.0
 Why did the blind woman fall into the well? Because she couldn't see that well.,[0.0],0,0,0.0
 If you rearrange the letters of POSTMEN... They become VERY ANGRY.,[0.0],0,0,1.0
 "Sins are like viruses, it's better you keep them to yourself",[0.0],0,1,1.0
->>>>>>> 5b02994 (small changes to models; new io configs):src/data/ensemble-misclassified-controversy.csv
+=======
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)

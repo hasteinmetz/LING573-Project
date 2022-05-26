@@ -1,15 +1,19 @@
-Using cpu device
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight']
+Using the GPU:Tesla M10
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.layer_norm.weight']
 - This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-(0, 192) Loss: 0.7559126447886229
-(0, 384) Loss: 0.6786862500011921
-(0, 576) Loss: 0.7018803264945745
-(0, 768) Loss: 0.6922621615231037
-(0, 960) Loss: 0.6837578769773245
-(0, 1152) Loss: 0.6916088405996561
-(0, 1344) Loss: 0.6930547636002302
-(0, 1536) Loss: 0.6968659572303295
-(0, 1728) Loss: 0.6933196261525154
-(0, 1920) Loss: 0.6846282780170441
-(0, 2112) Loss: 0.6928900051862001
+(0, 144) Loss: 0.7047973982989788
+(0, 288) Loss: 0.6892150317629178
+(0, 432) Loss: 0.6415800601243973
+(0, 576) Loss: 0.7082763823370138
+(0, 720) Loss: 0.6966137240330378
+(0, 864) Loss: 0.6991987650593121
+(0, 1008) Loss: 0.6986012980341911
+(0, 1152) Loss: 0.6860193014144897
+(0, 1296) Loss: 0.6943941588203112
+(0, 1440) Loss: 0.691878579556942
+(0, 1584) Loss: 0.6942545995116234
+(0, 1728) Loss: 0.689427929619948
+(0, 1872) Loss: 0.6556360001365343
+(0, 2016) Loss: 0.7169434974590937
+(0, 2160) Loss: 0.6938320348660151

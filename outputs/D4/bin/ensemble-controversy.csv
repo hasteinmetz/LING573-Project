@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:outputs/D4/bin/ensemble-controversy.csv
+=======
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)
 sentence,predicted,correct_label
 me: [being pulled out of my flipped car] can you get my ipod nano paramedic: no me: ok,[0.0],1
 """Part Of Your World"" was almost cut from ""The Little Mermaid.""",[0.0],0
@@ -10,6 +13,7 @@ I fucked an arthritic woman yesterday. What a cracker.,[0.0],1
 "Contentment is not the fulfillment of what you want, but the realization of how much you already have",[0.0],0
 """He's not sleeping with you cause you're fat and ugly, so lose some weight and do your make up like this."" - Women's magazines, summarized.",[0.0],1
 What did the husband tell his wife to do after he slapped her? The same thing he told her the first time!,[0.0],1
+<<<<<<< HEAD
 =======
 sentence,predicted,transformer,featurizer,correct_label
 What's the difference between a Mormon man and a Muslim man. A Mormon man gets 72 virgins and THEN kills himself.,[1.0],1,1,1.0
@@ -813,3 +817,5 @@ If Laura Dern and Brad Pitt win best supporting actor I think they should have t
 "Hey family! As promised, we've assembled bags of food/supplies for our community. Black Trans folks in NYC can currently pick these up in Queens. If you're a Black Trans person in need of food, read this thread for more info and fill out the form at the end of the thread!",[0.0],0,0,0.0
 """Each ounce of sunflower seeds gives you 37% of your daily need for vitamin E"" vitamin health",[0.0],0,0,0.0
 >>>>>>> 5b02994 (small changes to models; new io configs):outputs/D4/ensemble-kfolds/humor/fusion-output.csv
+=======
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)

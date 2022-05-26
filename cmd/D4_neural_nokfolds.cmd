@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 executable            = src/executables/d4_neural.sh 
 =======
 executable            = src/executables/d4_neural_no_kfolds.sh 
 >>>>>>> 7b20617 (renamed files)
+=======
+executable            = src/executables/d4_neural.sh 
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)
 getenv                = true
 output                = outputs/D4/neural_ensemble/$(job)/condor-$(dim_red).out
 error                 = outputs/D4/neural_ensemble/$(job)/condor-$(dim_red).error
@@ -15,14 +19,20 @@ request_memory        = 2*1024
 stream_output         = True
 queue job, dim_red, arguments from (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)
     humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
     controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
     humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
     controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
+<<<<<<< HEAD
 =======
     humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red)"
     controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red)"
     humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red)"
     controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red)"
 >>>>>>> 7b20617 (renamed files)
+=======
+>>>>>>> 28284be (made small changes; runnign expts; reorganized repo)
 )

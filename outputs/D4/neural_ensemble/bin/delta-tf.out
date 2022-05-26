@@ -1,8 +1,0 @@
-Using cuda device
-loading training and development data...
-initializing ensemble architecture
-f1:
-	 {'f1': 0.9241114313160422}
-accuracy:
-	 {'accuracy': 0.90125}
-
