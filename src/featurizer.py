@@ -283,8 +283,9 @@ def get_all_features(train_sentences: List[str], train_labels: np.ndarray, dev_s
 	train_pca.fit(train_features)
 	train_pv = train_pca.transform(train_features) 
 	print("\tnum components: {}".format(train_pca.n_components))
-	dev_pca = PCA(n_components=train_pca.n_components_)
-	dev_pv = dev_pca.fit_transform(dev_features)
-	print("\tnum components: {}".format(dev_pca.n_components))
+	#dev_pca = PCA(n_components=train_pca.n_components_)
+	#dev_pv = dev_pca.fit_transform(dev_features)
+	dev_pv = train_pca.transform(dev_features)
+	print("\tnum components: {}".format(dev_pv.shape))
 
 	return train_pv, dev_pv
