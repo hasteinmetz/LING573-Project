@@ -109,10 +109,10 @@ def train_ensemble(model: Ensemble,
 
 	# SAVE MODEL
 	try:
-		print(f"Saving model to {save_path}/ensemble-fusion/{args.job}/...", file=sys.stderr)
+		print(f"Saving model to {save_path}/neural_ensemble/{args.job}/...", file=sys.stderr)
 		torch.save(model, save_path + f'/{args.job}/ensemble-{dim_spec}.pt')
 	except Exception("Could not save model..."):
-		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-fusion/{args.job}/...", file=sys.stderr)
+		print(f"(Saving error) Couldn't save model to {save_path}/neural_ensemble/{args.job}/...", file=sys.stderr)
 
 
 def evaluate(model: Ensemble, sentences: List[str], labels: np.ndarray, batch_size: int,
@@ -211,7 +211,7 @@ def main(args: argparse.Namespace) -> None:
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 	
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/fusion-{args.job}.json'
+	config_file = f'src/configs/neural_{args.job}.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
@@ -280,7 +280,7 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	output_file = f'{args.output_path}/{args.job}/fusion-output-{args.dim_reduc_method}.csv'
+	output_file = f'{args.output_path}/{args.job}/nn_{args.dim_reduc_method}.csv'
 	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there

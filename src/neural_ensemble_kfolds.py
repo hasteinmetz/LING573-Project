@@ -223,12 +223,12 @@ def train_ensemble(
 					
 	# SAVE MODEL
 	try:
-		print(f"Saving models to /src/models/ensemble-kfolds/{args.job}/...", file=sys.stderr)
+		print(f"Saving models to /src/models/nn_ensemble_kfolds/{args.job}/...", file=sys.stderr)
 		torch.save(Transformer, save_path + f'/{args.job}/roberta-{dim_spec}.pt')
 		torch.save(FClassifier, save_path + f'/{args.job}/featurizer-{dim_spec}.pt')
 		torch.save(LogRegressor, save_path + f'/{args.job}/regression-{dim_spec}.pt')
 	except Exception("Could not save model..."):
-		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-kfolds/{args.job}/...", file=sys.stderr)
+		print(f"(Saving error) Couldn't save model to {save_path}/nn_ensemble_kfolds/{args.job}/...", file=sys.stderr)
 
 
 def evaluate_ensemble(
@@ -361,7 +361,7 @@ def main(args: argparse.Namespace) -> None:
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/kfolds-{args.job}.json'
+	config_file = f'src/configs/nn_kfolds_{args.job}.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
@@ -418,7 +418,7 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	output_file = f'{args.output_path}/{args.job}/kfolds-output-{args.dim_reduc_method}.csv'
+	output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}.csv'
 	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there

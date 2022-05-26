@@ -1,8 +1,8 @@
-executable            = src/executables/d4_fusion_kfolds.sh 
+executable            = src/executables/d4_neural_kfolds.sh 
 getenv                = true
-output                = outputs/D4/ensemble-kfolds/$(job)/condor-$(dim_red).out
-error                 = outputs/D4/ensemble-kfolds/$(job)/condor-$(dim_red).error
-log                   = outputs/D4/ensemble-kfolds/$(job)/condor-$(dim_red).log
+output                = outputs/D4/nn_ensemble_kfolds/$(job)/condor-$(dim_red).out
+error                 = outputs/D4/nn_ensemble_kfolds/$(job)/condor-$(dim_red).error
+log                   = outputs/D4/nn_ensemble_kfolds/$(job)/condor-$(dim_red).log
 request_GPUs          = 1
 requirements          = (CUDACapability >= 10.2) && $(requirements:True)
 Rank                  = (machine == "patas-gn2.ling.washington.edu") || (machine == "patas-gn1.ling.washington.edu") || (machine == "patas-gn3.ling.washington.edu")
