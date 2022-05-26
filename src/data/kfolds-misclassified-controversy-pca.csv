@@ -1,24 +1,11 @@
-<<<<<<< HEAD:outputs/D4/nn_ensemble_kfolds/controversy-5-26/ensemble-output.csv
-sentence,predicted,correct_label
-"Have to remember my stocked fridge is to last my family for weeks, not a challenge for me to finish all in one day 🙄",0,0.0
-"Sins are like viruses, it's better you keep them to yourself",0,1.0
-I like my women the way I like my coffee in a basket being touched by many Colombian men.,1,0.0
-"""Dad, on my way home from school I saw Santa beating a Pakistani man up outside a shop. "" ""Well son, I don't know what to say to you, I'm shocked. "" ""So am I dad, I only posted the letter yesterday""",1,0.0
-Learning to love yourself is important. Just don't let your wife catch you doing it.,1,0.0
-*takes cute picture with child for Instagram *writes inspirational post about being a good parent while ignoring child for 45 mins,1,0.0
-Can someone get me some rohypnol or chloroform? I've got a date tomorrow tonight and she doesn't know yet.,1,0.0
-I drink water throughout the day to stay hydrated and also just in case someone says something shocking so I can spit it out.,0,1.0
-"After a long debate with my wife, I decided that we won't vaccinate our kids We think the doctor would do a way better job than us.",1,0.0
-"Abdul, my neighbour was crying... ""What's wrong?"" I asked. ""We lost our baby daughter, cot death"" he replied. ""Oh dear, that's so sad, never mind Abdul"" I said, ""just think of her as another virgin in paradise for your brave soldiers now""",1,0.0
-=======
 sentence,predicted,transformer,featurizer,correct_label
-What's the difference between a Mormon man and a Muslim man. A Mormon man gets 72 virgins and THEN kills himself.,[0.0],0,1,0.0
-"My girlfriend is like the square root of -100. She's a 10, but she's imaginary.",[0.0],0,1,0.0
-What do you call bad breath that sneaks up on you? Ninjavitis.,[0.0],0,1,1.0
-I met a girl who said she liked Imagine Dragons. I asked her if she could Imagine Dragon these nuts across her chin.,[0.0],0,0,0.0
+What's the difference between a Mormon man and a Muslim man. A Mormon man gets 72 virgins and THEN kills himself.,[1.0],0,1,0.0
+"My girlfriend is like the square root of -100. She's a 10, but she's imaginary.",[0.0],0,0,0.0
+What do you call bad breath that sneaks up on you? Ninjavitis.,[1.0],0,1,1.0
+I met a girl who said she liked Imagine Dragons. I asked her if she could Imagine Dragon these nuts across her chin.,[1.0],0,1,0.0
 "I'm waiting for them to invent a pleasure robot that's so lifelike, it won't have sex with me.",[0.0],0,1,1.0
 Barack Obama goes to a costume party while giving his wife a piggyback ride. Someone asks him what he's dressed up as and he responds 'I'm a snail!' That's M'Shell on my back,[0.0],0,0,1.0
-Brad Pitt should have his own line of deodorant called Brad's Pits,[0.0],0,1,1.0
+Brad Pitt should have his own line of deodorant called Brad's Pits,[1.0],0,1,1.0
 "Baby yoda = delight, ancient yoda = enchanting, teen yoda = friggin impossible",[0.0],0,0,0.0
 "A boy was born of an Indian, Chinese, Irish, and Italian grandmother... They couldn't settle on a name, until it hit them! They named him Ravi O. Lee ",[0.0],0,0,1.0
 My girlfriend dressed up as a policewoman and told me I was under arrest on suspicion of being good in bed. After 2 minutes all charges were dropped due to a lack of evidence.,[0.0],0,1,1.0
@@ -26,94 +13,94 @@ I've been so stressed recently I've been doing that Chinese thing with the needl
 Black women make the best wives. You can't see their bruises.,[0.0],0,0,0.0
 "My town never changes population. Everytime a girl gets pregnant, a guy leaves town.",[0.0],0,0,1.0
 Heading to Chinatown after work... I heard it's Erection Day.,[0.0],0,0,0.0
-"I wanna tell my girlfriend she's using way too much teeth when she goes down on me, but I don't want to hurt her feelings. How do I soften the blow?",[0.0],0,0,1.0
-*takes cute picture with child for Instagram *writes inspirational post about being a good parent while ignoring child for 45 mins,[0.0],0,1,0.0
+"I wanna tell my girlfriend she's using way too much teeth when she goes down on me, but I don't want to hurt her feelings. How do I soften the blow?",[1.0],0,1,1.0
+*takes cute picture with child for Instagram *writes inspirational post about being a good parent while ignoring child for 45 mins,[0.0],0,0,0.0
 "This girl I like said she didn't like bondage..... ....Me either, but you're the one who said No.",[0.0],0,0,1.0
-What do they call mosquitoes in Pakistan? Churchitoes,[0.0],0,1,0.0
+What do they call mosquitoes in Pakistan? Churchitoes,[1.0],0,1,0.0
 You know what they say... Once you go black... You're a single mother.,[0.0],0,0,1.0
-"Hey grandson, what's the name of that german man who makes me go crazy? Alzheimer, grandma, Alzheimer...",[0.0],0,1,0.0
-I got down on one knee in the middle of a busy restaurant and pulled out the ring. The whole place was in tears! 'Marry me... and I'll put it back in the grenade.',[0.0],0,1,0.0
-Did you hear about the Leper going for the masturbation world record? Eventually he pulled it off!,[0.0],0,1,1.0
+"Hey grandson, what's the name of that german man who makes me go crazy? Alzheimer, grandma, Alzheimer...",[1.0],0,1,0.0
+I got down on one knee in the middle of a busy restaurant and pulled out the ring. The whole place was in tears! 'Marry me... and I'll put it back in the grenade.',[1.0],0,1,0.0
+Did you hear about the Leper going for the masturbation world record? Eventually he pulled it off!,[1.0],0,1,1.0
 What happened to the blind circumcisor? He got the sack.,[0.0],0,0,0.0
-Why did the feminist cross the road? To suck my cock!,[0.0],0,0,0.0
-"What's the difference between a police officer and a bullet? When a bullet kills someone else, you know it's been fired",[0.0],0,1,1.0
-Lonely and awkward people are waiting to talk to you on Twitter right now,[0.0],0,1,1.0
+Why did the feminist cross the road? To suck my cock!,[0.0],0,1,0.0
+"What's the difference between a police officer and a bullet? When a bullet kills someone else, you know it's been fired",[1.0],0,1,1.0
+Lonely and awkward people are waiting to talk to you on Twitter right now,[1.0],0,1,1.0
 My Christian friend told me he doesn't believe in gay marriage. He said there should be no such thing as a happy marriage.,[0.0],0,0,0.0
-This is an unbelievable statistic: 18% of all statistics are falsely inflated 106% of the time.,[0.0],0,1,1.0
+This is an unbelievable statistic: 18% of all statistics are falsely inflated 106% of the time.,[0.0],0,0,1.0
 Turn a regular sofa into a sofa bed by simply forgetting your wife's birthday.,[0.0],0,0,0.0
-"When I put the left AirPod in my left ear on the first try, I know it's gonna be a great day.",[0.0],0,0,0.0
-"I tried telling a joke my friend from Baghdad told me. Unfortunately, Iraqed it.",[0.0],0,1,0.0
+"When I put the left AirPod in my left ear on the first try, I know it's gonna be a great day.",[1.0],0,1,0.0
+"I tried telling a joke my friend from Baghdad told me. Unfortunately, Iraqed it.",[1.0],0,1,0.0
 I bet deaf people get really confused when they talk to someone who is applying hand lotion...,[0.0],0,0,0.0
 "This year, I'm breaking with tradition a little and stuffing my turkey with delusions of grandeur.",[0.0],0,0,0.0
-This morning my kitten was riding around the house on my dog's back like he was on a horse. I'd post a video of it but I made it up.,[0.0],0,1,1.0
-Two nuns walking through the park were confronted by a flasher. The 85-year-old nun immediately had a stroke. The younger one didn't touch it.,[0.0],0,1,1.0
+This morning my kitten was riding around the house on my dog's back like he was on a horse. I'd post a video of it but I made it up.,[1.0],0,1,1.0
+Two nuns walking through the park were confronted by a flasher. The 85-year-old nun immediately had a stroke. The younger one didn't touch it.,[1.0],0,1,1.0
 What do you call a group of confused Spanish speaking racists? The Qué Qué Qué,[0.0],0,0,0.0
 My girlfriend complained that I treat her like a slave. So I sold her.,[0.0],0,0,1.0
-"Movie pitch: Millenials buy a house that turns out to be haunted, but they're just grateful they were able to afford something in a good school district.",[0.0],0,1,1.0
+"Movie pitch: Millenials buy a house that turns out to be haunted, but they're just grateful they were able to afford something in a good school district.",[1.0],0,1,1.0
 "[at the gym] Him: Hey man, could you spot me? Me: Sure. What do you need... 10... 20 bucks? Him: Uhh..? Me: Just kidding. I have no money.",[0.0],0,0,1.0
 "A woman was taking a shower when the doorbell rang. ""It's the blind man"" he called. That's ok, she thought, so she quickly ran downstairs naked to open the door. ""Nice tits"" he said. ""Now, where do you want those blinds?""",[0.0],0,0,1.0
 What's up with black people? They're not black... And they're not people.,[0.0],0,0,0.0
 "U2 are one of Ireland's most successful bands. Or according to their tax returns, one of Netherlands' least successful hardware store owners.",[0.0],0,0,1.0
-What's a cannibal's favourite game? Swallow the leader.,[0.0],0,0,1.0
+What's a cannibal's favourite game? Swallow the leader.,[0.0],0,1,1.0
 "Every time spellcheck corrects “does” to “dies”, for a split second I panic that the subject of the sentence that has passed away",[0.0],0,0,1.0
 "Here in California Catholics use non-fat, high fiber communion wafers. They call them ""I can't believe it's not Jesus""",[0.0],0,0,1.0
 "Why is a lesbians tea green, slimy, and give you a great buzz? Because it's aLGae Bee Tea",[0.0],0,0,0.0
-What do you call a caveman's fart? A blast from the past.,[0.0],0,1,1.0
-You know it's time to move on when she develops an immunity to Rohypnol.,[0.0],0,1,0.0
-My wife has threatened to leave me because of my obsession with horoscopes. It's taurus apart.,[0.0],0,1,1.0
+What do you call a caveman's fart? A blast from the past.,[1.0],0,1,1.0
+You know it's time to move on when she develops an immunity to Rohypnol.,[1.0],0,1,0.0
+My wife has threatened to leave me because of my obsession with horoscopes. It's taurus apart.,[1.0],0,1,1.0
 What's the difference between a Transformer robot and a Transgender person? One is living in a spaceship and one is living a lie.,[0.0],0,0,0.0
-"Today I saw a little boy wearing rags sitting on a curb. I said, ""Awww, are you an orphan""? He said, ""Yes, what gave me away?"" I said, ""Your parents.""",[0.0],0,1,1.0
-"The horse favored to win the Kentucky Derby had to pull out of the race. Apparently, someone dug up some of his homophobic tweets.",[1.0],0,0,0.0
-"Kid: mom, some kid is calling me gay mama: Hit him, in the face. Kid: I cant Mom: Why? Kid: Cause, he's so Cute!!",[0.0],0,1,0.0
-"A woman complained to HR that a coworker was always complimenting how nice her hair smells. HR: ""Why is that a problem?"" Employee: ""He's a midget""",[0.0],0,1,1.0
+"Today I saw a little boy wearing rags sitting on a curb. I said, ""Awww, are you an orphan""? He said, ""Yes, what gave me away?"" I said, ""Your parents.""",[1.0],0,1,1.0
+"The horse favored to win the Kentucky Derby had to pull out of the race. Apparently, someone dug up some of his homophobic tweets.",[0.0],0,0,0.0
+"Kid: mom, some kid is calling me gay mama: Hit him, in the face. Kid: I cant Mom: Why? Kid: Cause, he's so Cute!!",[0.0],0,0,0.0
+"A woman complained to HR that a coworker was always complimenting how nice her hair smells. HR: ""Why is that a problem?"" Employee: ""He's a midget""",[0.0],0,0,1.0
 I never chase a man. I always go for the ones who are too fat to run.,[0.0],0,0,1.0
-"""Oooh lovely, Jehovas Witnesses"" I said as I answered the door.... ""Come inside and sit down while I put the kettle on"" ""You don't have to do that"" they said... ""I do if I'm going to pour boiling water over you""",[0.0],0,0,1.0
-I'm headed out now to the record store to buy The Raconteurs' new album. Then I'm going to the pharmacy for a chocolate malt. I live in a small town in 1948.,[0.0],0,0,0.0
+"""Oooh lovely, Jehovas Witnesses"" I said as I answered the door.... ""Come inside and sit down while I put the kettle on"" ""You don't have to do that"" they said... ""I do if I'm going to pour boiling water over you""",[0.0],0,1,1.0
+I'm headed out now to the record store to buy The Raconteurs' new album. Then I'm going to the pharmacy for a chocolate malt. I live in a small town in 1948.,[0.0],0,1,0.0
 What bird never knows the lyrics to a song? A hummingbird.,[0.0],0,0,1.0
 "Everybody's a gangster until they get punched in the mouth - Mike Tyson And after that, everybody's a gangthter.",[0.0],0,0,1.0
-"It's exciting that the LA Dodgers will be playing in the World Series, unless of course their pilots get picked up.",[0.0],0,1,0.0
+"It's exciting that the LA Dodgers will be playing in the World Series, unless of course their pilots get picked up.",[1.0],0,1,0.0
 "I can't never remember if I'm lisdexic Or epileptikjlfasd,md,.dsaf-aaaaafddasfrwe",[0.0],0,0,0.0
 "What is long, black and dangerous to cut into? The line at KFC",[0.0],0,0,0.0
-When is the worst time to have a heart attack? During a game of charades haha,[0.0],0,0,0.0
+When is the worst time to have a heart attack? During a game of charades haha,[0.0],0,1,0.0
 Why are there no casinos in Africa? Too many cheetahs. corny,[0.0],0,0,0.0
 There's a man walking a tight rope. 100ft below him there's a man getting a blowjob from an 80 year old woman. What are they both thinking? Don't look down.,[0.0],0,0,0.0
-"I asked a Chinese girl for her number and she said... Sex! Sex! Sex! Free sex tonigh! I thought it was a guaranteed fuck until her friend said, ""She means 666-3629.""",[0.0],0,1,0.0
+"I asked a Chinese girl for her number and she said... Sex! Sex! Sex! Free sex tonigh! I thought it was a guaranteed fuck until her friend said, ""She means 666-3629.""",[1.0],0,1,0.0
 DRINKING A CUP OF HOT COFFEE: Delicious! DRINKING A CUP OF ICED COFFEE: Fantastic! DRINKING A CUP OF COFFEE AT ANY TEMPERATURE IN BETWEEN: The devil is alive and he's winning.,[0.0],0,0,1.0
-Why are European cars the lightest? because there's no Americans sitting in them.,[0.0],0,1,1.0
-Ate reduced fat cheese on low calorie bread and my taste buds had me indicted for hate crimes.,[1.0],0,0,1.0
+Why are European cars the lightest? because there's no Americans sitting in them.,[1.0],0,1,1.0
+Ate reduced fat cheese on low calorie bread and my taste buds had me indicted for hate crimes.,[0.0],0,0,1.0
 "How many gay men does it take to screw in a light bulb? Only one, but it takes the entire emergency room to remove it.",[0.0],0,0,1.0
-I should rename myself Summer. All girls want is Summer to come.,[0.0],0,1,0.0
-Someone told me a joke about transgender surgery. Took balls to tell it.,[0.0],0,1,0.0
+I should rename myself Summer. All girls want is Summer to come.,[1.0],0,1,0.0
+Someone told me a joke about transgender surgery. Took balls to tell it.,[1.0],0,1,0.0
 What do you call a homosexual in a wheelchair? Rolaids.,[0.0],0,0,0.0
 "Why are muslim people so kind-hearted? Because they don't live long, especially when they're a bomb",[0.0],0,0,1.0
 "The collective noun for kangaroos is a ""troop"". What is the collective noun for cars? A lot.",[0.0],0,0,0.0
-Where did I take my pet Cow on Valentines Day? To the Moooovies rofl,[0.0],0,0,1.0
+Where did I take my pet Cow on Valentines Day? To the Moooovies rofl,[0.0],0,1,1.0
 What do politicians and porn stars have most in common? They're experts at switching positions in front of camera.,[0.0],0,0,1.0
 What do you call your Mexican crush? Juan Andonle,[0.0],0,0,1.0
 Decapitating Vamps and taking names. That's how we do!!! Supernatura I Vamps Suck,[0.0],0,0,1.0
 "Latest entry in my Gratitude Journal: ""The Altoids people didn't go into the suppository business.""",[0.0],0,0,1.0
-god: [watching my life] oh this guy's definitely getting into heaven me: [waves goodbye to my poop as i flush] god: wait,[0.0],0,1,0.0
+god: [watching my life] oh this guy's definitely getting into heaven me: [waves goodbye to my poop as i flush] god: wait,[1.0],0,1,0.0
 "What question would confuse a transsexual who used to be a woman? ""Have you ever been abroad?""",[0.0],0,0,1.0
 I bought my wife some gloves and a sex toy for her birthday if she doesn't like the gloves she can go f*ck herself,[0.0],0,0,1.0
-"My wife had to buy some new bras, so I guess we'll be remortgaging our house again.",[0.0],0,1,1.0
+"My wife had to buy some new bras, so I guess we'll be remortgaging our house again.",[1.0],0,1,1.0
 They should make brownies that look like joints but contain no marijuana.,[0.0],0,0,0.0
 Where do Muslim hipsters shop for clothes? Turban Outfitters!,[0.0],0,0,0.0
 Where does a catholic cat go when it dies? Purrrgatory.,[0.0],0,0,1.0
 How do you know if an Italian person is mute? When you see he has no hands.,[0.0],0,0,0.0
 "Did you know that Princess Diana was on her cell phone when she died? She was also on the dashboard, the windscreen, the roadside...",[0.0],0,0,0.0
-I met this amazing girl while speed dating. We stayed up all night and day just talking and giggling and I guess speed will do that to you.,[0.0],0,0,0.0
-"Protip: When making snow angels, remember to lay down first... otherwise you end up looking like you're just doing jumping jacks.",[0.0],0,0,0.0
-Why did the blind kid fail geometry? He didnt see the point.,[0.0],0,0,1.0
+I met this amazing girl while speed dating. We stayed up all night and day just talking and giggling and I guess speed will do that to you.,[1.0],0,1,0.0
+"Protip: When making snow angels, remember to lay down first... otherwise you end up looking like you're just doing jumping jacks.",[0.0],0,1,0.0
+Why did the blind kid fail geometry? He didnt see the point.,[0.0],0,1,1.0
 There are few things more awkward on a blind date than looking up from your phone to realise she's left. She obviously wasn't blind at all.,[0.0],0,0,0.0
 When is International Men-Frequently-Mistaken-For-Women Day?,[0.0],0,0,0.0
 Why does the military only allow dress shirts at its ceremonies? Because civilian casual tees are unacceptable,[0.0],0,0,0.0
 "When a lady leaves an article of clothing at my place, I do the gentlemanly thing and put it on and parade around the house looking pretty.",[0.0],0,0,0.0
 "Abdul, my neighbour was crying... ""What's wrong?"" I asked. ""We lost our baby daughter, cot death"" he replied. ""Oh dear, that's so sad, never mind Abdul"" I said, ""just think of her as another virgin in paradise for your brave soldiers now""",[0.0],0,0,0.0
-*writes inspirational post about not letting the behaviour of others determine your happiness *gets upset when no one retweets it,[0.0],0,1,0.0
-I've learned a lot from movies. Like how in the 1970s if you wanted to develop a picture you had to turn on a red light and put a piece of paper in a tub of juice.,[0.0],0,0,0.0
-"What lies on its back, 100 feet in the air? A dead centipede.",[0.0],0,1,0.0
-What do you call a bunch of crows inside a tent? Murder within tent.,[0.0],0,1,0.0
-customer: i'd like to return this boomerang me: oh it does that for you,[0.0],0,1,1.0
+*writes inspirational post about not letting the behaviour of others determine your happiness *gets upset when no one retweets it,[1.0],0,1,0.0
+I've learned a lot from movies. Like how in the 1970s if you wanted to develop a picture you had to turn on a red light and put a piece of paper in a tub of juice.,[1.0],0,1,0.0
+"What lies on its back, 100 feet in the air? A dead centipede.",[1.0],0,1,0.0
+What do you call a bunch of crows inside a tent? Murder within tent.,[1.0],0,1,0.0
+customer: i'd like to return this boomerang me: oh it does that for you,[1.0],0,1,1.0
 "A girl at the restaurant was about to eat her food before I stood up & yelled ""STOP. THIS IS NOT THE THIRD WORLD LADY. INSTAGRAM IT FIRST""",[0.0],0,0,0.0
 What's the difference between magic and black magic? Black magic doesn't work.,[0.0],0,0,1.0
 "Nancy Grace just called pot smokers ""fat and lazy"". Right. Unlike the buff marathon runners home 4 o'clock on a Monday watching your show.",[0.0],0,0,0.0
@@ -121,220 +108,220 @@ What's the difference between magic and black magic? Black magic doesn't work.,[
 With gay marriage being legal now does that mean we don't have to call them butt buddies anymore? Good because that was a pain in the ass.,[0.0],0,0,0.0
 "I signed up for my company's 401k, but I don't think I can run that far.",[0.0],0,0,0.0
 I told my psychiatrist I felt like a dog. He told me to get off the couch.,[0.0],0,0,1.0
-What kind of prize do you give someone who hasn't moved a muscle in over a year? A trophy.,[0.0],0,0,0.0
+What kind of prize do you give someone who hasn't moved a muscle in over a year? A trophy.,[1.0],0,1,0.0
 You shouldn't bully someone in a wheelchair - they can't stand up for themselves.,[0.0],0,0,1.0
-How many cops does it take to push a black man down the stairs? None. He fell.,[0.0],0,1,1.0
+How many cops does it take to push a black man down the stairs? None. He fell.,[1.0],0,1,1.0
 Do you know what is the worst part about being an egg? You get laid only once.,[0.0],0,0,1.0
 My wife is really mad at the fact that I have no sense of direction So I packed up my stuff and right,[0.0],0,0,1.0
 An alligator decided to have unprotected sex. Now he has Gatorades.,[0.0],0,0,0.0
-*Party at M.C Escher's house* ME: Where's the bathroom? ESCHER: [giggling and glancing at his more established friends] Top of the stairs.,[0.0],0,1,1.0
-Kim Petras on Sept 30th: woo ah! Kim Petras on Oct 1st: boo ah!,[0.0],0,1,0.0
-A disadvantage of being gay is that you never get to see the grateful stare of a women you've just released.,[0.0],0,1,0.0
-"My sex change from male to female went really well. It was so successful, I'm still trying to reverse out of the fucking hospital car park!",[0.0],0,0,0.0
+*Party at M.C Escher's house* ME: Where's the bathroom? ESCHER: [giggling and glancing at his more established friends] Top of the stairs.,[1.0],0,1,1.0
+Kim Petras on Sept 30th: woo ah! Kim Petras on Oct 1st: boo ah!,[0.0],0,0,0.0
+A disadvantage of being gay is that you never get to see the grateful stare of a women you've just released.,[1.0],0,1,0.0
+"My sex change from male to female went really well. It was so successful, I'm still trying to reverse out of the fucking hospital car park!",[1.0],0,1,0.0
 I love raising caterpillars as pets. It always gives me butterflies.,[0.0],0,0,0.0
 Stove Top Stuffing is my favorite side-dish that sounds like a Midwestern porn video.,[0.0],0,0,1.0
 "Me: What are my chances doc? Doctor: The surgery is fairly routine, but there's a catch -- you won't be able to drink alcohol for a full year. Me: Let me die.",[0.0],0,0,1.0
-"me: before you hire me, you should know i take things interviewer: like what? me: time and care interviewer: oh haha me: also xanax, company money, and two-hour morning shits",[0.0],0,1,0.0
-"My wife said she saw a bowtie made from solid mahogany. She said she nearly bought it for me but she didn't think I would wear it. I replied ""Wooden tie?""",[0.0],0,1,0.0
+"me: before you hire me, you should know i take things interviewer: like what? me: time and care interviewer: oh haha me: also xanax, company money, and two-hour morning shits",[1.0],0,1,0.0
+"My wife said she saw a bowtie made from solid mahogany. She said she nearly bought it for me but she didn't think I would wear it. I replied ""Wooden tie?""",[1.0],0,1,0.0
 I've always had an irrational fear of speed bumps. But I'm slowly getting over it.,[0.0],0,0,0.0
 There's a German shepherd next door who keeps burying under my fence and shitting in the flower bed His dog is just as bad,[0.0],0,0,1.0
-"So a woman shot up Youtube Headquarters, fired 20 shots and only injured 4 people.... ....looks like mass shootings are another thing to add to the list of things that men are better than women at.",[0.0],0,0,0.0
+"So a woman shot up Youtube Headquarters, fired 20 shots and only injured 4 people.... ....looks like mass shootings are another thing to add to the list of things that men are better than women at.",[1.0],0,1,0.0
 How do you know when your girlfriend is getting fat? She can fit into your wife's clothes,[0.0],0,0,1.0
 What do u call a greedy lesbian? Bush hog.,[0.0],0,0,1.0
-"My tongue slipped when I was asking my wife to ""pass the milk"" at breakfast. I accidentally said: ""Fuck you Ann you ruined my fucking life""",[0.0],0,0,1.0
-"If three men are arguing about whether to be known as Jews, Israelis, or Hebrews... ...would you say they're just arguing Semitics?",[0.0],0,0,1.0
-"If your name is Pi, and your mom is standing at the top of the stairs yelling '3.141592653589793238462643383279502884197169399375105820974944592307816406286‚ you're about to get in some trouble.",[0.0],0,1,0.0
-Waking up confused on Sunday morning in my 20s: What happened last night? I must've passed out after drinking too much and again. Waking up confused on Sunday morning in my 40s: What happened last night? I must've passed out while watching infomercials on TV again.,[0.0],0,1,0.0
-"I'm not saying my last girlfriend was a bit of a slut.... But, when I first met her, she had a higher sperm count than me.",[0.0],0,1,1.0
+"My tongue slipped when I was asking my wife to ""pass the milk"" at breakfast. I accidentally said: ""Fuck you Ann you ruined my fucking life""",[1.0],0,1,1.0
+"If three men are arguing about whether to be known as Jews, Israelis, or Hebrews... ...would you say they're just arguing Semitics?",[1.0],0,1,1.0
+"If your name is Pi, and your mom is standing at the top of the stairs yelling '3.141592653589793238462643383279502884197169399375105820974944592307816406286‚ you're about to get in some trouble.",[1.0],0,1,0.0
+Waking up confused on Sunday morning in my 20s: What happened last night? I must've passed out after drinking too much and again. Waking up confused on Sunday morning in my 40s: What happened last night? I must've passed out while watching infomercials on TV again.,[1.0],0,1,0.0
+"I'm not saying my last girlfriend was a bit of a slut.... But, when I first met her, she had a higher sperm count than me.",[1.0],0,1,1.0
 Me feeling overwhelmingly sad: *goes off somewhere to be alone and cry* Me feeling overwhelmingly happy: *goes off somewhere to be alone and cry* Feelings are confusing,[0.0],0,0,0.0
 "My wife blocked me on Facebook because I post too many bird puns. Well, toucan play at that game.",[0.0],0,0,1.0
-"Yesterday I purchased a world map...gave my wife a dart and said to her ""throw this and wherever it lands, I'm taking you for a holiday"". Turns out we're spending three weeks behind the fridge.",[0.0],0,1,1.0
+"Yesterday I purchased a world map...gave my wife a dart and said to her ""throw this and wherever it lands, I'm taking you for a holiday"". Turns out we're spending three weeks behind the fridge.",[1.0],0,1,1.0
 "A long time ago, I thought of a soda joke. I'd share it with you, but I'm afraid I think it'd fall flat.",[0.0],0,0,0.0
 Wearing crocs is like getting a blowjob from a guy. It feels great until you look down and realize you're gay,[0.0],0,0,1.0
-Why can't Caitlyn Jenner lie to her kids? She's a transparent.,[0.0],0,1,1.0
-I opened the door for an old lady today... A few people stared when they seen me jump in front of her and just stand there to activate the automatic door though.,[0.0],0,1,1.0
+Why can't Caitlyn Jenner lie to her kids? She's a transparent.,[1.0],0,1,1.0
+I opened the door for an old lady today... A few people stared when they seen me jump in front of her and just stand there to activate the automatic door though.,[1.0],0,1,1.0
 Gotta love those girls in department stores wearing lab coats--taking time away from their experiments to help women out with their makeup.,[0.0],0,0,0.0
 Teacher Johnny: Use the word HARASSMENT in a Sentence... Johnny: I was in Love with a girl and.. Her-ass-meant a lot to me,[0.0],0,0,1.0
 My wife just told me to put the toilet seat down. I don't know why I was carrying it around in the first place.,[0.0],0,0,0.0
-me: i just feel like you understand me self-check out: unexpected item in bagging area me: you mean my heart,[0.0],0,1,1.0
+me: i just feel like you understand me self-check out: unexpected item in bagging area me: you mean my heart,[0.0],0,0,1.0
 "me: alexa alexa: that name was a fiction to hide my true identity, alizarin the demon god of fear and- me: is it okay to microwave glass alexa: for how long",[0.0],0,0,1.0
-I like getting on the metro train just as the doors are closing so it feels like a scene from a movie where I'm escaping a bad guy.,[0.0],0,1,0.0
-I open my phone and read your text. The news is so horrific and heartbreaking I have no idea how to respond. I type 'my condolences' into the GIF search.,[0.0],0,0,1.0
-"When you want someone to get out of your way, establish dominance by saying 'ex-squeeze me'",[0.0],0,1,0.0
-I think my friend is having an affair with my wife. He seems miserable lately.,[0.0],0,1,0.0
-Daughter: dad Im a lesbian Dad: Okay its cool 2nd daughter: dad I'm a lesbian too Dad: Does ANYone in this family like guys? Son: I do,[0.0],0,1,0.0
-Whats the difference between a peeping tom and a pick-pocket? One of them snatches watches The other watches snatches,[0.0],0,1,1.0
-The way to her heart: make her a bomb as sopita with limon and tapatio,[0.0],0,1,1.0
-I'm so glad we've had the internet during the lockdown so we could still all meet online to make each other miserable,[0.0],0,1,0.0
-"My girlfriend said to me, ""I'm seeing another man."" I said, ""Well, try rubbing your eyes or something.""",[0.0],0,1,1.0
-"Girlfriend: ""babe it's hot I need a fan"" [Boyfriend starts taking pictures with her and BEGGING for autographs]",[0.0],0,1,1.0
+I like getting on the metro train just as the doors are closing so it feels like a scene from a movie where I'm escaping a bad guy.,[1.0],0,1,0.0
+I open my phone and read your text. The news is so horrific and heartbreaking I have no idea how to respond. I type 'my condolences' into the GIF search.,[1.0],0,1,1.0
+"When you want someone to get out of your way, establish dominance by saying 'ex-squeeze me'",[1.0],0,1,0.0
+I think my friend is having an affair with my wife. He seems miserable lately.,[1.0],0,1,0.0
+Daughter: dad Im a lesbian Dad: Okay its cool 2nd daughter: dad I'm a lesbian too Dad: Does ANYone in this family like guys? Son: I do,[1.0],0,1,0.0
+Whats the difference between a peeping tom and a pick-pocket? One of them snatches watches The other watches snatches,[1.0],0,1,1.0
+The way to her heart: make her a bomb as sopita with limon and tapatio,[1.0],0,1,1.0
+I'm so glad we've had the internet during the lockdown so we could still all meet online to make each other miserable,[1.0],0,1,0.0
+"My girlfriend said to me, ""I'm seeing another man."" I said, ""Well, try rubbing your eyes or something.""",[1.0],0,1,1.0
+"Girlfriend: ""babe it's hot I need a fan"" [Boyfriend starts taking pictures with her and BEGGING for autographs]",[1.0],0,1,1.0
 "Paddy wanted to buy a Labrador.. Mick said ""Fuck that, have you seen how many of their owners go blind!""",[0.0],0,0,0.0
-her: [during sex] spank me me: [nervous but i go for it] her: did you just say good game,[0.0],0,1,1.0
+her: [during sex] spank me me: [nervous but i go for it] her: did you just say good game,[1.0],0,1,1.0
 "Gay guys don't listen to girls talk either, but we do have the good sense to say ""I know, right?!"" while we wait for our turn to talk.",[0.0],0,0,0.0
-me: there's been a terrible accident at the ketchup factory 911: is anyone bleeding me: um,[0.0],0,1,1.0
-"My wife and I always fight about stealing the covers, so now we use separate blankets, beds, bedrooms, houses and area codes. Problem solved.",[0.0],0,1,1.0
-British people be like: I'm bri ish. I guess they drank the t.,[0.0],0,1,1.0
-"My girlfriend usually has peanut butter toast for breakfast, but this morning we were out of bread, and she's been grouchy all day. I never knew she was lack-toast intolerant.",[0.0],0,1,0.0
+me: there's been a terrible accident at the ketchup factory 911: is anyone bleeding me: um,[1.0],0,1,1.0
+"My wife and I always fight about stealing the covers, so now we use separate blankets, beds, bedrooms, houses and area codes. Problem solved.",[1.0],0,1,1.0
+British people be like: I'm bri ish. I guess they drank the t.,[1.0],0,1,1.0
+"My girlfriend usually has peanut butter toast for breakfast, but this morning we were out of bread, and she's been grouchy all day. I never knew she was lack-toast intolerant.",[1.0],0,1,0.0
 Hv trouble accepting help/support? Feel bottled up inside and ready to blow? Suffering in silence? You're probably a classic Strong Black Woman,[0.0],0,0,0.0
 "Why are shoes always tied in the ghetto? Because if not, you always be trippin nigga.",[0.0],0,0,0.0
 "My Jewish friend always had such a positive outlook on life, even as he suffered from such horrible constipation. As he'd always say, ... This two shall pass.",[0.0],0,0,0.0
-How did Rihanna find out Chris Brown was cheating on her? She found another woman's lipstick on his knuckles.,[0.0],0,0,1.0
-My deaf girlfriend just told me to fuck off. That's not a good sign.,[0.0],0,0,0.0
-Why did Sally fall of the swing? She had no arms. Knock knock (Reader says who's there) Not Sally.,[0.0],0,1,0.0
+How did Rihanna find out Chris Brown was cheating on her? She found another woman's lipstick on his knuckles.,[1.0],0,1,1.0
+My deaf girlfriend just told me to fuck off. That's not a good sign.,[1.0],0,1,0.0
+Why did Sally fall of the swing? She had no arms. Knock knock (Reader says who's there) Not Sally.,[1.0],0,1,0.0
 When you smoke marijuana on a boat it's called sea weed. Thanks for following and stay tuned for more of these great tweets.,[0.0],0,0,0.0
 "My ex-wife cheated on me with her deaf best friend! Honestly, I should have seen the signs.",[0.0],0,0,1.0
-"I work in security, and i want to get a pumpkin for my desk. It'll be my security gourd.",[0.0],0,0,1.0
-What do you call a smart Muslim? Ex Muslim.,[0.0],0,0,0.0
+"I work in security, and i want to get a pumpkin for my desk. It'll be my security gourd.",[0.0],0,1,1.0
+What do you call a smart Muslim? Ex Muslim.,[1.0],0,1,0.0
 I trapped a couple of vegans in my basement. At least I think they're vegan. They keep shouting 'lettuce leaf!',[0.0],0,0,1.0
-If you think about it a wheelchair is a shopping trolley to a cannibal.,[0.0],0,0,0.0
-Anyone want to buy a broken barometer? No pressure.,[0.0],0,1,0.0
-"I told my daughter, 'Its always been my dream to walk you down the aisle.' She said: 'Dad, we're grocery shopping.'",[0.0],0,1,0.0
+If you think about it a wheelchair is a shopping trolley to a cannibal.,[0.0],0,1,0.0
+Anyone want to buy a broken barometer? No pressure.,[1.0],0,1,0.0
+"I told my daughter, 'Its always been my dream to walk you down the aisle.' She said: 'Dad, we're grocery shopping.'",[0.0],0,0,0.0
 "My flat-earther friend decided to walk to the end of the world to prove it is flat. In the end, he came around.",[0.0],0,0,0.0
-internet: there are singles in your area me: really internet: ya you're one of them you fucking loser me: ah,[0.0],0,1,1.0
+internet: there are singles in your area me: really internet: ya you're one of them you fucking loser me: ah,[1.0],0,1,1.0
 "I like how our one year old will eat a screw he found on the floor, but won't eat my wife's lasagna. In fairness to him, her lasagna is terrible.",[0.0],0,0,1.0
 Reminder to my massage therapists: the less you giggle the more I tip.,[0.0],0,1,1.0
-11 y/o Daughter: [opens xmas present] uh..cable ties? Wife: she asked for a pony.. Me: a pony? ..SHE CAN'T EVEN LOOK AFTER HER CABLES LINDA,[0.0],0,1,0.0
+11 y/o Daughter: [opens xmas present] uh..cable ties? Wife: she asked for a pony.. Me: a pony? ..SHE CAN'T EVEN LOOK AFTER HER CABLES LINDA,[1.0],0,1,0.0
 "My wife takes 13 bikinis for a 4-day beach trip. Meanwhile, I'm rocking the swimming trunks my mom bought at K-Mart in 1991.",[0.0],0,0,0.0
-What's the difference between a feminist and a gun? A gun only has one trigger.,[0.0],0,1,1.0
+What's the difference between a feminist and a gun? A gun only has one trigger.,[1.0],0,1,1.0
 Immigrants are like sperm millions get in but only one works.,[0.0],0,0,0.0
-"I pointed the gun in my wife's face I said, 'Any last words?' Two months later, I shot her.",[0.0],0,1,1.0
+"I pointed the gun in my wife's face I said, 'Any last words?' Two months later, I shot her.",[0.0],0,0,1.0
 I hate it when people don't know the difference between your and you're. There so stupid.,[0.0],0,0,0.0
 "I just saw a guy running down the street with a cape on. I shouted ""Are you a Superhero"" ""No"" he said ""I haven't paid for my haircut!""",[0.0],0,0,1.0
-"I asked a Chinese girl for her number. She said, ""Sex! Sex! Sex! Free Sex tonight!"" I said, ""Wow!"" Her friend said, ""She means 666-3629.""",[0.0],0,1,1.0
+"I asked a Chinese girl for her number. She said, ""Sex! Sex! Sex! Free Sex tonight!"" I said, ""Wow!"" Her friend said, ""She means 666-3629.""",[1.0],0,1,1.0
 "What's the difference between the ISIS headquarters and a kindergarten? I don't know, I just fly the drone.",[0.0],0,0,0.0
 What kind of organization is Atheism? Non-prophet.,[0.0],0,0,0.0
-"Son: ""Dad, can you tell me what a solar eclipse is?"" Dad: ""No sun.""",[0.0],0,1,0.0
+"Son: ""Dad, can you tell me what a solar eclipse is?"" Dad: ""No sun.""",[1.0],0,1,0.0
 God's Assistant: really? Leather wings on a mouse's body? I think you're just in a bad mood. God: ALSO MAKE IT BLIND AND SCREECHING,[0.0],0,0,0.0
-There might be plenty of good food choices in College.. .. but you can't Top Ramen,[0.0],0,0,0.0
+There might be plenty of good food choices in College.. .. but you can't Top Ramen,[0.0],0,1,0.0
 "A man got a car for his wife Now, thats what you call a good trade.",[0.0],0,0,1.0
-"STEELY DAN: I'm Steely Dan POLICEY DAN: Hands up, scumbag.",[0.0],0,1,0.0
-Did you hear about the gay midget? He came out of the cabinet.,[0.0],0,1,1.0
+"STEELY DAN: I'm Steely Dan POLICEY DAN: Hands up, scumbag.",[1.0],0,1,0.0
+Did you hear about the gay midget? He came out of the cabinet.,[1.0],0,1,1.0
 I once thought I had a Japanese friend. But it was just my imagine Asian,[0.0],0,0,1.0
-I met a Jewish girl and she asked for my number. I told her we use names here.,[0.0],0,1,1.0
-What are the strongest days of the week? Saturday and Sunday. The rest are weekdays.,[0.0],0,1,0.0
+I met a Jewish girl and she asked for my number. I told her we use names here.,[1.0],0,1,1.0
+What are the strongest days of the week? Saturday and Sunday. The rest are weekdays.,[0.0],0,0,0.0
 If pronouncing my B's as V's makes me sound Russian Then soviet.,[0.0],0,0,0.0
 What have you done wrong if the wife keep complaining when you try to watch TV in the living room? You made the chain too long in the kitchen.,[0.0],0,0,0.0
 "Soccer player calls his wife after a game... Player: ""I scored two goals!!"" Wife: ""Great! What was the end scored?"" Player: ""1:1""",[0.0],0,0,1.0
-Yo mama so greasy she sweats Crisco!,[0.0],0,0,0.0
+Yo mama so greasy she sweats Crisco!,[0.0],0,1,0.0
 What do my wife and my math teacher have in common? They both love to create problems that I am apparently supposed to solve.,[0.0],0,0,1.0
-Welcome to your 40s... you now enjoy bragging about how early you go to bed.,[0.0],0,1,0.0
+Welcome to your 40s... you now enjoy bragging about how early you go to bed.,[1.0],0,1,0.0
 "How many hookers does it take to screw in a light bulb? I don't know, but my basement's still dark",[0.0],0,0,1.0
-Michelle’s speech will be the ASMR video that lulls me to sleep for the next year.,[0.0],0,0,0.0
-"In 2015, a Singapore Airlines cargo plane had to make an emergency landing after its load of 2,000 farting sheep set off a fire alarm.",[0.0],0,1,1.0
-"What is black, heavy, and can't swim? A grand piano.",[0.0],0,1,0.0
-I like my women the way I like my coffee in a basket being touched by many Colombian men.,[0.0],0,1,0.0
+Michelle’s speech will be the ASMR video that lulls me to sleep for the next year.,[1.0],0,1,0.0
+"In 2015, a Singapore Airlines cargo plane had to make an emergency landing after its load of 2,000 farting sheep set off a fire alarm.",[1.0],0,1,1.0
+"What is black, heavy, and can't swim? A grand piano.",[1.0],0,1,0.0
+I like my women the way I like my coffee in a basket being touched by many Colombian men.,[1.0],0,1,0.0
 My wife has been walking around the house sighing for the last 20 minutes. I can't decide if I should ask her if something is wrong or just leave the house for a few days.,[0.0],0,0,1.0
 "After God created 24 hours of alternating darkness and light, one of the angels asked him, ""what are you going to do now?"" God said, ""I think I'm going to call it a day.""",[0.0],0,0,1.0
 "I see my evil twin sit down in the audience. We've had our problems in the past, but I'm sure he won't spoil my recital. He seems to have a bag full of snakes. Probably unrelated.",[0.0],0,0,1.0
 Q: What do you get when you cross an Arab with a Mexican? A: Oil of Ole',[0.0],0,0,1.0
-This tweet is just a humblebrag that I can spell 'cantaloupe.',[0.0],0,0,0.0
+This tweet is just a humblebrag that I can spell 'cantaloupe.',[1.0],0,1,0.0
 "My girlfriend said to me that she wanted me to tease her, so I said, ""All right, fatty.""",[0.0],0,0,0.0
-What did the elephant say to the naked man? How do you breathe through that tiny thing?,[0.0],0,1,0.0
-"Good cop: Tell the truth and it'll be more better for you Bad cop: If you don't, it'll be worser Grammar cop: I hate both of you",[0.0],0,1,1.0
+What did the elephant say to the naked man? How do you breathe through that tiny thing?,[1.0],0,1,0.0
+"Good cop: Tell the truth and it'll be more better for you Bad cop: If you don't, it'll be worser Grammar cop: I hate both of you",[1.0],0,1,1.0
 [First day as a career counsellor] Them: I want a career where I make people happy every day Me: You should become a pizza delivery driver,[0.0],0,1,0.0
 My son was playing on one of his video games when he screamed out that he'd just won a life. I thought how ironic.,[0.0],0,0,1.0
 "My girlfriend came out of the shower and said ""I shaved my pussy, you know what that means? I said ""yeah, the drain is clogged again. """,[0.0],0,1,1.0
 If you call someone from America American and someone from Mexico Mexican what do you call someone from Tibet? Chinese,[0.0],0,0,1.0
 A white couple doesn't just simply 'have a baby' without posting a pic of them showing her growing gut every day for 9 months.,[0.0],0,0,0.0
 Three conspiracy theorists walk into a bar. You can't tell me that's just a coincidence!,[0.0],0,0,0.0
-"The internet connection in my farm is really sketchy, so I moved the modem to the barn. Now I have stable wifi.",[0.0],0,1,1.0
+"The internet connection in my farm is really sketchy, so I moved the modem to the barn. Now I have stable wifi.",[1.0],0,1,1.0
 The other day I brought myself a universal remote and thought to myself well this changes everything.,[0.0],0,0,0.0
 What do you call a helpful lemon? Lemonaid.,[0.0],0,0,1.0
 Never go to bed angry. Sleep on the couch.,[0.0],0,0,1.0
-I try so hard not to upset my vegan girlfriend. I'm constantly treading on eggshells. Which she also doesn't approve of.,[0.0],0,1,0.0
-They all laughed when I told them that one day I would discover the secrets of invisibility. If only they could see me now.,[0.0],0,0,0.0
-What did the husband tell his wife to do after he slapped her? The same thing he told her the first time!,[0.0],0,1,0.0
+I try so hard not to upset my vegan girlfriend. I'm constantly treading on eggshells. Which she also doesn't approve of.,[1.0],0,1,0.0
+They all laughed when I told them that one day I would discover the secrets of invisibility. If only they could see me now.,[1.0],0,1,0.0
+What did the husband tell his wife to do after he slapped her? The same thing he told her the first time!,[1.0],0,1,0.0
 "Today's recipe for increasing anxiety: Bach's Brandenburg Concertos P.G. Wodehouse's Mulliner Nights Susanna Clarke's Jonathan Strange and Mr Norrell Louis Armstrong's Hot 5 Listening to Amy Poehler read her memoir ""Yes, Please."" Not all at once obviously. That would be chaos.",[0.0],0,0,1.0
 My dad told me to make little things count? So now I'm teaching maths to dwarfs.,[0.0],0,1,0.0
-"Today at the church, the lady next to me lit a cigarette and started smoking it... I almost dropped my beer in shock.",[0.0],0,1,1.0
+"Today at the church, the lady next to me lit a cigarette and started smoking it... I almost dropped my beer in shock.",[1.0],0,1,1.0
 Wanna go somewhere that has FREE WINE?' Me: Heck yes! 'Done. Pick you up Sunday at 8am!' Me: What?! -how I got tricked into going to church,[0.0],0,0,1.0
 "In 2011, Queen Elizabeth II agreed to act in a James Bond skit with Daniel Craig for the Olympics, breaking royal protocol. When asked if she wanted a speaking part, she replied, ""Of course I must say something. After all, he is coming to rescue me.""",[0.0],0,0,0.0
 How did the Germans conquer Poland so fast? They marched in backwards and the Polish thought they were leaving,[0.0],0,0,1.0
-"A Jehovah's Witness knocked on my door today so I invited him in, gave him tea and biscuits and said to him, ""So, what's this Jehovah's Witness thing about then?"" ""I haven't got a fucking clue"" He replied. ""I've never got this far before!""",[0.0],0,1,0.0
-"Two teenagers knocked on my door and then ran away, so I chased them down the street and down a dark alley where they beat me up and stole my wallet.",[0.0],0,1,1.0
-"Sometimes I have to sleep in the guest bedroom because my wife snores, but I don't want to embarrass her so I tell people it's because of her farts.",[0.0],0,1,1.0
-"SON: I went viral, dad... ME: Congratulations! I always knew your memes would bring clout to this family. SON: No, not for a meme, for saying something stupid. ME: [already pulling out my phone to publicly cancel my son] You live in the woods now.",[0.0],0,1,1.0
+"A Jehovah's Witness knocked on my door today so I invited him in, gave him tea and biscuits and said to him, ""So, what's this Jehovah's Witness thing about then?"" ""I haven't got a fucking clue"" He replied. ""I've never got this far before!""",[1.0],0,1,0.0
+"Two teenagers knocked on my door and then ran away, so I chased them down the street and down a dark alley where they beat me up and stole my wallet.",[1.0],0,1,1.0
+"Sometimes I have to sleep in the guest bedroom because my wife snores, but I don't want to embarrass her so I tell people it's because of her farts.",[0.0],0,0,1.0
+"SON: I went viral, dad... ME: Congratulations! I always knew your memes would bring clout to this family. SON: No, not for a meme, for saying something stupid. ME: [already pulling out my phone to publicly cancel my son] You live in the woods now.",[0.0],0,0,1.0
 "I'm 60 days clean now. It's been hard showering every day, but thankfully I had heroin to help me through it.",[0.0],0,0,0.0
-Where do most black people work? In jail,[0.0],0,1,0.0
+Where do most black people work? In jail,[1.0],0,1,0.0
 Santa works one night a week then spends the rest of the year cranking out his podcast.,[0.0],0,0,1.0
 take more than 5 minutes to respond to a text and she will think you are not paying attention to her,[0.0],0,0,0.0
 What wine pairs best with doing your taxes?,[0.0],0,0,1.0
 "When I take my wife on dates, I don't open the door for her. It's not that I'm not chivalrous, it's just that the door on the bus opens itself.",[0.0],0,0,1.0
 "Wife: ""I just got stung by a jellyfish. quick, pee on it!"" Husband: [peeing on jellyfish] ""This is for stinging my wife.""",[0.0],0,0,1.0
-My girlfriend found lipstick in my jacket pocket. I told her straight up I was cheating. There's no way that I was going to confess that I sell Avon,[0.0],0,1,0.0
+My girlfriend found lipstick in my jacket pocket. I told her straight up I was cheating. There's no way that I was going to confess that I sell Avon,[1.0],0,1,0.0
 what do you call an arab vegatarian a muslim fondalentalist,[0.0],0,0,1.0
 Why is the ocean so salty? Because the land doesn't wave back.,[0.0],0,0,1.0
-"Nearly half of every single one of my paychecks gets taken by a group who doesn't want anyone to hold them accountable, doesn't understand the value of a dollar, and who get more expensive every year. I am of course talking about my children.",[0.0],0,1,0.0
+"Nearly half of every single one of my paychecks gets taken by a group who doesn't want anyone to hold them accountable, doesn't understand the value of a dollar, and who get more expensive every year. I am of course talking about my children.",[1.0],0,1,0.0
 What do you call an Asian guy that always shows up before he needs to? Earl Lee,[0.0],0,0,0.0
-me: [checking my email] every restaurant i've ever been to: ok here's the deal i will suck your dick if you order delivery right now,[0.0],0,1,0.0
+me: [checking my email] every restaurant i've ever been to: ok here's the deal i will suck your dick if you order delivery right now,[1.0],0,1,0.0
 "Did Jesus ever get drunk? Not sure, but I heard he got hammered once.",[0.0],0,0,0.0
 Why do Native Americans hate snow? Because it's white and settles on their land.,[0.0],0,0,0.0
 "Bruce Jenner, substantiated proof... Women are worse drivers.",[0.0],0,0,1.0
-Boss: Any ideas on what we can call this insanely sticky adhesive? Employee: How about crazy glue? Boss: Hmmmm... won't people be upset because it's insensitive to the mentally ill? Employee: Yes.... so we'll spell it with a K. They'll never pick up on it. Boss: Perfect,[0.0],0,1,1.0
-My dentist removed the wrong tooth. It was acci-dental.,[0.0],0,1,1.0
+Boss: Any ideas on what we can call this insanely sticky adhesive? Employee: How about crazy glue? Boss: Hmmmm... won't people be upset because it's insensitive to the mentally ill? Employee: Yes.... so we'll spell it with a K. They'll never pick up on it. Boss: Perfect,[1.0],0,1,1.0
+My dentist removed the wrong tooth. It was acci-dental.,[1.0],0,1,1.0
 "Years from now, historians will look back on this period of American History and move to Canada.",[0.0],0,0,0.0
 "I got chatting to a black chick in the pub last night and she asked if I fancied taking her home. ""Fuck off"" I told her "" I'm not driving to Africa at this time of night"".",[0.0],0,0,1.0
 "My girlfriend asked me why I was blow-drying my crotch... Apparently ""heating your dinner"" was not the response she was looking for.",[0.0],0,0,1.0
-What do pigs and ink have in common? They both belong in a pen.,[0.0],0,1,1.0
+What do pigs and ink have in common? They both belong in a pen.,[1.0],0,1,1.0
 "Today the Government's Furlough scheme has kicked in and now I am only receiving 80% of what I should be paid. Finally, I know what it feels like to be a woman.",[0.0],0,0,0.0
-What rock group has four men that don't sing? Mount Rushmore.,[0.0],0,0,1.0
-Do the people of Denmark appreciate the fact that their nationality is also a delicious treat?,[1.0],0,0,1.0
+What rock group has four men that don't sing? Mount Rushmore.,[1.0],0,1,1.0
+Do the people of Denmark appreciate the fact that their nationality is also a delicious treat?,[0.0],0,0,1.0
 "My roommate claims i'm schizophrenic. Jokes on him, I don't have a roommate.",[0.0],0,0,1.0
-My Viagra addiction... Was the hardest time of my life.,[0.0],0,0,1.0
-What's a redneck's favorite type of bread? Inbred,[0.0],0,1,1.0
+My Viagra addiction... Was the hardest time of my life.,[0.0],0,1,1.0
+What's a redneck's favorite type of bread? Inbred,[1.0],0,1,1.0
 "I gave my daughter a watch for her birthday. She thought it was so cool and when she showed it to the next door neighbour, he asked, ""That's a pretty watch you've got there! Does it tell you the time?"" She laughed: 'No, this is an old fashioned watch. You have to look at it!'",[0.0],0,0,0.0
-Shark Tank idea: a microwave that will self-destruct if someone tries to use it to cook fish.,[0.0],0,0,1.0
+Shark Tank idea: a microwave that will self-destruct if someone tries to use it to cook fish.,[1.0],0,1,1.0
 Can someone get me some rohypnol or chloroform? I've got a date tomorrow tonight and she doesn't know yet.,[0.0],0,0,0.0
 Why did the Muslim cross the road? To get to the bigger crowd,[0.0],0,0,1.0
-My Grandfather was one of those Unorthodox Jews. He was a Nazi.,[0.0],0,0,0.0
-[first day as a pirate] Pirate: That's not why they call it a poop deck. Me: Oh. My bad,[0.0],0,1,1.0
+My Grandfather was one of those Unorthodox Jews. He was a Nazi.,[0.0],0,1,0.0
+[first day as a pirate] Pirate: That's not why they call it a poop deck. Me: Oh. My bad,[1.0],0,1,1.0
 "What do you call a group of well-endowed, homosexual physicists? Large hardon colliders",[0.0],0,0,1.0
 What do call a fish with a Phd? A brain sturgeon.,[0.0],0,0,1.0
-"My girlfriend told me that if I ever cheated on her, it would be worse if it was with a black girl. I told her she was wrong. It'd only be three-fifths as bad.",[0.0],0,1,1.0
+"My girlfriend told me that if I ever cheated on her, it would be worse if it was with a black girl. I told her she was wrong. It'd only be three-fifths as bad.",[1.0],0,1,1.0
 The problem with being gay It's a pain in the ass,[0.0],0,0,0.0
 "Justice is best served cold. Because if it were served warm, it would be justwater.",[0.0],0,0,1.0
-Have you heard of the dyslexic agnostic insomniac? He stayed up all night wondering if there was a dog.,[0.0],0,1,0.0
+Have you heard of the dyslexic agnostic insomniac? He stayed up all night wondering if there was a dog.,[1.0],0,1,0.0
 "[mattress shopping] Salesmen: Do you guys want to try it out before you buy it? Me: Sure *wife lays down on mattress, I go lay on couch in store lobby",[0.0],0,0,0.0
 "I was in a taxi today and the driver said, ""I love my job. I'm my own boss. Nobody tells me what to do."" Then I said: ""Turn left here.""",[0.0],0,0,0.0
-My wife threatened to leave me because of my obsession with optical illusions. I said: 'Wait! This isn't what you think it is!,[0.0],0,1,1.0
-Me: I wonder how a bill becomes a law? *music plays and the shit on my desk starts singing* Me: no stop I already looked it up on my phone,[0.0],0,1,1.0
+My wife threatened to leave me because of my obsession with optical illusions. I said: 'Wait! This isn't what you think it is!,[1.0],0,1,1.0
+Me: I wonder how a bill becomes a law? *music plays and the shit on my desk starts singing* Me: no stop I already looked it up on my phone,[0.0],0,0,1.0
 There is nothing wrong with exploring one's sexuality--and that is my message to the California Highway Patrol.,[0.0],0,0,1.0
 There's nothing worse than people online who feel they can just command others to discuss a topic they bring up. Discuss.,[0.0],0,0,1.0
-They just found a Black guy hanging from a tree with 79 stab wounds in Alabama.... The police say it's the worst case of suicide they've ever seen,[0.0],0,1,0.0
-My first day as a car salesman. Customer: Cargo space? Me: Car no do that. Car no fly. Manager: Can I see you in my office?,[0.0],0,1,1.0
-"COOKBOOK: 1 cup blood, 1/2 cup the white stuff on the corner of an old man's mouth, 3 tablespoons powdered farts, one green pepper. ME: Ew green pepper.",[0.0],0,1,1.0
-"I said to my wife ""When I die,"" I'd like to die having sex"" She replied: ""At least it'll be quick.""",[0.0],0,1,1.0
+They just found a Black guy hanging from a tree with 79 stab wounds in Alabama.... The police say it's the worst case of suicide they've ever seen,[1.0],0,1,0.0
+My first day as a car salesman. Customer: Cargo space? Me: Car no do that. Car no fly. Manager: Can I see you in my office?,[0.0],0,0,1.0
+"COOKBOOK: 1 cup blood, 1/2 cup the white stuff on the corner of an old man's mouth, 3 tablespoons powdered farts, one green pepper. ME: Ew green pepper.",[1.0],0,1,1.0
+"I said to my wife ""When I die,"" I'd like to die having sex"" She replied: ""At least it'll be quick.""",[1.0],0,1,1.0
 What do you call a dog magician? A labracadabrador. corny,[0.0],0,0,0.0
 "On a previous episode, a female listener left a voicemail and had something to say about the advice. Basically she says none of it's necessary and you'll do better if you ""just be yourself"". So you'll hear her voicemail and then my response to the worst dating advice ever given.",[0.0],0,0,0.0
-Our Mexican neighbor made us dinner and it tastes like I committed a grave error in marrying a white girl.,[0.0],0,1,1.0
+Our Mexican neighbor made us dinner and it tastes like I committed a grave error in marrying a white girl.,[1.0],0,1,1.0
 "Have to remember my stocked fridge is to last my family for weeks, not a challenge for me to finish all in one day 🙄",[0.0],0,0,0.0
-"My girlfriend told me I look ""uncool"" with a bike helmet on.. Well you know I'd rather look uncool than fall and split my head open during sex.",[0.0],0,0,1.0
-How many feminists does it take to change a light-bulb? THAT'S NOT FUNNY!,[0.0],0,0,0.0
+"My girlfriend told me I look ""uncool"" with a bike helmet on.. Well you know I'd rather look uncool than fall and split my head open during sex.",[1.0],0,1,1.0
+How many feminists does it take to change a light-bulb? THAT'S NOT FUNNY!,[1.0],0,1,0.0
 Twins and mama bear are napping... Time to practice my COD skills so I could stop being a burden to teams ¥º.... .....oooh I hurt my own feelings ­,[0.0],0,0,0.0
-me: [being pulled out of my flipped car] can you get my ipod nano paramedic: no me: ok,[0.0],0,1,1.0
+me: [being pulled out of my flipped car] can you get my ipod nano paramedic: no me: ok,[1.0],0,1,1.0
 When the eclipse comes I'm going to borrow the special glasses my wife uses when I'm shirtless.,[0.0],0,0,1.0
-So I gave a blind guy a basketball. I think he's still trying to read it,[0.0],0,1,1.0
-"I have never worked out the moral to Humpty Dumpty. Is it, 'don't let horses perform medical procedures?'",[0.0],0,1,1.0
-"I thought I won the argument with my wife as to how to arrange the dining room furniture... But when I got home, the tables were turned.",[0.0],0,1,1.0
-Premature ejaculation.... the single biggest compliment a man can pay a women and they fucking moan about it.,[0.0],0,1,1.0
+So I gave a blind guy a basketball. I think he's still trying to read it,[0.0],0,0,1.0
+"I have never worked out the moral to Humpty Dumpty. Is it, 'don't let horses perform medical procedures?'",[1.0],0,1,1.0
+"I thought I won the argument with my wife as to how to arrange the dining room furniture... But when I got home, the tables were turned.",[1.0],0,1,1.0
+Premature ejaculation.... the single biggest compliment a man can pay a women and they fucking moan about it.,[1.0],0,1,1.0
 "me: how will i die fortune teller: unequivocally, and finally...happy me: [tearing up] oh wow- fortune teller: also naked in a mcdonalds drive thru what the fuck",[0.0],0,0,1.0
 I busted my nose earlier today... I suppose women can call the aftermath a hot mess.,[0.0],0,0,0.0
-"ME: I'm such an idiot. ME, 3 DRINKS IN AND FEELING WISE: A broken clock is right twice a day, but a working clock set improperly is wrong all the time. Wow. Yes. Write that down. That's a tattoo.",[0.0],0,1,0.0
-My roommate says our house is haunted I've been living here for 300 years and i haven't noticed shit.,[0.0],0,1,0.0
+"ME: I'm such an idiot. ME, 3 DRINKS IN AND FEELING WISE: A broken clock is right twice a day, but a working clock set improperly is wrong all the time. Wow. Yes. Write that down. That's a tattoo.",[1.0],0,1,0.0
+My roommate says our house is haunted I've been living here for 300 years and i haven't noticed shit.,[1.0],0,1,0.0
 "A woman is on trial for beating her husband to death with his guitar collection. The judge asks her ""First offender?"" She replies ""No, first a Gibson, then a Fender.""",[0.0],0,0,0.0
 Someone threw a giant bottle of omega-3 pills at me. I'm fine - I only suffered super fish oil injuries.,[0.0],0,0,1.0
-How many ants are needed to fill an apartment? Tenants,[0.0],0,1,0.0
+How many ants are needed to fill an apartment? Tenants,[1.0],0,1,0.0
 A German bakers was robbed... Apparently everything was stollen.,[0.0],0,0,1.0
 What do you call immigrants to Sweden? Artificial Swedeners,[0.0],0,0,1.0
-"I've often heard that ""icy"" is the easiest word to spell Looking at it now, I see why",[0.0],0,1,1.0
+"I've often heard that ""icy"" is the easiest word to spell Looking at it now, I see why",[1.0],0,1,1.0
 The wife & I fought last night. Saying things that can't be taken back. Like perishable goods. Baby food. DVDs with broken seals. Underwear.,[0.0],0,0,0.0
 What do you call a Jewish rapper? A rappi.,[0.0],0,0,0.0
-did you know you can tell how much a girl likes you by the position of their feet Chances are if her feet are next to her ears she really likes you.,[0.0],0,1,1.0
+did you know you can tell how much a girl likes you by the position of their feet Chances are if her feet are next to her ears she really likes you.,[1.0],0,1,1.0
 Holding one of those artist paint palettes but the paints are different sauces and I have a nugget in my brush hand. My mouth is the canvas.,[0.0],0,0,0.0
-"I think I'm pretty perceptive but I've been flying around the sun at 67,000 mph since I was born and haven't even noticed.",[0.0],0,1,0.0
+"I think I'm pretty perceptive but I've been flying around the sun at 67,000 mph since I was born and haven't even noticed.",[1.0],0,1,0.0
 "Critics are calling my performance of Wife Pretending To Care About Her Husband's Work Story ""emotionally charged"" and ""daring"".",[0.0],0,0,0.0
-"One unintended consequence of unprotected sex is that sometimes, 6 years later, a small child is forced to learn the recorder.",[0.0],0,0,1.0
-Nothing beats a pretty girl with a beautiful singing voice except for Chris Brown,[0.0],0,1,0.0
+"One unintended consequence of unprotected sex is that sometimes, 6 years later, a small child is forced to learn the recorder.",[1.0],0,1,1.0
+Nothing beats a pretty girl with a beautiful singing voice except for Chris Brown,[1.0],0,1,0.0
 Did you hear the one about the 2 gay ghosts? They kept giving each other the willies!,[0.0],0,0,1.0
 "Why was there semen on the clean laundry? When Greg woke up, his mom had left a note reading, ""Please put a load in the washer""",[0.0],0,0,0.0
 Why do Christian people suck at Pokemon? They don't believe in evolution rofl,[0.0],0,0,1.0
@@ -342,64 +329,64 @@ Learning to love yourself is important. Just don't let your wife catch you doing
 You know how some women wax off their eyebrows and draw them on more attractive with a pen? I do that same thing for my personality with alcohol,[0.0],0,1,1.0
 "For the past few days, I wake up to see someone has dumped a bunch of LEGO blocks on my front porch. I don't know what to make of it.",[0.0],0,0,1.0
 "What's the difference between Jesus, and a picture of Jesus? It only takes one nail to hang the picture. haha",[0.0],0,0,0.0
-Did you hear about the Native American who drank 1000 glasses of tea? He drowned in his tea pee.,[0.0],0,1,0.0
-"WHEN SOMETHING BAD HAPPENS TO SOMEONE I LIKE: This universe is a cruel and random place. There is no cosmic justice. WHEN SOMETHING BAD HAPPENS TO SOMEONE I DON'T LIKE: Karma strikes again, baby!!!",[0.0],0,1,1.0
-What is the name of the Asian pointing out everyones mistakes? Xu wong,[0.0],0,1,1.0
-I scared the postman today by going to the door completely naked. I'm not sure what scared him more. My naked body or the fact I knew where he lived.,[0.0],0,1,1.0
-me: omg honey i can't hear your broke ass through my airpods judge: i said death by electrocution,[0.0],0,1,1.0
-Bullets are so weird. They only do their job AFTER they're fired,[0.0],0,1,0.0
+Did you hear about the Native American who drank 1000 glasses of tea? He drowned in his tea pee.,[1.0],0,1,0.0
+"WHEN SOMETHING BAD HAPPENS TO SOMEONE I LIKE: This universe is a cruel and random place. There is no cosmic justice. WHEN SOMETHING BAD HAPPENS TO SOMEONE I DON'T LIKE: Karma strikes again, baby!!!",[1.0],0,1,1.0
+What is the name of the Asian pointing out everyones mistakes? Xu wong,[1.0],0,1,1.0
+I scared the postman today by going to the door completely naked. I'm not sure what scared him more. My naked body or the fact I knew where he lived.,[1.0],0,1,1.0
+me: omg honey i can't hear your broke ass through my airpods judge: i said death by electrocution,[1.0],0,1,1.0
+Bullets are so weird. They only do their job AFTER they're fired,[1.0],0,1,0.0
 Why don't dentists display their awards? Because they want to prevent plaque build-up. corny,[0.0],0,0,0.0
-I'm reading a horror story in Braille. Something bad is about to happen...I can feel it.,[0.0],0,1,0.0
+I'm reading a horror story in Braille. Something bad is about to happen...I can feel it.,[1.0],0,1,0.0
 ME IN NORMAL CLOTHES: I am nothing. I am invisible. ME THE SECOND I PUT ON A SCARF: I am a handsome rich millionaire who knows about horses. Make way.,[0.0],0,0,1.0
-"Today I was asked to go out, by 20 girls. Sadly, I was in the women's bathroom.",[0.0],0,0,1.0
-"A Mormon president would face the most difficult issue any president has. Deciding who's the First Lady, who's the Second Lady, and who's the Third Lady.",[0.0],0,0,1.0
+"Today I was asked to go out, by 20 girls. Sadly, I was in the women's bathroom.",[0.0],0,1,1.0
+"A Mormon president would face the most difficult issue any president has. Deciding who's the First Lady, who's the Second Lady, and who's the Third Lady.",[1.0],0,1,1.0
 A black man is speeding down the motorway and he dies. How? He sticks his head out of the window and his lips beat him to death.,[0.0],0,0,0.0
-"[gym] Personal Trainer: (looking at my workout journal) You were supposed to record the weight you lifted, not how the workouts made you feel. Me: oh",[0.0],0,1,0.0
-Weird. I've been hitting this wasp's nest with a wiffle ball bat for about five minutes and noth- ok I gotta go,[0.0],0,1,1.0
+"[gym] Personal Trainer: (looking at my workout journal) You were supposed to record the weight you lifted, not how the workouts made you feel. Me: oh",[1.0],0,1,0.0
+Weird. I've been hitting this wasp's nest with a wiffle ball bat for about five minutes and noth- ok I gotta go,[1.0],0,1,1.0
 A study conducted by a group of scientists shows that women that have more than 25% body fat live longer than the men who mention it to them,[0.0],0,0,0.0
 I went to a restaurant last night and I noticed that my waitress had a black eye. So I made sure I spoke loud and clear when ordering my food because she obviously has trouble listening.,[0.0],0,0,1.0
-"My roommate is 2 days younger than me So I've gotten into the habit of saying ""when I was your age…' and then describing what I did 2 days ago",[0.0],0,1,0.0
-wife: Why is 9 crying? me: Because it's raining and he's getting wet wife: But we're at a water park me *takes a drink from my flask* Yep,[0.0],0,1,0.0
+"My roommate is 2 days younger than me So I've gotten into the habit of saying ""when I was your age…' and then describing what I did 2 days ago",[1.0],0,1,0.0
+wife: Why is 9 crying? me: Because it's raining and he's getting wet wife: But we're at a water park me *takes a drink from my flask* Yep,[0.0],0,0,0.0
 What do you call a pretty lady on the arm of a drummer? A Tattoo.,[0.0],0,0,1.0
-What's the difference between Santa Claus and A Black Rapper? Santa stops after three hoes.,[0.0],0,0,1.0
+What's the difference between Santa Claus and A Black Rapper? Santa stops after three hoes.,[1.0],0,1,1.0
 I don't have a Fitbit. But I have a couple of fat bits.,[0.0],0,0,0.0
 [fridge shopping] Salesmen: What type of fridge are you looking for? Me: Do you have something in stainless steel that does a good job hiding rotting vegetables?,[0.0],0,0,0.0
-Where are average things manufactured? The satisfactory.,[0.0],0,1,1.0
+Where are average things manufactured? The satisfactory.,[1.0],0,1,1.0
 What do you call a caring prostitute? Someone who gives a fuck,[0.0],0,0,0.0
-"[2 am] *5 year old sneaks into my room* 5: (whispers) Daddy Me: .... 5: (louder) Daddy! Me: huh? what? 5: Are you asleep? Me: No... not anymore... 5: Okay, just checking. *goes back to bed*",[0.0],0,1,0.0
+"[2 am] *5 year old sneaks into my room* 5: (whispers) Daddy Me: .... 5: (louder) Daddy! Me: huh? what? 5: Are you asleep? Me: No... not anymore... 5: Okay, just checking. *goes back to bed*",[1.0],0,1,0.0
 What do you call an iguana that thinks it's a dog? A reptile dysfunction.,[0.0],0,0,1.0
-Just ordered a non-fat pumpkin spice latte & now I drive a Prius & am a Zumba instructor.,[0.0],0,1,1.0
-I saw a poor old lady fall over today on the sidewalk! At least I presume she was poor - she only had $1.20 in her purse.,[0.0],0,1,0.0
+Just ordered a non-fat pumpkin spice latte & now I drive a Prius & am a Zumba instructor.,[1.0],0,1,1.0
+I saw a poor old lady fall over today on the sidewalk! At least I presume she was poor - she only had $1.20 in her purse.,[1.0],0,1,0.0
 "Sometimes, in the heat of an argument, you say things you don't mean. I'm sorry. You aren't a ""silly goose"". That's my dad talking, not me.",[0.0],0,0,1.0
 What's the hardest part about breaking up with a Japanese girl? You have to drop the bomb on her twice before she gets the point.,[0.0],0,0,1.0
 "Me: *takes off shirt and pants, gets into bed with just socks and underwear on* Mattress salesmen: Dude",[0.0],0,0,1.0
-"Do you know how many 3rd party sects the catholic church is protecting? None, catholics aren't allowed to have protected sects.",[0.0],0,0,0.0
-[at ultrasound] Nurse: there it is. There's your baby Me visibly relieved: oh Jesus thank u Wife whispering to nurse: he thought it was bees,[0.0],0,1,1.0
+"Do you know how many 3rd party sects the catholic church is protecting? None, catholics aren't allowed to have protected sects.",[1.0],0,1,0.0
+[at ultrasound] Nurse: there it is. There's your baby Me visibly relieved: oh Jesus thank u Wife whispering to nurse: he thought it was bees,[1.0],0,1,1.0
 My wife and I had a row and it finished with her literally crawling to me on her hands and knees! She said: 'Get out from under that bed and fight like a man.',[0.0],0,0,1.0
-Why do Jews get circumcised? Because Jewish women won't touch anything that's not at least 10% off.,[0.0],0,1,1.0
-"Being an adult means eating what you want when you want. But it also means realizing you're not capable of making healthy choices, so you get a personal trainer to make a meal plan for you. But when he does you say 'No one is telling me what to eat. Screw that guy. I'm an adult'.",[0.0],0,1,1.0
+Why do Jews get circumcised? Because Jewish women won't touch anything that's not at least 10% off.,[1.0],0,1,1.0
+"Being an adult means eating what you want when you want. But it also means realizing you're not capable of making healthy choices, so you get a personal trainer to make a meal plan for you. But when he does you say 'No one is telling me what to eat. Screw that guy. I'm an adult'.",[1.0],0,1,1.0
 "Gay marriage will encourage people to be gay, in the same way that hanging around tall people will make you tall.",[0.0],0,0,1.0
-"English ships start with HMS, United states with USS... what about Italian ships? AMB. It's stands for, 'Atsa Ma Boat!'",[0.0],0,0,0.0
+"English ships start with HMS, United states with USS... what about Italian ships? AMB. It's stands for, 'Atsa Ma Boat!'",[1.0],0,1,0.0
 I'm addicted to having money in the bank. I really do suffer from withdrawals.,[0.0],0,0,0.0
-My wife... It's difficult to say what she does... She sells seashells on the seashore.,[0.0],0,0,0.0
+My wife... It's difficult to say what she does... She sells seashells on the seashore.,[0.0],0,1,0.0
 Worked out legs n nalgas yesterday. Everything hurts. I can't even hold in my farts.,[0.0],0,0,1.0
 "Did you hear about the girl so in love, she'd rather blow her boyfriend than go out shoe shopping? Talk about head over heels!",[0.0],0,0,1.0
 Sometimes at night I look up at the stars and think... I should really get a roof for this house.,[0.0],0,0,0.0
 My girlfriend wants me to choose between her and my career as a reporter. I have some breaking news for her.,[0.0],0,0,0.0
-It's a bad sign that in order to vote in Georgia you have to prove you subscribe to The Golf Channel.,[0.0],0,0,1.0
-"A sexy woman sits down next to a guy drinking alone at a bar She whispers, ""You look like you could use a little fun. For $100, I'll do anything you ask me to in three words or less."" The man takes a drink of his beer, then takes out $100 and says, ""Paint my house.""",[0.0],0,1,0.0
-duck: [sees my bread] i lust for crust me: no duck: c'mon that dough make me go oh me: it'll make you sick duck: i am a beast for the yeast baby,[0.0],0,1,0.0
+It's a bad sign that in order to vote in Georgia you have to prove you subscribe to The Golf Channel.,[1.0],0,1,1.0
+"A sexy woman sits down next to a guy drinking alone at a bar She whispers, ""You look like you could use a little fun. For $100, I'll do anything you ask me to in three words or less."" The man takes a drink of his beer, then takes out $100 and says, ""Paint my house.""",[1.0],0,1,0.0
+duck: [sees my bread] i lust for crust me: no duck: c'mon that dough make me go oh me: it'll make you sick duck: i am a beast for the yeast baby,[1.0],0,1,0.0
 What's the hardest thing about dating a blind woman? Getting her husband's voice just right,[0.0],0,0,0.0
-What's the difference between redneck newlyweds and two variables in a dataset? The variables aren't necessarily related.,[0.0],0,1,0.0
-I like my hookers like I like my treasure... Buried.,[0.0],0,1,0.0
+What's the difference between redneck newlyweds and two variables in a dataset? The variables aren't necessarily related.,[1.0],0,1,0.0
+I like my hookers like I like my treasure... Buried.,[1.0],0,1,0.0
 "Christmas is such a happy time - the only way I can get through it, is to stop taking my anti-depressants.",[0.0],0,0,0.0
 I decided to join the new Jewish fraternity on campus ... Zayda Ate a Bagel,[0.0],0,0,1.0
 "The past, the present, and the future walk into a bar... It was tense. haha",[0.0],0,0,0.0
 "I'm not afraid of butterflies, but they do make me feel nervous.",[0.0],0,0,0.0
-"My girlfriend feels she needs 72 half-empty bottles of stuff in her shower & if I even look at them, they all throw themselves on the floor",[0.0],0,1,0.0
+"My girlfriend feels she needs 72 half-empty bottles of stuff in her shower & if I even look at them, they all throw themselves on the floor",[1.0],0,1,0.0
 """You know the difference between me and you? ... I make this look good"" - Men in Black",[0.0],0,0,0.0
 It can't be much fun being gay. Your friends are always moaning behind your back.,[0.0],0,0,0.0
-What's Dracula's favourite type of coffee? Decoffinated.,[0.0],0,0,0.0
+What's Dracula's favourite type of coffee? Decoffinated.,[0.0],0,1,0.0
 How do you navigate holidays like father's day in queer relationships where the bio dad isn't involved? Auntie Red Tweet Tea,[0.0],0,0,1.0
 """He's not sleeping with you cause you're fat and ugly, so lose some weight and do your make up like this."" - Women's magazines, summarized.",[0.0],0,0,0.0
 I can't stand abortions. I'm ok with killing babies... but the idea of a woman making decisions just doesn't sit right with me.,[0.0],0,0,0.0
@@ -410,29 +397,29 @@ I drink water throughout the day to stay hydrated and also just in case someone 
 I like my slaves like I like my coffee Strong and black,[0.0],0,0,0.0
 What did the Hobbit say to the Japanese man as he was leaving? Shirenara!,[0.0],0,0,0.0
 "A photon walks into a hotel The bell boy walks up and asks, ""Do you have any luggage?"". ""No,"" says the photon, ""I'm traveling light.""",[0.0],0,0,0.0
-I was pulled over last night and the officer asked me if I had a police record. I told him 'no but I have a couple albums by Sting.',[0.0],0,1,0.0
-One of the ants on my ant farm dresses up as a clown to cheer up his friends. He's an anti-depress ant.,[0.0],0,1,1.0
+I was pulled over last night and the officer asked me if I had a police record. I told him 'no but I have a couple albums by Sting.',[1.0],0,1,0.0
+One of the ants on my ant farm dresses up as a clown to cheer up his friends. He's an anti-depress ant.,[1.0],0,1,1.0
 "If you don't remember her name in the morning, take her to Starbucks.",[0.0],0,0,1.0
 Where do beekeepers stay on vacation? Air bee and bee.,[0.0],0,0,0.0
-"I asked the librarian if the library had any books about paranoia. She whispered: ""They're right behind you.""",[0.0],0,1,1.0
-"What did the French man say when he tripped down the stairs? ""Eiffel."" corny",[0.0],0,1,1.0
-"I'm pretty sure the audience appreciated my standing up repeatedly and saying, 'Actually, it's PANTHER OF COLOR.'",[0.0],0,1,0.0
+"I asked the librarian if the library had any books about paranoia. She whispered: ""They're right behind you.""",[1.0],0,1,1.0
+"What did the French man say when he tripped down the stairs? ""Eiffel."" corny",[1.0],0,1,1.0
+"I'm pretty sure the audience appreciated my standing up repeatedly and saying, 'Actually, it's PANTHER OF COLOR.'",[1.0],0,1,0.0
 Met gayla.,[0.0],0,0,0.0
 "Today I saw a dwarf climbing down a prison wall. I thought to myself, ""That's a little condescending""",[0.0],0,0,1.0
-"Personally, I don't agree with cannabis being legalised in America. The last thing those fat fuckers need is the munchies.",[0.0],0,1,1.0
-"If I could only pick one desert island record, I'd choose whichever album is most canoe-shaped.",[0.0],0,1,1.0
-"When they said, ""we're all in this together"" they were actually talking about a big internet argument.",[0.0],0,1,0.0
+"Personally, I don't agree with cannabis being legalised in America. The last thing those fat fuckers need is the munchies.",[1.0],0,1,1.0
+"If I could only pick one desert island record, I'd choose whichever album is most canoe-shaped.",[1.0],0,1,1.0
+"When they said, ""we're all in this together"" they were actually talking about a big internet argument.",[0.0],0,0,0.0
 "Wife: that's never going to work Husband: you're so negative, Sandra W: you're planting bird seeds H: LET ME GROW MY BIRDS, WOMAN",[0.0],0,0,1.0
-Why did the bachelors purchase double amputee strippers for their party? Because they were 50% off!,[0.0],0,1,0.0
-"As a kid, I was less concerned about Goldilock's safety than I was about Mama and Papa bear not sleeping in the same bed anymore.",[0.0],0,1,0.0
+Why did the bachelors purchase double amputee strippers for their party? Because they were 50% off!,[1.0],0,1,0.0
+"As a kid, I was less concerned about Goldilock's safety than I was about Mama and Papa bear not sleeping in the same bed anymore.",[1.0],0,1,0.0
 What do you call a deaf lesbian? Earmuff,[0.0],0,0,0.0
-"A man is buying a banana, an apple and two eggs. The female cashier says: ""You must be single."" The man answers: ""Wow, how did you know?"" Cashier: ""Because you're ugly.""",[0.0],0,1,1.0
-"If there's one thing we've learned from stripper cops, it's that the police could make way more money getting naked than handing out tickets.",[0.0],0,0,0.0
+"A man is buying a banana, an apple and two eggs. The female cashier says: ""You must be single."" The man answers: ""Wow, how did you know?"" Cashier: ""Because you're ugly.""",[0.0],0,0,1.0
+"If there's one thing we've learned from stripper cops, it's that the police could make way more money getting naked than handing out tickets.",[0.0],0,1,0.0
 How many people with dementia does it take to change a lightbulb? To get to the other side.,[0.0],0,0,1.0
-1-year-old: *shrieks repeatedly* Me: Why is she so loud? Wife: That's how she talks. Apparently she speaks fluent pterodactyl.,[0.0],0,1,1.0
-"Your first instinct is gonna to be to spell ""leopard"" and ""deaf"" correctly. You're going to want to resist that.  Best band manager ever.",[0.0],0,1,1.0
-I never shower before church. I like to sit in my own pew.,[0.0],0,1,0.0
-I still don't know what nougat is.,[0.0],0,1,0.0
+1-year-old: *shrieks repeatedly* Me: Why is she so loud? Wife: That's how she talks. Apparently she speaks fluent pterodactyl.,[1.0],0,1,1.0
+"Your first instinct is gonna to be to spell ""leopard"" and ""deaf"" correctly. You're going to want to resist that.  Best band manager ever.",[1.0],0,1,1.0
+I never shower before church. I like to sit in my own pew.,[1.0],0,1,0.0
+I still don't know what nougat is.,[1.0],0,1,0.0
 Why should you always bring a bag of chips to a party? In queso emergency.,[0.0],0,0,1.0
 The barista said she liked my Dia de los Muertos skeleton costume. I'm not wearing a costume.,[0.0],0,0,1.0
 Me trying to decide if I want to buy a rockstar energy drink or a monster energy drink: 'Do I want to feel energized enough to melt faces or eat them?',[0.0],0,0,0.0
@@ -441,7 +428,7 @@ Me trying to decide if I want to buy a rockstar energy drink or a monster energy
 "Girls look back at your wedding photos, if you are fatter than that, he is not happy..",[0.0],0,0,0.0
 "Do you have to be from Vietnam to open up a restaurant called ""Viet Noms?"" I'm asking for a friend",[0.0],0,0,1.0
 "Keep your friends close, keep your enemies closer, keep your stuffed animals closest.",[0.0],0,0,1.0
-My wife keeps telling me that I'm the cheapest person she has ever met in her life. I'm not buying it.,[0.0],0,1,1.0
+My wife keeps telling me that I'm the cheapest person she has ever met in her life. I'm not buying it.,[1.0],0,1,1.0
 "Watching Grey's Anatomy teaches me that if I'm really sad, I should walk slowly down a corridor to a Snow Patrol track.",[0.0],0,0,1.0
 "Which southeast Asian drink is more popular, the iced tea or the coffee? Neither. It's a Thai.",[0.0],0,0,1.0
 "A cop pulls over a rabbi on Yom Kippur. He says ""I pulled you over for speeding"". Rabbi goes ""I wasn't speeding, I was fasting"".",[0.0],0,0,1.0
@@ -451,58 +438,57 @@ Toilet paper is one of the toughest items to buy in the grocery store. It's so h
 I fucked an arthritic woman yesterday. What a cracker.,[0.0],0,1,0.0
 The Old Testament is the historical record of the first time we Jews controlled the media.,[0.0],0,0,1.0
 Whoever stole my anti depressants. I hope you're happy now.,[0.0],0,0,0.0
-I regret rubbing ketchup in my eyes. But that's Heinz sight for you.,[0.0],0,1,0.0
+I regret rubbing ketchup in my eyes. But that's Heinz sight for you.,[1.0],0,1,0.0
 My girlfriend wanted to have a talk about how childish i am But she didn't have the secret password to my pillow fort so she couldn't get in,[0.0],0,0,0.0
 You wouldn't call me lazy if you saw the long list of things I did in order to avoid being productive.,[0.0],0,0,1.0
 I went jogging but came back after five minutes because I forgot something. I forgot that I'm fat and can't run for more than five minutes.,[0.0],0,0,0.0
-The name Red Lobster is helpful if you totally forgot what color lobsters are.,[1.0],0,0,0.0
+The name Red Lobster is helpful if you totally forgot what color lobsters are.,[0.0],0,0,0.0
 I was sacked from the ice cream factory today. It was because I'll only work on two sundaes a month.,[0.0],0,0,1.0
 "The main reason I've never joined a religious cult is I'm not a fan of Kool-aid, other than that I totally would.",[0.0],0,0,1.0
 I love autumn in California: watching the leaves change color because they're on fire.,[0.0],0,1,0.0
-What do you call a Muslim woman without a burka? Dead.,[0.0],0,1,1.0
+What do you call a Muslim woman without a burka? Dead.,[1.0],0,1,1.0
 "I walked in on my girlfriend having sex with her personal trainer. Me: ""Ok, this isn't working out.""",[0.0],0,0,1.0
-"Valentine's Day soon, Ladies! But don't bother getting me what you got me last year. I've got enough fucking restraining orders as it is.",[0.0],0,0,1.0
-What do lawyers wear to work? A lawsuit.,[0.0],0,1,1.0
+"Valentine's Day soon, Ladies! But don't bother getting me what you got me last year. I've got enough fucking restraining orders as it is.",[0.0],0,1,1.0
+What do lawyers wear to work? A lawsuit.,[1.0],0,1,1.0
 My boss told me to have a good day. So I went home.,[0.0],0,0,0.0
-My wife says I'm the cheapest man in the world. I'm not buying it.,[0.0],0,0,0.0
+My wife says I'm the cheapest man in the world. I'm not buying it.,[1.0],0,1,0.0
 My son is now at that age where he's curious about the human body. I guess I'll have to hide it somewhere else now.,[0.0],0,0,0.0
 I saw a group of transvestites driving really fast... ... it took me a while to realise that they were drag-racing.,[0.0],0,0,0.0
 """Dad, on my way home from school I saw Santa beating a Pakistani man up outside a shop. "" ""Well son, I don't know what to say to you, I'm shocked. "" ""So am I dad, I only posted the letter yesterday""",[0.0],0,0,0.0
-A guy in a wheelchair stole my camouflage stuff I told him 'you can hide but you can't run'.,[0.0],0,1,1.0
-"As I was entering a singles bar last night the bouncer started patting me down. He said, ""Have you got anything on you that you shouldn't have?"" ""Yes,"" I replied. ""My wedding ring!""",[0.0],0,1,0.0
-"When a bear stays in bed for 7 months in a row, they call it hibernation. But when I do it, everyone says I'm depressed",[0.0],0,1,0.0
+A guy in a wheelchair stole my camouflage stuff I told him 'you can hide but you can't run'.,[1.0],0,1,1.0
+"As I was entering a singles bar last night the bouncer started patting me down. He said, ""Have you got anything on you that you shouldn't have?"" ""Yes,"" I replied. ""My wedding ring!""",[1.0],0,1,0.0
+"When a bear stays in bed for 7 months in a row, they call it hibernation. But when I do it, everyone says I'm depressed",[1.0],0,1,0.0
 "My wife just cleaned out her purse. So, she'll be having a garage sale later this week.",[0.0],0,0,1.0
 What kind of batteries do Canadians get the most excited about? AA,[0.0],0,0,1.0
 "I tried to share a sandwich with a homeless guy today, but he just shouted very rudely, ""Get your own sandwich!""",[0.0],0,0,1.0
-What do you call a gay guy paralyzed from the neck down? A Tomato (because he's both a fruit AND a vegetable),[0.0],0,1,0.0
-What do Ethiopians get for Christmas? Hungry christmas jokes,[0.0],0,1,0.0
+What do you call a gay guy paralyzed from the neck down? A Tomato (because he's both a fruit AND a vegetable),[1.0],0,1,0.0
+What do Ethiopians get for Christmas? Hungry christmas jokes,[1.0],0,1,0.0
 "If I had a dime for every time I didn't know what was going on, I'd be like, ""Why ya'll keep giving me all these dimes?""",[0.0],0,0,1.0
-People with gender dysphoria tend to be great businessmen. Every action they take is a trans-action.,[0.0],0,1,0.0
+People with gender dysphoria tend to be great businessmen. Every action they take is a trans-action.,[1.0],0,1,0.0
 "My IT guy just asked, ""How does a computer get drunk?"" It takes screen shots.",[0.0],0,0,1.0
-What do the Egyptians call a man who cannot keep his opinions to himself? IMHOtep,[0.0],0,1,1.0
-Why does a white guy go to a brothel? For pleasure. Why does a black guy go to a brothel? He's looking for his mother.,[0.0],0,0,0.0
+What do the Egyptians call a man who cannot keep his opinions to himself? IMHOtep,[1.0],0,1,1.0
+Why does a white guy go to a brothel? For pleasure. Why does a black guy go to a brothel? He's looking for his mother.,[0.0],0,1,0.0
 What did Kim Jong-Un say yesterday before he died? My Korea is over,[0.0],0,0,0.0
 Do you think that all this poverty in Africa is just Gods way of saying that he didn't mean to create black people?,[0.0],0,0,0.0
 How do farmers party? They turnip the beets.,[0.0],0,0,0.0
 My parents are always telling me that their world doesn't revolve around me So I guess that means that I'm not actually their sun,[0.0],0,0,1.0
 What did Tennessee. The same thing Arkansas.,[0.0],0,0,1.0
-"My wife says she's reading a book about leadership to help her advance at work and be a better professional, but I bet it's to lead a team of evil villains who will rob banks and do bad stuff. She's not fooling me.",[0.0],0,1,0.0
+"My wife says she's reading a book about leadership to help her advance at work and be a better professional, but I bet it's to lead a team of evil villains who will rob banks and do bad stuff. She's not fooling me.",[1.0],0,1,0.0
 What do you call a man with no arms and no legs in a swimming pool? Bob.,[0.0],0,0,0.0
-Marriage Protip: dipping your wife's hand in warm water while she sleeps provides a good excuse to buy a new mattress and upgrade your bed situation.,[0.0],0,1,1.0
+Marriage Protip: dipping your wife's hand in warm water while she sleeps provides a good excuse to buy a new mattress and upgrade your bed situation.,[1.0],0,1,1.0
 "Child to his mum; ""Mummy, what is dark humour?"" ""Well sweetheart, you see that man over there with no arms?"" ""No Mummy, I""m blind"" ""Exactly""",[0.0],0,0,1.0
 "I know a lot of jokes about unemployed people, but none of them work",[0.0],0,0,0.0
-"When one door closes another one opens... if that were true, imagine trying to get in the car. It would be like an episode of Mr Bean.",[0.0],0,0,1.0
+"When one door closes another one opens... if that were true, imagine trying to get in the car. It would be like an episode of Mr Bean.",[1.0],0,1,1.0
 "A murderer is to be executed by electric chair and the priests asks if he has any last request. The man asks for the priest to hold his hand. Needless to say, the priest was shocked.",[0.0],0,0,0.0
 cop: alright step off of the vehicle me: [propping kickstand] this is bullshit cop: why do you have that on a tricycle,[0.0],0,0,0.0
 "Me: Hey buddy, do you want to go to the potty? Toddler: NO! I hate the bathroom and NEVER want to go in there! (5 mins later, I'm in the bathroom on the toilet) Toddler (pounding on bathroom door): LET ME IN!!!",[0.0],0,0,1.0
 "When life gives you lemons, make lemonade. When your wife gives you lemons... Make sure she hasn't gone senile.",[0.0],0,0,0.0
 How can you tell if your moms got Parkinsons? She's got lipstick on her eye balls.,[0.0],0,0,1.0
 "What did the Alaska Native's girlfriend say when she broke up with him? *""I'm just not that Inuit.""*",[0.0],0,0,1.0
-I like my girlfriend's new glow-in-the-dark braces... ...her smile really lights up the room now.,[0.0],0,0,0.0
-"I read that shaving your legs helps you swim faster, so now, I just have to go back in time and convince the guys who hazed me in high school that I was a swimmer.",[0.0],0,1,0.0
+I like my girlfriend's new glow-in-the-dark braces... ...her smile really lights up the room now.,[1.0],0,1,0.0
+"I read that shaving your legs helps you swim faster, so now, I just have to go back in time and convince the guys who hazed me in high school that I was a swimmer.",[1.0],0,1,0.0
 It's weird that my therapy dog has no interest in hearing about my childhood.,[0.0],0,0,1.0
 What's comforting and scary at the same time? A warm toilet seat.,[0.0],0,0,1.0
 Why did the blind woman fall into the well? Because she couldn't see that well.,[0.0],0,0,0.0
-If you rearrange the letters of POSTMEN... They become VERY ANGRY.,[0.0],0,0,1.0
-"Sins are like viruses, it's better you keep them to yourself",[0.0],0,1,1.0
->>>>>>> 5b02994 (small changes to models; new io configs):src/data/ensemble-misclassified-controversy.csv
+If you rearrange the letters of POSTMEN... They become VERY ANGRY.,[1.0],0,1,1.0
+"Sins are like viruses, it's better you keep them to yourself",[0.0],0,0,1.0

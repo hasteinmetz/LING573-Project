@@ -1,16 +1,3 @@
-<<<<<<< HEAD:outputs/D4/bin/ensemble-controversy.csv
-sentence,predicted,correct_label
-me: [being pulled out of my flipped car] can you get my ipod nano paramedic: no me: ok,[0.0],1
-"""Part Of Your World"" was almost cut from ""The Little Mermaid.""",[0.0],0
-"I thought I won the argument with my wife as to how to arrange the dining room furniture... But when I got home, the tables were turned.",[0.0],1
-What's up with black people? They're not black... And they're not people.,[0.0],1
-To formally reintroduce ourselves: we are a group of radical BIPOC interpreters across multiple intersections bringing access to Social Justice movements in Southern California! Our time our love our hands will fight for what is right,[0.0],0
-I fucked an arthritic woman yesterday. What a cracker.,[0.0],1
-"In 2011, Queen Elizabeth II agreed to act in a James Bond skit with Daniel Craig for the Olympics, breaking royal protocol. When asked if she wanted a speaking part, she replied, ""Of course I must say something. After all, he is coming to rescue me.""",[0.0],1
-"Contentment is not the fulfillment of what you want, but the realization of how much you already have",[0.0],0
-"""He's not sleeping with you cause you're fat and ugly, so lose some weight and do your make up like this."" - Women's magazines, summarized.",[0.0],1
-What did the husband tell his wife to do after he slapped her? The same thing he told her the first time!,[0.0],1
-=======
 sentence,predicted,transformer,featurizer,correct_label
 What's the difference between a Mormon man and a Muslim man. A Mormon man gets 72 virgins and THEN kills himself.,[1.0],1,1,1.0
 "My girlfriend is like the square root of -100. She's a 10, but she's imaginary.",[1.0],1,1,1.0
@@ -812,4 +799,3 @@ If Laura Dern and Brad Pitt win best supporting actor I think they should have t
 """He saved me. In every way a person can be saved."" - Titanic",[0.0],0,0,0.0
 "Hey family! As promised, we've assembled bags of food/supplies for our community. Black Trans folks in NYC can currently pick these up in Queens. If you're a Black Trans person in need of food, read this thread for more info and fill out the form at the end of the thread!",[0.0],0,0,0.0
 """Each ounce of sunflower seeds gives you 37% of your daily need for vitamin E"" vitamin health",[0.0],0,0,0.0
->>>>>>> 5b02994 (small changes to models; new io configs):outputs/D4/ensemble-kfolds/humor/fusion-output.csv
