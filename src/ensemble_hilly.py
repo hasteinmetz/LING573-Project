@@ -22,13 +22,20 @@ nn = torch.nn
 softmax = nn.Softmax(dim=1)
 
 class Ensemble(nn.Module):
-	def __init__(self, input_size: int, hidden_size: int, output_size: int):
+	def __init__(self, input_size: int, hidden_size: int, output_size: int, dropout: float):
 		super(Ensemble, self).__init__()
 		self.roberta = RobertaModel.from_pretrained('roberta-base')
 		roberta_hidden_size = self.roberta.config.hidden_size
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
+			nn.Dropout(dropout), 
+			nn.Linear(hidden_size, hidden_size),
+			nn.ReLU(),
+			nn.Dropout(dropout),
+			nn.Linear(hidden_size, hidden_size),
+			nn.ReLU(),
+			nn.Dropout(dropout),
 			nn.Linear(hidden_size, output_size)
 		)
 		self.logistic = nn.Linear(output_size + roberta_hidden_size, 2)
@@ -50,7 +57,8 @@ def train_ensemble(model: Ensemble,
 		test_sents: List[str], test_labels: List[str], 
 		epochs: int, batch_size: int, lr: int,
 		featurizer: Callable, tokenizer: RobertaTokenizer, 
-		optimizer: torch.optim, loss_fn: Callable, device: str, save_path: str):
+		optimizer: torch.optim, loss_fn: Callable, device: str, 
+		save_path: str, dim_spec: str):
 	'''Train the Ensemble neural network'''
 	
 	model.to(device)
@@ -61,6 +69,7 @@ def train_ensemble(model: Ensemble,
 	for metric in ['f1', 'accuracy']:
 		m = load_metric(metric)
 		metrics.append(m)
+	best_f1 = 0.0
 
 	# shuffle the data
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
@@ -96,14 +105,14 @@ def train_ensemble(model: Ensemble,
 				# output metrics to standard output
 				print(f'({epoch}, {(i + 1) * batch_size}) Loss: {loss.item()}', file = sys.stderr)
 
-		evaluate(model, sentences, labels, batch_size, tokenizer, featurizer, device, outfile = sys.stderr)
+		preds = evaluate(model, test_sents, test_labels, batch_size, tokenizer, featurizer, device, outfile = sys.stderr)
 
-	# SAVE MODELS
+	# SAVE MODEL
 	try:
-		print(f"Saving model to {save_path}/ensemble-fusion/...")
-		torch.save(model, save_path + '/ensemble.pt')
+		print(f"Saving model to {save_path}/ensemble-fusion/{args.job}/...", file=sys.stderr)
+		torch.save(model, save_path + f'/{args.job}/ensemble-{dim_spec}.pt')
 	except Exception("Could not save model..."):
-		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-fusion/...")
+		print(f"(Saving error) Couldn't save model to {save_path}/ensemble-fusion/{args.job}/...", file=sys.stderr)
 
 
 def evaluate(model: Ensemble, sentences: List[str], labels: np.ndarray, batch_size: int,
@@ -193,7 +202,7 @@ def main(args: argparse.Namespace) -> None:
 		print("\tnum components: {}".format(train_pca.n_components))
 		FEATURIZER = lambda x: train_pca.transform(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf))
 	else:
-		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list)
+		train_feat_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
 		train_feature_vector, feat_indices = k_perc_best_f(train_feat_vector, train_labels, 70)
 		# use the features inside the model using a featurize function
 		FEATURIZER = lambda x: prune_test(featurize(x, hurtlex_dict, hurtlex_feat_list, tfidf), feat_indices)
@@ -202,10 +211,15 @@ def main(args: argparse.Namespace) -> None:
 	input_size = FEATURIZER(train_sentences[0:1]).shape[1]
 	
 	# LOAD CONFIGURATION
-	config_file = f'src/configs/ensemble-{args.job}.json'
+	config_file = f'src/configs/fusion-{args.job}.json'
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
+
+	# get hidden layers for MLP
+	dropout = train_config.pop('dropout')
+	hidden_size = train_config.pop('hidden_size')
+	output_size = train_config.pop('output_size')
 
 	# load important parts of the model
 	print("Initializing ensemble architecture...\n")
@@ -216,7 +230,7 @@ def main(args: argparse.Namespace) -> None:
 		print("Training model...\n")
 
 		# initialize ensemble model
-		ENSEMBLE = Ensemble(input_size, 100, 25)
+		ENSEMBLE = Ensemble(input_size, hidden_size, output_size, dropout)
 		OPTIMIZER = AdamW
 		LOSS = nn.CrossEntropyLoss()
 	
@@ -232,20 +246,26 @@ def main(args: argparse.Namespace) -> None:
 			optimizer=OPTIMIZER,
 			loss_fn=LOSS, 
 			device=DEVICE, 
-			save_path = f"{args.model_save_path}/{args.job}",
+			save_path = args.model_save_path,
+			dim_spec = args.dim_reduc_method,
 			**train_config
 		)
 	else:
 		try:
 			print("Loading existing model...\n")
 			# TODO: Change the directory organization
-			ENSEMBLE = torch.load(f'src/models/ensemble-fusion/{args.job}/ensemble.pt')
+			ENSEMBLE = torch.load(f'{args.model_save_path}/{args.job}/ensemble-{args.dim_reduc_method}.pt')
 		except ValueError:
 			print("No existing model found. Rerun without --reevaluate")
 
+	try:
+		print("Loading the best model...")
+		ENSEMBLE = torch.load(f'{args.model_save_path}/{args.job}/ensemble-{args.dim_reduc_method}.pt')
+	except Exception("Could not load model..."):
+		print("Couldn't load the best model... Using the most recently trained model.")
 
 	# evaluate the model on test data
-	print("Evaluating models...")
+	print("Evaluating model...")
 	preds = evaluate(
 		model=ENSEMBLE, 
 		sentences=dev_sentences, 
@@ -260,12 +280,12 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	dev_out_d = {'sentence': dev_sentences, 'predicted': preds, 'correct_label': dev_labels}
 	dev_out = pd.DataFrame(dev_out_d)
-	output_file = f'{args.output_path}/{args.job}/fusion-output.csv'
+	output_file = f'{args.output_path}/{args.job}/fusion-output-{args.dim_reduc_method}.csv'
 	dev_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = dev_out.loc[~(dev_out['predicted'] == dev_out['correct_label'])]
-	error_file = f'{args.error_path}-{args.job}.csv'
+	error_file = f'{args.error_path}-{args.job}-{args.dim_reduc_method}.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
 	print(f"Done! Exited normally :)")
