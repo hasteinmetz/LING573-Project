@@ -1,0 +1,10 @@
+{
+	"lr_transformer": 5e-5,
+	"lr_classifier": 8e-3,
+	"lr_regressor": 1e-2,
+	"batch_size": 32,
+	"kfolds": 3,
+	"epochs": 3,
+	"hidden_size": 40,
+	"dropout": 0.3
+}
