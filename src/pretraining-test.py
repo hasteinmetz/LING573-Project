@@ -19,7 +19,7 @@ import json
 
 nn = torch.nn
 
-class FineTuneDataSet(Dataset):
+class PretrainFineTuneDataSet(Dataset):
 	'''Class creates a list of dicts of sentences and labels
 	and behaves list a list but also stores sentences and labels for
 	future use'''
@@ -114,7 +114,7 @@ def train_model(model: Union[Regression, RobertaSeqCls],
 		labels_arr = shuffled_labels
 
 	# create a dataset and dataloader to go iterate in batches
-	dataset = FineTuneDataSet(shuffled_sentences, labels_arr)
+	dataset = PretrainFineTuneDataSet(shuffled_sentences, labels_arr)
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -198,7 +198,7 @@ def evaluate(model, sentences: List[str], labels: List[str], batch_size: int,
 	else:
 		labels_arr = labels
 
-	dataset = FineTuneDataSet(sentences, labels_arr)
+	dataset = PretrainFineTuneDataSet(sentences, labels_arr)
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 

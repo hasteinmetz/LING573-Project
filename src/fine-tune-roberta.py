@@ -15,7 +15,7 @@ from typing import *
 from datasets import load_metric
 from torch.utils.data import DataLoader
 from transformers import RobertaTokenizer
-from finetune_dataset import FineTuneDataSet
+from finetune_dataset import CustomFineTuneDataSet
 from transformers import RobertaForSequenceClassification as RobertaModel
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 
@@ -29,7 +29,7 @@ def metrics(measure, evalpred: EvalPrediction) -> tuple:
 
 
 def evaluate(model: RobertaModel, batch_size: int, 
-    test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
+    test_data: CustomFineTuneDataSet, measures: List[str], device: str) -> None:
     '''Evaluate model performance on the test texts'''
     # set the model to eval mode
     model.eval()
@@ -78,7 +78,7 @@ def evaluate(model: RobertaModel, batch_size: int,
     return np.concatenate(predictions)
 
 
-def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
+def train_new_model(args: argparse.Namespace, train_data: CustomFineTuneDataSet, dev_data: CustomFineTuneDataSet, 
                     data_collator: DataCollatorWithPadding, tokenizer: RobertaTokenizer, 
                     comp_measure: Callable, start_time: float) -> RobertaModel:
     '''**Fine-tune the RoBERTa model using input data**
@@ -135,7 +135,7 @@ def roberta_io(model: RobertaModel, sentences: List[str],
 
     # read in the training and development data
     train_sentences, train_labels = utils.read_data_from_file(sentences)
-    train_data = FineTuneDataSet(train_sentences, train_labels)
+    train_data = CustomFineTuneDataSet(train_sentences, train_labels)
 
     # evaluate model
     y_pred_train = evaluate(model, batch_size, train_data, ['f1', 'accuracy'], device)
@@ -176,10 +176,10 @@ def main(args: argparse.Namespace) -> None:
         dev_sentences, dev_labels = dev_sentences[0:50], dev_labels[0:50]
 
     # load data into dataloader
-    train_data = FineTuneDataSet(train_sentences, train_labels)
-    dev_data = FineTuneDataSet(dev_sentences, dev_labels)
+    train_data = CustomFineTuneDataSet(train_sentences, train_labels)
+    dev_data = CustomFineTuneDataSet(dev_sentences, dev_labels)
 
-    # get roberta encodings for each sentence (see FineTuneDataSet class)
+    # get roberta encodings for each sentence (see CustomFineTuneDataSet class)
     train_data.tokenize_data(tokenizer)
     dev_data.tokenize_data(tokenizer)
 

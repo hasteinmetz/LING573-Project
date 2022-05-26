@@ -13,7 +13,7 @@ from typing import *
 from feature_selection import *
 from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
-from finetune_dataset import FineTuneDataSet
+from pytorch_utils import FineTuneDataSet
 from featurizer import featurize, get_all_features
 from transformers import RobertaForSequenceClassification, BatchEncoding, RobertaConfig, RobertaTokenizer
 from sklearn.ensemble import RandomForestClassifier
@@ -196,7 +196,7 @@ def main(args: argparse.Namespace) -> None:
 	#get tokenized input
 	print("preparing input for roberta model...")
 
-	train_dataset = FineTuneDataSet(train_sentences, train_labels)
+	train_dataset = FineTuneDataSet(train_sentences, train_labels, verbose='no')
 	dev_dataset = FineTuneDataSet(dev_sentences, dev_labels)
 	train_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 	dev_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
