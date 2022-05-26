@@ -1,0 +1,17 @@
+Using cuda device
+Loading training and development data...
+reducing feature dimensions...
+	num components: 0.95
+Initializing ensemble architecture...
+
+Saving models to /src/models/kfold-ensemble/...
+Evaluating models...
+Ensemble	f1: {'f1': 0.9396378269617706}
+Ensemble	accuracy: {'accuracy': 0.925}
+
+Transformer	f1: {'f1': 0.9398797595190381}
+Transformer	accuracy: {'accuracy': 0.925}
+
+Featurizer	f1: {'f1': 0.8496993987975952}
+Featurizer	accuracy: {'accuracy': 0.8125}
+
