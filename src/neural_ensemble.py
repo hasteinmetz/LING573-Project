@@ -33,14 +33,11 @@ class Ensemble(nn.Module):
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout_mlp), 
+			nn.Dropout(dropout), 
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout_mlp),
-			nn.Linear(hidden_size, hidden_size),
-			nn.ReLU(),
-			nn.Dropout(dropout_mlp),
-			nn.Linear(hidden_size, output_size)
+			nn.Dropout(dropout),
+			nn.Linear(hidden_size, num_classes)
 		)
 		self.logistic = nn.Linear(output_size + roberta_hidden_size, 2)
 
@@ -219,6 +216,7 @@ def main(args: argparse.Namespace) -> None:
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
+		print(f"Config: {train_config}")
 
 	# get hidden layers for MLP
 	dropout_mlp = train_config.pop('dropout_mlp')
