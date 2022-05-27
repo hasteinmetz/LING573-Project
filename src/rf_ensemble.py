@@ -12,7 +12,8 @@ import pandas as pd
 from typing import *
 from sklearn.metrics import f1_score
 from torch.utils.data import DataLoader
-from pytorch_utils import FineTuneDataSet
+from finetune_dataset import CustomFineTuneDataSet
+#from pytorch_utils import FineTuneDataSet
 from featurizer import get_all_features_mi, get_all_features_pca
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -85,9 +86,11 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 	and roberta model
 	'''
 	#train random forest
+	'''
 	print("\ttraining random forest classifier...")
 	ensemble.train_random_forest(train_lex_feat, train_labels)
 	rf_class_prob = ensemble.random_forest.predict_proba(train_lex_feat)
+	'''
 
 	#get roberta embeddings
 	ensemble.roberta_model.eval()
@@ -96,7 +99,7 @@ def train_ensemble(ensemble: Ensemble, train_lex_feat: np.ndarray, train_labels:
 
 	roberta_class_prob = None 
 	for batch in dl:
-		#batch['labels'] = batch.pop('labels')
+		batch['labels'] = batch.pop('label')
 		inputs = {k: y.to(device) for k,y in batch.items()}
 
 		with torch.no_grad():
@@ -137,7 +140,7 @@ def predict(ensemble: Ensemble, dev_lex_feat: np.ndarray, dev_labels: np.ndarray
 
 	roberta_class_prob = None
 	for batch in dl:
-		#batch['labels'] = batch.pop('labels')
+		batch['labels'] = batch.pop('label')
 		inputs = {k: y.to(device) for k,y in batch.items()}
 
 		with torch.no_grad():
@@ -195,8 +198,8 @@ def main(args: argparse.Namespace) -> None:
 	#get tokenized input
 	print("preparing input for roberta model...")
 
-	train_dataset = FineTuneDataSet(train_sentences, train_labels, verbose='no')
-	dev_dataset = FineTuneDataSet(dev_sentences, dev_labels)
+	train_dataset = CustomFineTuneDataSet(train_sentences, train_labels)
+	dev_dataset = CustomFineTuneDataSet(dev_sentences, dev_labels)
 	train_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 	dev_dataset.tokenize_data(ensemble_model.roberta_tokenizer)
 
