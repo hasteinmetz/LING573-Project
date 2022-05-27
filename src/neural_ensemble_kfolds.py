@@ -31,7 +31,10 @@ class RoBERTa(nn.Module):
 	def __init__(self, dropout_roberta: float = 0.1):
 		super(RoBERTa, self).__init__()
 		self.roberta = RobertaForSequenceClassification.from_pretrained(
-			'roberta-base', num_labels = 2, hidden_dropout_prob = dropout_roberta, attention_probs_dropout_prob = dropout_roberta
+			pretrained_model_name_or_path = 'roberta-base', 
+			hidden_dropout_prob = dropout_roberta, 
+			attention_probs_dropout_prob = dropout_roberta, 
+			problem_type = "single_label_classification"
 		)
 
 	def forward(self, data: dict, device: str):
@@ -52,9 +55,6 @@ class FeatureClassifier(nn.Module):
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
 			nn.Dropout(dropout),
-			nn.Linear(hidden_size, hidden_size),
-			nn.ReLU(),
-			nn.Dropout(dropout),
 			nn.Linear(hidden_size, num_classes)
 		)
 
@@ -70,7 +70,7 @@ class LogisticRegression(nn.Module):
 
 	def forward(self, input_logits: torch.tensor):
 		linear = self.linear(input_logits)
-		return torch.sigmoid(linear)
+		return linear
 
 def train_ensemble(
 		Transformer: RoBERTa, FClassifier: FeatureClassifier, LogRegressor: LogisticRegression, tokenizer: RobertaTokenizer,
@@ -89,9 +89,6 @@ def train_ensemble(
 	FClassifier.to(device)
 	LogRegressor.to(device)
 
-	# intialize the f1 used for comparison
-	best_f1 = 0.0
-
 	# initialize the optimizers for the Transformer and FClassifier
 	optim_tr = optimizer_transformer(Transformer.parameters(), lr=lr_transformer, weight_decay=1e-5)
 	optim_cl = optimizer_classifier(FClassifier.parameters(), lr=lr_classifier, weight_decay=1e-5)
@@ -101,7 +98,7 @@ def train_ensemble(
 	shuffled_sentences, shuffled_labels = shuffle(sentences, labels, random_state = 0)
 	
 	# set up regression loss function
-	loss_logistic = nn.BCELoss()
+	loss_logistic = nn.BCEWithLogitsLoss()
 
 	# prepare the kfolds cross validator
 	# k-folds cross-validation trains the Transformer and FClassifier on parts of the
@@ -120,10 +117,6 @@ def train_ensemble(
 			X_models, y_models = X[train_i].tolist(), y[train_i]
 			X_meta, y_meta = X[test_i].tolist(), y[test_i]
 
-			# turn into [n, 2] matrices
-			y_models = make_labels_binary(y_models)
-			y_meta = make_labels_binary(y_meta)
-
 			# make the data a Dataset and put it in a DataLoader to batch it
 			dataset = FineTuneDataSet(X_models, y_models, verbose = 'verbose')
 			dataset.tokenize_data(tokenizer)
@@ -136,14 +129,20 @@ def train_ensemble(
 
 			for i, (batch, X) in enumerate(dataloader):
 
-				# change the shape of labels to [n, 2]
-				y = batch['labels'].to(device)
+				# make the labels of type torch.long
+				batch['labels'] = batch['labels'].type(torch.long).to(device)
+
+				# get the labels as a separate variable
+				y = batch['labels']
+				y.to(device)
 
 				# TRANSFORMER TRAINING
 
 				# set transformer optimizer to 0-grad
 				optim_tr.zero_grad()
 
+				# NOTE: RoBERTa needs labels to be a tensor torch.long or torch.int
+				# in order to compute the loss for a single class
 				transformer_outputs = Transformer(batch, device)
 				
 				loss_tr = transformer_outputs.loss
@@ -189,6 +188,9 @@ def train_ensemble(
 				# GET LOGITS
 
 				with torch.no_grad():
+					# make the labels of type torch.long
+					batch['labels'] = batch['labels'].type(torch.long).to(device)
+
 					# transformer logits
 					transformer_logits = Transformer(batch, device).logits
 					
@@ -201,8 +203,7 @@ def train_ensemble(
 				output = LogRegressor(all_logits)
 				
 				# reshape true labels
-				true_ys = torch.argmax(batch['labels'], dim = 1)
-				y = torch.reshape(true_ys, (true_ys.size()[0], 1)).float().to(device)
+				y = torch.reshape(batch['labels'], (batch['labels'].size()[0], 1)).float()
 
 				# get loss and do backpropagation
 				loss_lg = loss_logistic(output, y)
@@ -212,7 +213,8 @@ def train_ensemble(
 				if (i + 1) % 20 == 0:
 			
 					# output metrics to standard output
-					correct = (torch.round(output) == y).type(torch.float).sum().item() 
+					probability = torch.sigmoid(output)
+					correct = (torch.round(probability) == y).type(torch.float).sum().item() 
 					total = output.shape[0]
 					accuracy = correct/total
 					print(
@@ -256,11 +258,8 @@ def evaluate_ensemble(
 		tr_metrics.append(load_metric(metric))
 		cl_metrics.append(load_metric(metric))
 
-	# convert the model labels to a [n, 2] matrix (needed for roberta)
-	labels_arr = make_labels_binary(labels)
-
 	# make the data a Dataset and put it in a DataLoader to batch it
-	dataset = FineTuneDataSet(sentences, labels_arr, verbose = 'verbose')
+	dataset = FineTuneDataSet(sentences, labels, verbose = 'verbose')
 	dataset.tokenize_data(tokenizer)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 
@@ -269,8 +268,9 @@ def evaluate_ensemble(
 
 	for batch, X in dataloader:
 
-		# send labels to device
-		y = batch['labels'].to(device)
+		# make the labels of type torch.long
+		batch['labels'] = batch['labels'].type(torch.long).to(device)
+		y = batch['labels']
 
 		# GET LOGITS
 
@@ -285,25 +285,25 @@ def evaluate_ensemble(
 		# OUTPUT EACH CLASSIFIER'S RESULT INDIVIDUALLY
 		tr_argmax = torch.argmax(transformer_logits, dim = -1)
 		cl_argmax = torch.argmax(feature_logits, dim = -1)
-		y_argmax = torch.argmax(y, dim = -1)
 		for m1 in tr_metrics:
-			m1.add_batch(predictions=tr_argmax, references=y_argmax)
+			m1.add_batch(predictions=tr_argmax, references=y)
 		for m2 in cl_metrics:
-			m2.add_batch(predictions=cl_argmax, references=y_argmax)
+			m2.add_batch(predictions=cl_argmax, references=y)
 
 		# EVALUATE REGRESSOR
 		all_logits = torch.cat((transformer_logits, feature_logits), axis=1)
 		y_hats = LogRegressor(all_logits)
 
 		# add batch to output
-		as_list = torch.round(y_hats).to('cpu').tolist()
+		probability = torch.sigmoid(y_hats)
+		as_list = torch.round(probability).to('cpu').tolist()
 		roberta_preds.extend(tr_argmax.to('cpu').tolist())
 		feature_preds.extend(cl_argmax.to('cpu').tolist())
 		predictions.extend(as_list)
 
 		# add batched results to metrics
 		for m3 in metrics:
-			m3.add_batch(predictions=torch.round(y_hats), references=y_argmax)
+			m3.add_batch(predictions=torch.round(probability), references=y)
 
 	# output metrics to standard output
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
@@ -369,6 +369,7 @@ def main(args: argparse.Namespace) -> None:
 	with open(config_file, 'r') as f1:
 		configs = f1.read()
 		train_config = json.loads(configs)
+		print(f"Config: {train_config}")
 
 	# initialize ensemble model
 	print("Initializing ensemble architecture...\n")

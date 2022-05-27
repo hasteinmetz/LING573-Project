@@ -30,21 +30,14 @@ class FineTuneDataSet(Dataset):
 			raise AttributeError("Did not initialize encodings or input_ids")
 		else:
 			item = {key: val[index].clone().detach() for key, val in self.encodings.items()}
-			item['labels'] = torch.tensor(self.labels[index])
 			if self.verbose == 'verbose':
+				item['labels'] = torch.tensor(self.labels[index])
 				return item, self.sentences[index]
 			else:
 				return item
 
 	def __len__(self):
 		return len(self.labels)
-
-def make_torch_labels_binary(labels: np.ndarray) -> torch.tensor:
-	'''Helper function that turns [n x 1] labels into [n x 2] labels'''
-	zeros = torch.zeros((labels.shape[0], 2), dtype=float)
-	for i in range(len(labels)):
-		zeros[i, int(labels[i])] = 1.0
-	return zeros
 
 def make_labels_binary(arr: np.ndarray) -> np.ndarray:
 	'''Expand the array labels in a one-dim array so that it's a [size, no_labels] matrix.
@@ -56,7 +49,7 @@ def make_labels_binary(arr: np.ndarray) -> np.ndarray:
 			]
 	'''
 	labels = set(arr.tolist())
-	new_arr = np.zeros((arr.shape[0], len(labels)), dtype=float)
+	new_arr = np.zeros((arr.shape[0], len(labels)), dtype=int)
 	for i in range(len(arr)):
-		new_arr[i, int(arr[i])] = 1.0
+		new_arr[i, int(arr[i])] = 1
 	return new_arr
