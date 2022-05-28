@@ -4,6 +4,34 @@ Use this file to document any important changes you've made or any records of ru
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
 
+## 5-27 Neural Ensemble performances (dev set)
+
+- Vanilla neural: 
+	- **Config**: {'lr': 2e-05, 'batch_size': 32, 'hidden_size': 40, 'output_size': 25, 'dropout_mlp': 0.4, 'dropout_roberta': 0.16, 'epochs': 5}
+
+	- K-Best:
+		- humor: 
+			- f1: {'f1': 0.9366834170854271} | accuracy: {'accuracy': 0.92125}
+		- controversy:
+			- f1: {'f1': 0.45879732739420936} | accuracy: {'accuracy': 0.5070993914807302}
+	- PCA:
+		- humor: 
+			- f1: {'f1': 0.9294605809128631} | accuracy: {'accuracy': 0.915}
+		- controversy:
+			- f1: {'f1': 0.4567627494456763} | accuracy: {'accuracy': 0.5030425963488844}
+- neural w/ kfolds:
+	- **Config**: {'lr_transformer': 2e-05, 'lr_classifier': 0.008, 'lr_regressor': 0.01, 'batch_size': 32, 'kfolds': 3, 'epochs': 3, 'hidden_size': 40, 'dropout_mlp': 0.4, 'dropout_roberta': 0.165}
+	- K-Best:
+		- humor: 
+			- f1: {'f1': 0.9442691903259726} | accuracy: {'accuracy': 0.93375}
+		- controversy:
+			- f1: {'f1': 0.4915254237288136} | accuracy: {'accuracy': 0.513184584178499} 
+	- PCA:
+		- humor: 
+			- _f1: {'f1': 0.9465968586387434} | accuracy: {'accuracy': 0.93625}_
+		- controversy:
+			- f1: {'f1': 0.47391304347826085} | accuracy: {'accuracy': 0.5091277890466531} 
+
 ## 5-26 Neural Ensemble performances (dev set)
 
 - Vanilla neural:
