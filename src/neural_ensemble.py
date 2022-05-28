@@ -33,11 +33,11 @@ class Ensemble(nn.Module):
 		self.mlp = nn.Sequential(
 			nn.Linear(input_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout), 
+			nn.Dropout(dropout_mlp), 
 			nn.Linear(hidden_size, hidden_size),
 			nn.ReLU(),
-			nn.Dropout(dropout),
-			nn.Linear(hidden_size, num_classes)
+			nn.Dropout(dropout_mlp),
+			nn.Linear(hidden_size, output_size)
 		)
 		self.logistic = nn.Linear(output_size + roberta_hidden_size, 2)
 
@@ -86,7 +86,7 @@ def train_ensemble(model: Ensemble,
 
 			# send to the correct device
 			batch_labels = batch.pop('labels')
-			y = batch_labels.to(device)
+			y = batch_labels.float().to(device)
 
 			optim.zero_grad()
 
@@ -140,7 +140,7 @@ def evaluate(model: Ensemble, sentences: List[str], labels: np.ndarray, batch_si
 
 		# send to the correct device
 		batch_labels = batch.pop('labels')
-		y = batch_labels.to(device)
+		y = batch_labels.float().to(device)
 
 		output = model(batch, X, featurizer, device)
 

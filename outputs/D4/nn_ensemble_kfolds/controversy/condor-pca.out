@@ -1,0 +1,19 @@
+Using cuda device
+Loading training and development data...
+reducing feature dimensions...
+	num components: 0.95
+Config: {'lr_transformer': 2e-05, 'lr_classifier': 0.008, 'lr_regressor': 0.01, 'batch_size': 32, 'kfolds': 3, 'epochs': 3, 'hidden_size': 40, 'dropout_mlp': 0.4, 'dropout_roberta': 0.165}
+Initializing ensemble architecture...
+
+Loading the best models...
+Evaluating models...
+Ensemble	f1: {'f1': 0.47391304347826085}
+Ensemble	accuracy: {'accuracy': 0.5091277890466531}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.47311827956989244}
+Featurizer	accuracy: {'accuracy': 0.5030425963488844}
+
+Done! Exited normally :)

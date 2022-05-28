@@ -4,8 +4,8 @@
 	"lr_regressor": 1e-2,
 	"batch_size": 32,
 	"kfolds": 3,
-	"epochs": 2,
+	"epochs": 3,
 	"hidden_size": 40,
 	"dropout_mlp": 0.4,
-	"dropout_roberta": 0.15
+	"dropout_roberta": 0.165
 }

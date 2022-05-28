@@ -4,6 +4,6 @@
 	"hidden_size": 40,
 	"output_size": 25,
 	"dropout_mlp": 0.4,
-	"dropout_roberta": 0.15,
-	"epochs": 4
+	"dropout_roberta": 0.16,
+	"epochs": 5
 }
