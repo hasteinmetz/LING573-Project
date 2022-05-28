@@ -10,8 +10,8 @@ transfer_executable   = false
 request_memory        = 3*1024
 stream_output         = True
 queue job, dim_red, arguments from (
-    humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
-    controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
-    humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
-    controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test_data_path src/data/D4_hahackathon_prepo1_dev.csv"
+    humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test 1"
+    controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test 1"
+    humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test 1"
+    controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test 1"
 )

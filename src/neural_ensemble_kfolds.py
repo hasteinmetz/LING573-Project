@@ -332,15 +332,16 @@ def main(args: argparse.Namespace) -> None:
 
 	#load data
 	print("Loading training and development data...")
+	dev_path = args.test_data_path + "dev.csv"
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
-	test_sentences, test_labels = utils.read_data_from_file(args.test_data_path, index=args.index)
+	dev_sentences, dev_labels = utils.read_data_from_file(dev_path, index=args.index)
 
 	if args.debug == 1:
 		print(f"NOTE: Running in debug mode", file=sys.stderr)
 		train_sentences, train_labels = shuffle(train_sentences, train_labels, random_state = 0)
-		test_sentences, test_labels = shuffle(test_sentences, test_labels, random_state = 0)
+		dev_sentences, dev_labels = shuffle(dev_sentences, dev_labels, random_state = 0)
 		train_sentences, train_labels = train_sentences[0:100], train_labels[0:100]
-		test_sentences, test_labels = test_sentences[0:10], test_labels[0:10]
+		dev_sentences, dev_labels = dev_sentences[0:10], dev_labels[0:10]
 
 	# initialize tf-idf vectorizer
 	tfidf = DTFIDF(train_sentences, train_labels)
@@ -400,8 +401,8 @@ def main(args: argparse.Namespace) -> None:
 		sentences=train_sentences, 
 		labels=train_labels, 
 		featurizer=FEATURIZER, 
-		test_sentences=test_sentences, 
-		test_labels=test_labels,
+		test_sentences=dev_sentences, 
+		test_labels=dev_labels,
 		optimizer_transformer=OPTIMIZER_TRANSFORMER, 
 		optimizer_classifier=OPTIMIZER_CLASSIFIER, 
 		optimizer_regression=OPTIMIZER_REGRESSOR,
@@ -424,22 +425,46 @@ def main(args: argparse.Namespace) -> None:
 	print("Evaluating models...")
 	preds, robs, feats = evaluate_ensemble(
 		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
+		dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE
 	)
 
 	# write results to output file
-	test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
+	test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	test_out = pd.DataFrame(test_out_d)
-	output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}.csv'
+	output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}_dev.csv'
 	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
-	error_file = f'{args.error_path}-{args.job}-{args.dim_reduc_method}.csv'
+	error_file = f'{args.error_path}_{args.job}_{args.dim_reduc_method}_dev.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
-	print(f"Done! Exited normally :)")
 
+	if args.test == 'test':
+
+		print("Loading test data...")
+		test_path = args.test_data_path + "test.csv"
+		test_sentences, test_labels = utils.read_data_from_file(test_path, index=args.index)
+
+		# evaluate the model on test data
+		print("Evaluating models...")
+		preds, robs, feats = evaluate_ensemble(
+			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
+			test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
+		)
+
+		# write results to output file
+		test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
+		test_out = pd.DataFrame(test_out_d)
+		output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}_{args.test}.csv'
+		test_out.to_csv(output_file, index=False, encoding='utf-8')
+
+		# filter the data so that only negative examples are there
+		data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
+		error_file = f'{args.error_path}_{args.job}_{args.dim_reduc_method}_{args.test}.csv'
+		data_filtered.to_csv(error_file, index=False, encoding='utf-8')
+
+		print(f"Done! Exited normally :)")
 	
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
@@ -453,6 +478,7 @@ if __name__ == "__main__":
 	parser.add_argument('--job', help="job being done (humor or controversy) to help with folder organization")
 	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)
 	parser.add_argument('--index', help="column to select from data", type=int)
+	parser.add_argument('--test', help="whether to run the model on the test set", type=str, default='dev')
 	args = parser.parse_args()
 
 	main(args)
