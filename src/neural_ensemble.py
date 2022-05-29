@@ -282,7 +282,7 @@ def main(args: argparse.Namespace) -> None:
 	)
 
 # write results to output file
-	test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
+	test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
 	test_out = pd.DataFrame(test_out_d)
 	output_file = f'{args.output_path}/{args.job}/nn_{args.dim_reduc_method}_{args.test}.csv'
 	test_out.to_csv(output_file, index=False, encoding='utf-8')
@@ -301,9 +301,15 @@ def main(args: argparse.Namespace) -> None:
 
 		# evaluate the model on test data
 		print("Evaluating models...")
-		preds, robs, feats = evaluate_ensemble(
-			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-			test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
+		preds = evaluate(
+			model=ENSEMBLE, 
+			sentences=test_sentences, 
+			labels=test_labels, 
+			batch_size=train_config['batch_size'],
+			tokenizer=TOKENIZER, 
+			featurizer=FEATURIZER, 
+			device=DEVICE, 
+			outfile=sys.stdout
 		)
 
 		# write results to output file
