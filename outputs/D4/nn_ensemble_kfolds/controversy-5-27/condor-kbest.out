@@ -1,0 +1,17 @@
+Using cuda device
+Loading training and development data...
+reducing feature dimensions...
+Initializing ensemble architecture...
+
+Loading the best models...
+Evaluating models...
+Ensemble	f1: {'f1': 0.5251396648044693}
+Ensemble	accuracy: {'accuracy': 0.4827586206896552}
+
+Transformer	f1: {'f1': 0.0}
+Transformer	accuracy: {'accuracy': 0.4969574036511156}
+
+Featurizer	f1: {'f1': 0.4178403755868545}
+Featurizer	accuracy: {'accuracy': 0.4969574036511156}
+
+Done! Exited normally :)
