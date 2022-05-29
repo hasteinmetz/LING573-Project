@@ -4,6 +4,24 @@ Use this file to document any important changes you've made or any records of ru
 
 This notebook uses Markdown. Use '#' to create headings. When you make a change put the heading ### followed by the date and your name. Always add changes above previous changes. Leave these instructions on top. You can also use - to make a list of items and \[text\](link) to add a link.
 
+## 5-20 Neural Kfold Ensemble performances (_test set_)
+
+- **Config**: {'lr': 2e-05, 'batch_size': 32, 'hidden_size': 40, 'output_size': 25, 'dropout_mlp': 0.4, 'dropout_roberta': 0.16, 'epochs': 5}
+- K-Best:
+	- humor: 
+		- f1: {'f1': 0.9585439838220424}
+		- accuracy: {'accuracy': 0.9488139825218477}
+	- controversy:
+		- f1: {'f1': 0.5158730158730158}
+		- accuracy: {'accuracy': 0.5060728744939271}
+- PCA:
+	- humor: 
+		- f1: {'f1': 0.9557157569515962}
+		- accuracy: {'accuracy': 0.9463171036204744}
+	- controversy:
+		- f1: {'f1': 0.4304932735426009}
+		- accuracy: {'accuracy': 0.48582995951417}
+
 ## 5-27 Neural Ensemble performances (dev set)
 
 ### Vanilla neural: 
