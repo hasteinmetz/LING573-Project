@@ -1,0 +1,111 @@
+Using the GPU:Tesla M10
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'lm_head.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+(0, 192) Loss: 0.7260832786560059
+(0, 384) Loss: 0.6994209289550781
+(0, 576) Loss: 0.7006861567497253
+(0, 768) Loss: 0.686761736869812
+(0, 960) Loss: 0.6909176111221313
+(0, 1152) Loss: 0.6930946707725525
+(0, 1344) Loss: 0.6983731985092163
+(0, 1536) Loss: 0.7041100263595581
+(0, 1728) Loss: 0.6934074759483337
+(0, 1920) Loss: 0.679272472858429
+(0, 2112) Loss: 0.6869602799415588
+(0, 2304) Loss: 0.704288899898529
+(0, 2496) Loss: 0.6885441541671753
+(0, 2688) Loss: 0.697136640548706
+(0, 2880) Loss: 0.6939336657524109
+(0, 3072) Loss: 0.6908763647079468
+(0, 3264) Loss: 0.6930403709411621
+(0, 3456) Loss: 0.6960309147834778
+(0, 3648) Loss: 0.6884358525276184
+(0, 3840) Loss: 0.7076889276504517
+Evaluation metrics:
+	f1: {'f1': 0.29239766081871343}
+	accuracy: {'accuracy': 0.5091277890466531}
+
+(1, 192) Loss: 0.6867520809173584
+(1, 384) Loss: 0.6795881390571594
+(1, 576) Loss: 0.6936408281326294
+(1, 768) Loss: 0.6929845809936523
+(1, 960) Loss: 0.687676191329956
+(1, 1152) Loss: 0.6752505302429199
+(1, 1344) Loss: 0.6856335997581482
+(1, 1536) Loss: 0.6961622834205627
+(1, 1728) Loss: 0.685500979423523
+(1, 1920) Loss: 0.6393589973449707
+(1, 2112) Loss: 0.6502954363822937
+(1, 2304) Loss: 0.6930945515632629
+(1, 2496) Loss: 0.689049243927002
+(1, 2688) Loss: 0.6932377815246582
+(1, 2880) Loss: 0.6706334352493286
+(1, 3072) Loss: 0.6865195035934448
+(1, 3264) Loss: 0.6860046982765198
+(1, 3456) Loss: 0.690959095954895
+(1, 3648) Loss: 0.6890904903411865
+(1, 3840) Loss: 0.6904076933860779
+Evaluation metrics:
+	f1: {'f1': 0.2960725075528701}
+	accuracy: {'accuracy': 0.5273833671399595}
+
+(2, 192) Loss: 0.6805495023727417
+(2, 384) Loss: 0.6576022505760193
+(2, 576) Loss: 0.6602706909179688
+(2, 768) Loss: 0.6866745948791504
+(2, 960) Loss: 0.6374557018280029
+(2, 1152) Loss: 0.6294919848442078
+(2, 1344) Loss: 0.6721376180648804
+(2, 1536) Loss: 0.6537326574325562
+(2, 1728) Loss: 0.670978307723999
+(2, 1920) Loss: 0.5981690883636475
+(2, 2112) Loss: 0.5956929922103882
+(2, 2304) Loss: 0.6890290379524231
+(2, 2496) Loss: 0.6642695069313049
+(2, 2688) Loss: 0.6713447570800781
+(2, 2880) Loss: 0.6516847014427185
+(2, 3072) Loss: 0.6642588376998901
+(2, 3264) Loss: 0.6804021596908569
+(2, 3456) Loss: 0.665729820728302
+(2, 3648) Loss: 0.6632500886917114
+(2, 3840) Loss: 0.7180100083351135
+Evaluation metrics:
+	f1: {'f1': 0.13333333333333333}
+	accuracy: {'accuracy': 0.49898580121703856}
+
+(3, 192) Loss: 0.6770660877227783
+(3, 384) Loss: 0.5991009473800659
+(3, 576) Loss: 0.6550200581550598
+(3, 768) Loss: 0.6777122020721436
+(3, 960) Loss: 0.5992716550827026
+(3, 1152) Loss: 0.5248620510101318
+(3, 1344) Loss: 0.5721638202667236
+(3, 1536) Loss: 0.42804062366485596
+(3, 1728) Loss: 0.4082237482070923
+(3, 1920) Loss: 0.42175692319869995
+(3, 2112) Loss: 0.4754829704761505
+(3, 2304) Loss: 0.6611149907112122
+(3, 2496) Loss: 0.5470560789108276
+(3, 2688) Loss: 0.5566617250442505
+(3, 2880) Loss: 0.5857172012329102
+(3, 3072) Loss: 0.48547643423080444
+(3, 3264) Loss: 0.5352047681808472
+(3, 3456) Loss: 0.3874093294143677
+(3, 3648) Loss: 0.5217380523681641
+(3, 3840) Loss: 0.6899508833885193
+Evaluation metrics:
+	f1: {'f1': 0.611111111111111}
+	accuracy: {'accuracy': 0.48884381338742394}
+
+Saving model to src/models/neural_ensemble/neural_ensemble/controversy/...
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/neural_ensemble.py", line 339, in <module>
+    main(args)
+  File "/home2/hsteinm/573/repo/src/neural_ensemble.py", line 285, in main
+    test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
+NameError: name 'dev_sentences' is not defined
+
+real	62m7.631s
+user	56m37.378s
+sys	4m40.263s

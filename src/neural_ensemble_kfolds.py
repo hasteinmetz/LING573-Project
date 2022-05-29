@@ -454,7 +454,7 @@ def main(args: argparse.Namespace) -> None:
 		)
 
 		# write results to output file
-		test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
+		test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
 		test_out = pd.DataFrame(test_out_d)
 		output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}_{args.test}.csv'
 		test_out.to_csv(output_file, index=False, encoding='utf-8')

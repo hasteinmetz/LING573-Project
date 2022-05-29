@@ -179,8 +179,9 @@ def main(args: argparse.Namespace) -> None:
 
 	#load data
 	print("Loading training and development data...")
+	dev_file = args.test_data_path + "dev.csv"
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
-	test_sentences, test_labels = utils.read_data_from_file(args.test_data_path, index=args.index)
+	test_sentences, test_labels = utils.read_data_from_file(dev_file, index=args.index)
 
 	if args.debug == 1:
 		print(f"NOTE: Running in debug mode", file=sys.stderr)
@@ -302,11 +303,11 @@ def main(args: argparse.Namespace) -> None:
 		print("Evaluating models...")
 		preds, robs, feats = evaluate_ensemble(
 			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-			dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE
+			test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
 		)
 
 		# write results to output file
-		test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
+		test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
 		test_out = pd.DataFrame(test_out_d)
 		output_file = f'{args.output_path}/{args.job}/nn_{args.dim_reduc_method}_{args.test}.csv'
 		test_out.to_csv(output_file, index=False, encoding='utf-8')
@@ -332,6 +333,7 @@ if __name__ == "__main__":
 	parser.add_argument('--debug', help="debug the ensemble with small dataset", type=int)
 	parser.add_argument('--index', help="column to select from data", type=int)
 	parser.add_argument('--reevaluate', help="use 1 to reload an existing model if already completed", type=int, default=0)
+	parser.add_argument('--test', help="whether to run the model on the test set", type=str, default='dev')
 	args = parser.parse_args()
 
 	main(args)
