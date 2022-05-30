@@ -1,0 +1,98 @@
+Using cuda device
+Using the GPU:Tesla M10
+Loading training and development data...
+NOTE: Running in debug mode
+reducing feature dimensions...
+Initializing ensemble architecture...
+
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'roberta.pooler.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'roberta.pooler.dense.bias']
+- This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.dense.bias', 'classifier.out_proj.weight', 'classifier.out_proj.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Fold 0 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Fold 1 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Fold 2 accuracies:
+Ensemble	f1: {'f1': 0.0}
+Ensemble	accuracy: {'accuracy': 0.3}
+
+Transformer	f1: {'f1': 0.8235294117647058}
+Transformer	accuracy: {'accuracy': 0.7}
+
+Featurizer	f1: {'f1': 0.8235294117647058}
+Featurizer	accuracy: {'accuracy': 0.7}
+
+Saving models to /src/models/nn_ensemble_kfolds/primary/...
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/neural_ensemble_kfolds.py", line 233, in train_ensemble
+    torch.save(Transformer, save_path + f'/{args.job}/roberta-{dim_spec}.pt')
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/serialization.py", line 377, in save
+    with _open_file_like(f, 'wb') as opened_file:
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/serialization.py", line 231, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/projects/assigned/2122_ling573_elibales/env/lib/python3.9/site-packages/torch/serialization.py", line 212, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: 'src/models/nn_ensemble_kfolds/primary/roberta-kbest.pt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home2/hsteinm/573/repo/src/neural_ensemble_kfolds.py", line 488, in <module>
+    main(args)
+  File "/home2/hsteinm/573/repo/src/neural_ensemble_kfolds.py", line 397, in main
+    train_ensemble(
+  File "/home2/hsteinm/573/repo/src/neural_ensemble_kfolds.py", line 236, in train_ensemble
+    except Exception("Could not save model..."):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+
+real	2m48.358s
+user	1m38.876s
+sys	0m12.410s

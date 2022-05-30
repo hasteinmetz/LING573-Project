@@ -9,6 +9,6 @@ transfer_executable   = false
 request_memory        = 3*1024
 stream_output         = True
 queue job, dim_red, arguments from (
-    primary, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test eval"
-    adaptation, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test eval"
+    primary, kbest, "--debug 1 --index 1 --job $(job) --dim_reduc_method $(dim_red) --test eval"
+    adaptation, kbest, "--debug 1 --index 2 --job $(job) --dim_reduc_method $(dim_red) --test eval"
 )

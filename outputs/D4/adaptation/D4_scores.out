@@ -1,0 +1,1 @@
+Config: {'lr_transformer': 2e-05, 'lr_classifier': 0.008, 'lr_regressor': 0.01, 'batch_size': 32, 'kfolds': 3, 'epochs': 2, 'hidden_size': 40, 'dropout_mlp': 0.4, 'dropout_roberta': 0.165}
