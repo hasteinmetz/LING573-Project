@@ -309,9 +309,9 @@ def evaluate_ensemble(
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
 	for m1, m2, m3 in zip(metrics, tr_metrics, cl_metrics):
 		val1, val2, val3 = m1.compute(), m2.compute(), m3.compute()
-		val_en += f"{m1.name}: {val1}\n"
-		val_tr += f"Subscore: Transformer\t{m2.name}: {val2}\n"
-		val_cl += f"Subscore: Featurizer:\t{m3.name}: {val3}\n"
+		val_en += f"{m1.name} {val1}\n"
+		val_tr += f"Subscore: Transformer\t{m2.name} {val2}\n"
+		val_cl += f"Subscore: Featurizer\t{m3.name} {val3}\n"
 		# output metrics to standard output
 	result = "\n".join([val_en, val_tr, val_cl])
 	print(result.split("\n")[0:2], file=file)
@@ -458,7 +458,7 @@ def main(args: argparse.Namespace) -> None:
 			print("########################\n\tD4 TEST SCORES\n########################", file=outfile)
 			result, preds, robs, feats = evaluate_ensemble(
 				ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-				dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
+				test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
 			)
 			print(result)
 
