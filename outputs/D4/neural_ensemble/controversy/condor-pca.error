@@ -1,1 +1,60 @@
 Using cpu device
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaModel: ['lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+(0, 192) Loss: 0.7005610466003418
+(0, 384) Loss: 0.7002823352813721
+(0, 576) Loss: 0.6897351145744324
+(0, 768) Loss: 0.7020860314369202
+(0, 960) Loss: 0.6938953399658203
+(0, 1152) Loss: 0.6895202994346619
+(0, 1344) Loss: 0.7004073262214661
+(0, 1536) Loss: 0.6898055672645569
+(0, 1728) Loss: 0.6788150072097778
+(0, 1920) Loss: 0.68094801902771
+(0, 2112) Loss: 0.687054455280304
+(0, 2304) Loss: 0.6931735277175903
+(0, 2496) Loss: 0.686443567276001
+(0, 2688) Loss: 0.6967253684997559
+(0, 2880) Loss: 0.6899309158325195
+(0, 3072) Loss: 0.6886640191078186
+(0, 3264) Loss: 0.6915817260742188
+(0, 3456) Loss: 0.6987457275390625
+(0, 3648) Loss: 0.6909982562065125
+(0, 3840) Loss: 0.6936949491500854
+Evaluation metrics:
+	f1: {'f1': 0.023809523809523808}
+	accuracy: {'accuracy': 0.5010141987829615}
+
+(1, 192) Loss: 0.6746309399604797
+(1, 384) Loss: 0.6789400577545166
+(1, 576) Loss: 0.6911802887916565
+(1, 768) Loss: 0.6857381463050842
+(1, 960) Loss: 0.6855297684669495
+(1, 1152) Loss: 0.6725282669067383
+(1, 1344) Loss: 0.6925601363182068
+(1, 1536) Loss: 0.693411648273468
+(1, 1728) Loss: 0.6851614713668823
+(1, 1920) Loss: 0.6537858843803406
+(1, 2112) Loss: 0.6533423662185669
+(1, 2304) Loss: 0.6956924200057983
+(1, 2496) Loss: 0.6822457909584045
+(1, 2688) Loss: 0.696363091468811
+(1, 2880) Loss: 0.6748018860816956
+(1, 3072) Loss: 0.6801493167877197
+(1, 3264) Loss: 0.6711938977241516
+(1, 3456) Loss: 0.7006431818008423
+(1, 3648) Loss: 0.6724328994750977
+(1, 3840) Loss: 0.7091481685638428
+Evaluation metrics:
+	f1: {'f1': 0.03162055335968379}
+	accuracy: {'accuracy': 0.5030425963488844}
+
+(2, 192) Loss: 0.667798638343811
+(2, 384) Loss: 0.6709645986557007
+(2, 576) Loss: 0.6617187857627869
+(2, 768) Loss: 0.6749507188796997
+(2, 960) Loss: 0.6460840106010437
+(2, 1152) Loss: 0.6388872265815735
+(2, 1344) Loss: 0.6666973829269409
+(2, 1536) Loss: 0.6914079785346985

@@ -10,8 +10,8 @@ transfer_executable   = false
 request_memory        = 3*1024
 stream_output         = True
 queue job, dim_red, arguments from (
-    humor, pca, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test test"
-    controversy, pca, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test test"
-    humor, kbest, "--index 1 --job $(job) --dim_reduc_method $(dim_red) --test test"
-    controversy, kbest, "--index 2 --job $(job) --dim_reduc_method $(dim_red) --test test"
+    humor, pca, "--reevaluate 1 --index 1 --job $(job) --dim_reduc_method $(dim_red) --test test"
+#    controversy, pca, "--reevaluate 1 --index 2 --job $(job) --dim_reduc_method $(dim_red) --test test"
+    humor, kbest, "--reevaluate 1 --index 1 --job $(job) --dim_reduc_method $(dim_red) --test test"
+    controversy, kbest, "--reevaluate 1 --index 2 --job $(job) --dim_reduc_method $(dim_red) --test test"
 )
