@@ -424,7 +424,7 @@ def main(args: argparse.Namespace) -> None:
 
 	# evaluate the model on test data
 	print("Evaluating models...", file=sys.stderr)
-	with open(f"{args.output_path}/{args.job}/devtest/D4.out", 'w') as outfile:
+	with open(f"{args.output_path}/{args.job}/devtest/D4_scores.out", 'w') as outfile:
 		outfile.write("########################\n\t\tD4 DEV SCORES\n########################\n")
 		preds, robs, feats = evaluate_ensemble(
 			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
@@ -450,11 +450,12 @@ def main(args: argparse.Namespace) -> None:
 		test_sentences, test_labels = utils.read_data_from_file(test_path, index=args.index)
 
 		# evaluate the model on test data
-		print("########################\n\t\tD4 TEST SCORES\n########################")
-		preds, robs, feats = evaluate_ensemble(
-			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-			test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
-		)
+		with open(f"{args.output_path}/{args.job}/evaltest/D4_scores.out", 'w') as outfile:
+			print("########################\n\t\tD4 TEST SCORES\n########################")
+			preds, robs, feats = evaluate_ensemble(
+				ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
+				dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
+			)
 
 		# write results to output file
 		test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
