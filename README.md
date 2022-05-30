@@ -10,6 +10,7 @@ Eli, Avani, Pangbo, and Hilly's project for LING 573 at the University of Washin
 	- `sh Anaconda3-2021.11-Linux-x86 64.sh`
 2. Issue the following command from the root of this repo to fine-tune the models and print the results: condor_submit cmd/D4.cmd
 	- The script will activate a Conda environment in the shared folder `/projects/assigned/2122_ling573_elibales/env/` 
+   - Note: D4.cmd only runs the adaptation portion. D4_all.cmd runs both the primary and adaptation task. 
 
 The accuracy and F1 scores of our ensemble classification model can be found under: 
 - src/results/D4/primary/evaltest/D4_scores.out
