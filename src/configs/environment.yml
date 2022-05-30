@@ -1,7 +1,8 @@
 name: 573-project
 channels:
-  - defaults
+  - pytorch
   - conda-forge
+  - defaults
 dependencies:
   - scikit-learn
   - intel-openmp=2021.4.0
@@ -69,4 +70,3 @@ dependencies:
   - spacy
   - empath
   - nltk
-  - spacy-model-en_core_web_sm

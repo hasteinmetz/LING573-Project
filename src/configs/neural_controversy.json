@@ -1,0 +1,9 @@
+{
+	"lr": 2e-5,
+	"batch_size": 32,
+	"hidden_size": 40,
+	"output_size": 25,
+	"dropout_mlp": 0.4,
+	"dropout_roberta": 0.16,
+	"epochs": 4
+}

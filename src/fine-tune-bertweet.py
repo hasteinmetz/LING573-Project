@@ -15,7 +15,7 @@ from typing import *
 from datasets import load_metric
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
-from finetune_dataset import FineTuneDataSet
+from finetune_dataset import CustomFineTuneDataSet
 from transformers import AutoModelForSequenceClassification as AutoModel
 from transformers import DataCollatorWithPadding, TrainingArguments, Trainer, EvalPrediction
 
@@ -29,7 +29,7 @@ def metrics(measure, evalpred: EvalPrediction) -> tuple:
 
 
 def evaluate(model: AutoModel, batch_size: int, 
-    test_data: FineTuneDataSet, measures: List[str], device: str) -> None:
+    test_data: CustomFineTuneDataSet, measures: List[str], device: str) -> None:
     '''Evaluate model performance on the test texts'''
     # set the model to eval mode
     model.eval()
@@ -78,7 +78,7 @@ def evaluate(model: AutoModel, batch_size: int,
     return np.concatenate(predictions)
 
 
-def train_new_model(args: argparse.Namespace, train_data: FineTuneDataSet, dev_data: FineTuneDataSet, 
+def train_new_model(args: argparse.Namespace, train_data: CustomFineTuneDataSet, dev_data: CustomFineTuneDataSet, 
                     data_collator: DataCollatorWithPadding, tokenizer: AutoTokenizer, 
                     comp_measure: Callable, start_time: float) -> AutoModel:
     '''**Fine-tune the bertweet model using input data**
@@ -135,7 +135,7 @@ def bertweet_io(model: AutoModel, sentences: List[str],
 
     # read in the training and development data
     train_sentences, train_labels = utils.read_data_from_file(sentences)
-    train_data = FineTuneDataSet(train_sentences, train_labels)
+    train_data = CustomFineTuneDataSet(train_sentences, train_labels)
 
     # evaluate model
     y_pred_train = evaluate(model, batch_size, train_data, ['f1', 'accuracy'], device)
@@ -176,10 +176,10 @@ def main(args: argparse.Namespace) -> None:
         dev_sentences, dev_labels = dev_sentences[0:50], dev_labels[0:50]
 
     # load data into dataloader
-    train_data = FineTuneDataSet(train_sentences, train_labels)
-    dev_data = FineTuneDataSet(dev_sentences, dev_labels)
+    train_data = CustomFineTuneDataSet(train_sentences, train_labels)
+    dev_data = CustomFineTuneDataSet(dev_sentences, dev_labels)
 
-    # get bertweet encodings for each sentence (see FineTuneDataSet class)
+    # get bertweet encodings for each sentence (see CustomFineTuneDataSet class)
     train_data.tokenize_data(tokenizer)
     dev_data.tokenize_data(tokenizer)
 
@@ -214,14 +214,13 @@ def main(args: argparse.Namespace) -> None:
     train_out_d = {'sentence': train_data.sentences, 'predicted': y_pred_train, 'correct_label': train_data.labels}
     dev_out_d = {'sentence': dev_data.sentences, 'predicted': y_pred_dev, 'correct_label': dev_data.labels}
     train_out, dev_out = pd.DataFrame(train_out_d), pd.DataFrame(dev_out_d)
-    dev_out.to_csv(args.output_file, index=False, encoding='utf-8', doublequote=False, escapechar="\\")
-
+    dev_out.to_csv(args.output_file, index=False, encoding='utf-8')
     # write missing examples to one particular file
     df = pd.concat((train_out, dev_out), axis=0)
 
     # filter the data so that only negative examples are there
     data_filtered = df.loc[~(df['predicted'] == df['correct_label'])]
-    data_filtered.to_csv('src/data/bertweet-misclassified-examples.csv', index=False, encoding='utf-8', escapechar="\\", doublequote=False)
+    data_filtered.to_csv('src/data/bertweet-misclassified-examples.csv', index=False, encoding='utf-8')
 
     # save the model
     if args.save_file != 'None':

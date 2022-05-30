@@ -3,7 +3,7 @@ from typing import *
 from torch.utils.data import Dataset
 from transformers import RobertaTokenizer
 
-class FineTuneDataSet(Dataset):
+class CustomFineTuneDataSet(Dataset):
     '''Class creates a list of dicts of sentences and labels
     and behaves like a list but also stores sentences and labels for
     future use'''
