@@ -12,10 +12,10 @@ Eli, Avani, Pangbo, and Hilly's project for LING 573 at the University of Washin
 	- The script will activate a Conda environment in the shared folder `/projects/assigned/2122_ling573_elibales/env/` 
 
 The accuracy and F1 scores of our ensemble classification model can be found under: 
-- src/outputs/D4/primary/evaltest/D4_scores.out
-- src/outputs/D4/primary/devtest/D4_scores.out
-- src/outputs/D4/adaptation/devtest/D4_scores.out
-- src/outputs/D4/adaptation/devtest/D4_scores.out
+- src/results/D4/primary/evaltest/D4_scores.out
+- src/results/D4/primary/devtest/D4_scores.out
+- src/results/D4/adaptation/devtest/D4_scores.out
+- src/results/D4/adaptation/devtest/D4_scores.out
 
 ### D4 results
 
