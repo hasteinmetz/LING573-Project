@@ -229,12 +229,12 @@ def train_ensemble(
 					
 	# SAVE MODEL
 	try:
-		print(f"Saving models to /src/models/nn_ensemble_kfolds/{args.job}/...", file=sys.stderr)
+		print(f"Saving models to /src/models/{args.job}/...", file=sys.stderr)
 		torch.save(Transformer, save_path + f'/{args.job}/roberta-{dim_spec}.pt')
 		torch.save(FClassifier, save_path + f'/{args.job}/featurizer-{dim_spec}.pt')
 		torch.save(LogRegressor, save_path + f'/{args.job}/regression-{dim_spec}.pt')
 	except Exception("Could not save model..."):
-		print(f"(Saving error) Couldn't save model to {save_path}/nn_ensemble_kfolds/{args.job}/...", file=sys.stderr)
+		print(f"(Saving error) Couldn't save model to {save_path}/{args.job}/...", file=sys.stderr)
 
 
 def evaluate_ensemble(
@@ -309,12 +309,13 @@ def evaluate_ensemble(
 	val_en, val_tr, val_cl = f"", f"", f"" # empty strings
 	for m1, m2, m3 in zip(metrics, tr_metrics, cl_metrics):
 		val1, val2, val3 = m1.compute(), m2.compute(), m3.compute()
-		val_en += f"Ensemble\t{m1.name}: {val1}\n"
-		val_tr += f"Transformer\t{m2.name}: {val2}\n"
-		val_cl += f"Featurizer\t{m3.name}: {val3}\n"
+		val_en += f"{m1.name}: {val1}\n"
+		val_tr += f"Subscore: Transformer\t{m2.name}: {val2}\n"
+		val_cl += f"Subscore: Featurizer:\t{m3.name}: {val3}\n"
 		# output metrics to standard output
 	result = "\n".join([val_en, val_tr, val_cl])
-	print(result, file=file)
+	print(result.split("\n")[0:2], file=file)
+	print(result, file=sys.stderr)
 	return result, predictions, roberta_preds, feature_preds
 
 
@@ -414,19 +415,19 @@ def main(args: argparse.Namespace) -> None:
 		**train_config
 	)
 
-	try:
-		print("Loading the best models...", file=sys.stderr)
-		ROBERTA = torch.load(f'{args.model_save_path}/{args.job}/roberta-{args.dim_reduc_method}.pt')
-		FEATURECLASSIFIER = torch.load(f'{args.model_save_path}/{args.job}/featurizer-{args.dim_reduc_method}.pt')
-		LOGREGRESSION = torch.load(f'{args.model_save_path}/{args.job}/regression-{args.dim_reduc_method}.pt')
-	except Exception("Could not load models..."):
-		print("Couldn't load the best models... Using the most recently trained model.")
+	# try:
+	# 	print("Loading the models...", file=sys.stderr)
+	# 	ROBERTA = torch.load(f'{args.model_save_path}/{args.job}/roberta-{args.dim_reduc_method}.pt')
+	# 	FEATURECLASSIFIER = torch.load(f'{args.model_save_path}/{args.job}/featurizer-{args.dim_reduc_method}.pt')
+	# 	LOGREGRESSION = torch.load(f'{args.model_save_path}/{args.job}/regression-{args.dim_reduc_method}.pt')
+	# except Exception("Could not load models..."):
+	# 	print("Couldn't load the models... Using the most recently trained model.")
 
 	# evaluate the model on test data
 	print("Evaluating models...", file=sys.stderr)
 	with open(f"{args.output_path}/{args.job}/devtest/D4_scores.out", 'w') as outfile:
-		outfile.write("########################\n\t\tD4 DEV SCORES\n########################\n")
-		print("########################\n\t\tD4 DEV SCORES\n########################\n")
+		outfile.write("########################\n\tD4 DEV SCORES\n########################\n")
+		print("########################\n\tD4 DEV SCORES\n########################\n")
 		result, preds, robs, feats = evaluate_ensemble(
 			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 			dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
@@ -448,13 +449,13 @@ def main(args: argparse.Namespace) -> None:
 	if args.test == 'eval':
 
 		print("Loading test data...", file=sys.stderr)
-		test_path = args.test_data_path + "eval.csv"
+		test_path = args.test_data_path + "test.csv"
 		test_sentences, test_labels = utils.read_data_from_file(test_path, index=args.index)
 
 		# evaluate the model on test data
 		with open(f"{args.output_path}/{args.job}/evaltest/D4_scores.out", 'w') as outfile:
-			print("########################\n\t\tD4 TEST SCORES\n########################")
-			print("########################\n\t\tD4 TEST SCORES\n########################", file=outfile)
+			print("########################\n\tD4 TEST SCORES\n########################")
+			print("########################\n\tD4 TEST SCORES\n########################", file=outfile)
 			result, preds, robs, feats = evaluate_ensemble(
 				ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 				dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
