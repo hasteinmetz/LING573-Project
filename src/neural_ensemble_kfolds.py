@@ -437,7 +437,7 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	test_out = pd.DataFrame(test_out_d)
-	output_file = f'{args.output_path}/{args.job}/devtest/D4.csv'
+	output_file = f'{args.output_path}/{args.job}/devtest/D4_scores.csv'
 	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there

@@ -1,1 +1,26 @@
 Config: {'lr_transformer': 2e-05, 'lr_classifier': 0.008, 'lr_regressor': 0.01, 'batch_size': 32, 'kfolds': 3, 'epochs': 2, 'hidden_size': 40, 'dropout_mlp': 0.4, 'dropout_roberta': 0.165}
+########################
+	D4 DEV SCORES
+########################
+
+f1 {'f1': 0.5973597359735974}
+accuracy {'accuracy': 0.5050709939148073}
+
+Subscore: Transformer	f1 {'f1': 0.30538922155688625}
+Subscore: Transformer	accuracy {'accuracy': 0.5294117647058824}
+
+Subscore: Featurizer	f1 {'f1': 0.4753363228699552}
+Subscore: Featurizer	accuracy {'accuracy': 0.5253549695740365}
+
+########################
+	D4 TEST SCORES
+########################
+f1 {'f1': 0.6054421768707482}
+accuracy {'accuracy': 0.5303643724696356}
+
+Subscore: Transformer	f1 {'f1': 0.3212121212121212}
+Subscore: Transformer	accuracy {'accuracy': 0.5465587044534413}
+
+Subscore: Featurizer	f1 {'f1': 0.4133016627078385}
+Subscore: Featurizer	accuracy {'accuracy': 0.5}
+
