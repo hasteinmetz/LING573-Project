@@ -225,7 +225,7 @@ def train_ensemble(
 				
 			# Get the accuracy of the fold on the test data
 			print(f"Fold {fold} accuracies:", file = sys.stderr)
-			preds1, preds2, preds3 = evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, test_sentences, test_labels, featurizer, batch_size, device, sys.stderr)
+			result, preds1, preds2, preds3 = evaluate_ensemble(Transformer, FClassifier, LogRegressor, tokenizer, test_sentences, test_labels, featurizer, batch_size, device, sys.stderr)
 					
 	# SAVE MODEL
 	try:
@@ -313,8 +313,9 @@ def evaluate_ensemble(
 		val_tr += f"Transformer\t{m2.name}: {val2}\n"
 		val_cl += f"Featurizer\t{m3.name}: {val3}\n"
 		# output metrics to standard output
-	print("\n".join([val_en, val_tr, val_cl]), file = file)
-	return predictions, roberta_preds, feature_preds
+	result = "\n".join([val_en, val_tr, val_cl])
+	print(result, file=file)
+	return result, predictions, roberta_preds, feature_preds
 
 
 def main(args: argparse.Namespace) -> None:
@@ -323,15 +324,15 @@ def main(args: argparse.Namespace) -> None:
 	if torch.cuda.is_available():
 		DEVICE = "cuda"
 		torch.device(DEVICE)
-		print(f"Using {DEVICE} device")
+		print(f"Using {DEVICE} device", file=sys.stderr)
 		print(f"Using the GPU:{torch.cuda.get_device_name(0)}", file = sys.stderr)
 	else:
 		torch.device(DEVICE)
-		print(f"Using {DEVICE} device")
+		print(f"Using {DEVICE} device", file=sys.stderr)
 		print(f"Using {DEVICE} device", file = sys.stderr)
 
 	#load data
-	print("Loading training and development data...")
+	print("Loading training and development data...", file=sys.stderr)
 	dev_path = args.test_data_path + "dev.csv"
 	train_sentences, train_labels = utils.read_data_from_file(args.train_data_path, index=args.index)
 	dev_sentences, dev_labels = utils.read_data_from_file(dev_path, index=args.index)
@@ -349,7 +350,7 @@ def main(args: argparse.Namespace) -> None:
 	# get hurtlex dictionary
 	hurtlex_dict, hurtlex_feat_list = utils.read_from_tsv(args.hurtlex_path)
 
-	print("reducing feature dimensions...")
+	print("reducing feature dimensions...", file=sys.stderr)
 	if args.dim_reduc_method == 'pca':
 		train_feature_vector = featurize(train_sentences, hurtlex_dict, hurtlex_feat_list, tfidf)
 		train_pca = PCA(.95)
@@ -373,7 +374,7 @@ def main(args: argparse.Namespace) -> None:
 		print(f"Config: {train_config}")
 
 	# initialize ensemble model
-	print("Initializing ensemble architecture...\n")
+	print("Initializing ensemble architecture...\n", file=sys.stderr)
 
 	# optimizers and loss functions
 	OPTIMIZER_TRANSFORMER = AdamW
@@ -414,7 +415,7 @@ def main(args: argparse.Namespace) -> None:
 	)
 
 	try:
-		print("Loading the best models...")
+		print("Loading the best models...", file=sys.stderr)
 		ROBERTA = torch.load(f'{args.model_save_path}/{args.job}/roberta-{args.dim_reduc_method}.pt')
 		FEATURECLASSIFIER = torch.load(f'{args.model_save_path}/{args.job}/featurizer-{args.dim_reduc_method}.pt')
 		LOGREGRESSION = torch.load(f'{args.model_save_path}/{args.job}/regression-{args.dim_reduc_method}.pt')
@@ -422,16 +423,18 @@ def main(args: argparse.Namespace) -> None:
 		print("Couldn't load the best models... Using the most recently trained model.")
 
 	# evaluate the model on test data
-	print("Evaluating models...")
-	preds, robs, feats = evaluate_ensemble(
-		ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
-		dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE
-	)
+	print("Evaluating models...", file=sys.stderr)
+	with open(f"{args.output_path}/{args.job}/devtest/D4.out", 'w') as outfile:
+		outfile.write("########################\n\t\tD4 DEV SCORES\n########################\n")
+		preds, robs, feats = evaluate_ensemble(
+			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
+			dev_sentences, dev_labels, FEATURIZER, train_config['batch_size'], DEVICE, file=outfile
+		)
 
 	# write results to output file
 	test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	test_out = pd.DataFrame(test_out_d)
-	output_file = f'{args.output_path}/{args.job}/devtest/D4_scores.csv'
+	output_file = f'{args.output_path}/{args.job}/devtest/D4.csv'
 	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
@@ -442,12 +445,12 @@ def main(args: argparse.Namespace) -> None:
 
 	if args.test == 'eval':
 
-		print("Loading test data...")
+		print("Loading test data...", file=sys.stderr)
 		test_path = args.test_data_path + "eval.csv"
 		test_sentences, test_labels = utils.read_data_from_file(test_path, index=args.index)
 
 		# evaluate the model on test data
-		print("Evaluating models...")
+		print("########################\n\t\tD4 TEST SCORES\n########################")
 		preds, robs, feats = evaluate_ensemble(
 			ROBERTA, FEATURECLASSIFIER, LOGREGRESSION, TOKENIZER,
 			test_sentences, test_labels, FEATURIZER, train_config['batch_size'], DEVICE
@@ -464,7 +467,7 @@ def main(args: argparse.Namespace) -> None:
 		error_file = f'{args.error_path}_{args.job}_evaltest.csv'
 		data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
-		print(f"Done! Exited normally :)")
+		print(f"Done! Exited normally :)", file=sys.stderr)
 	
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
