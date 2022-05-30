@@ -431,19 +431,19 @@ def main(args: argparse.Namespace) -> None:
 	# write results to output file
 	test_out_d = {'sentence': dev_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': dev_labels}
 	test_out = pd.DataFrame(test_out_d)
-	output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}_dev.csv'
+	output_file = f'{args.output_path}/{args.job}/devtest/D4_scores.csv'
 	test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 	# filter the data so that only negative examples are there
 	data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
-	error_file = f'{args.error_path}_{args.job}_{args.dim_reduc_method}_dev.csv'
+	error_file = f'{args.error_path}_{args.job}_devtest.csv'
 	data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
 
-	if args.test == 'test':
+	if args.test == 'eval':
 
 		print("Loading test data...")
-		test_path = args.test_data_path + "test.csv"
+		test_path = args.test_data_path + "eval.csv"
 		test_sentences, test_labels = utils.read_data_from_file(test_path, index=args.index)
 
 		# evaluate the model on test data
@@ -456,12 +456,12 @@ def main(args: argparse.Namespace) -> None:
 		# write results to output file
 		test_out_d = {'sentence': test_sentences, 'predicted': preds, 'transformer': robs, 'featurizer': feats, 'correct_label': test_labels}
 		test_out = pd.DataFrame(test_out_d)
-		output_file = f'{args.output_path}/{args.job}/nn_kfolds_{args.dim_reduc_method}_{args.test}.csv'
+		output_file = f'{args.output_path}/{args.job}/evaltest/D4_scores.csv'
 		test_out.to_csv(output_file, index=False, encoding='utf-8')
 
 		# filter the data so that only negative examples are there
 		data_filtered = test_out.loc[~(test_out['predicted'] == test_out['correct_label'])]
-		error_file = f'{args.error_path}_{args.job}_{args.dim_reduc_method}_{args.test}.csv'
+		error_file = f'{args.error_path}_{args.job}_evaltest.csv'
 		data_filtered.to_csv(error_file, index=False, encoding='utf-8')
 
 		print(f"Done! Exited normally :)")
