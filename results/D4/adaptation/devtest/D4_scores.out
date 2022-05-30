@@ -1,12 +1,29 @@
-########################
-		D4 DEV SCORES
-########################
-Ensemble	f1: {'f1': 0.0}
-Ensemble	accuracy: {'accuracy': 0.8}
+Using cuda device
+Loading training and development data...
+reducing feature dimensions...
+Config: {'lr_transformer': 2e-05, 'lr_classifier': 0.008, 'lr_regressor': 0.01, 'batch_size': 32, 'kfolds': 3, 'epochs': 2, 'hidden_size': 40, 'dropout_mlp': 0.4, 'dropout_roberta': 0.165}
+Initializing ensemble architecture...
 
-Transformer	f1: {'f1': 0.0}
-Transformer	accuracy: {'accuracy': 0.8}
+Loading the best models...
+Evaluating models...
+Ensemble	f1: {'f1': 0.53125}
+Ensemble	accuracy: {'accuracy': 0.513184584178499}
 
-Featurizer	f1: {'f1': 0.0}
-Featurizer	accuracy: {'accuracy': 0.8}
+Transformer	f1: {'f1': 0.30538922155688625}
+Transformer	accuracy: {'accuracy': 0.5294117647058824}
 
+Featurizer	f1: {'f1': 0.43478260869565216}
+Featurizer	accuracy: {'accuracy': 0.5253549695740365}
+
+Loading test data...
+Evaluating models...
+Ensemble	f1: {'f1': 0.5158730158730158}
+Ensemble	accuracy: {'accuracy': 0.5060728744939271}
+
+Transformer	f1: {'f1': 0.3212121212121212}
+Transformer	accuracy: {'accuracy': 0.5465587044534413}
+
+Featurizer	f1: {'f1': 0.4418052256532066}
+Featurizer	accuracy: {'accuracy': 0.5242914979757085}
+
+Done! Exited normally :)
