@@ -22,15 +22,15 @@ The accuracy and F1 scores of our ensemble classification model can be found und
 
 - Primary:
 
-	f1: {'f1': 0.9585439838220424}
+	f1: {'f1': 0.9627391742195367}
 
-	accuracy: {'accuracy': 0.9488139825218477}
+	accuracy: {'accuracy': 0.9538077403245943}
 
 - Adaptation:
 
-	f1: {'f1': 0.5158730158730158}
+	f1: {'f1': 0.6054421768707482}
 	
-	accuracy: {'accuracy': 0.5060728744939271}
+	accuracy: {'accuracy': 0.5303643724696356}
 
 The top 3 scores for the Hahackathon [shared task humor controversy subtask](https://competitions.codalab.org/competitions/27446#results) (our adaptation task) were:
 
